@@ -3,11 +3,27 @@ import { useContext, useEffect, useState } from 'react';
 import Footer from '../../components/footer';
 import NavScroll from '../../components/navbar';
 import { AuthContext } from '../../contexts/Auth/AuthContext';
+import { useAPI } from '../../hooks/useAPI';
+import { UserDTO } from '../../types/Dtos/UserDTO';
+import { VerificaMatricula } from '../../utils/utils';
+
+
 
 export const Home = () => {
     const auth = useContext(AuthContext);
     const [isAdmin, setIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [input, setInput] = useState('');
+    const [selecao, setSelecao] = useState('matrícula');
+    const [resultado, setResultado] = useState<any | null>(null);
+    
+    const api = useAPI();
+
+    const [usuario, setUsuario] = useState<UserDTO>({
+        nome: '',
+        login: '',
+        role: ''
+    });
 
     useEffect(() => {
         if (auth.user) {
@@ -16,14 +32,47 @@ export const Home = () => {
         }
     }, [auth.user]);
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        switch (name) {
+            case 'selecao':
+                setSelecao(value);    
+                break;
+        
+            default:
+                setInput(value);
+                break;
+        }
+        
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        
+
+        if (selecao === 'matrícula') {
+            
+            if(VerificaMatricula(input))
+              setResultado(await api.buscarUsuarioPorMatricula(input))
+            else
+              alert('Matricula Incorreta !');     
+
+        } else if (selecao === 'cpfrequerimento') {
+
+            setResultado(await api.buscarRequerimentoPorCpf(input))
+        
+        }
+    };
+
+   
+
     if (loading) {
         return <div>Loading...</div>; 
     }
 
     return (
         <>
-            <NavScroll isAdmin={isAdmin} /> 
-
+            <NavScroll isAdmin={isAdmin} />
             <div className="container">
                 <br /> <br />
                 <div className="row">
@@ -33,18 +82,22 @@ export const Home = () => {
                             <div className="card-header">
                                 <h3>Pesquisar no sistema</h3>
                             </div>
-                            <form className="form-inline" method="post">
+                            <form className="form-inline" method="post" onSubmit={handleSubmit}>
                                 <div className="row form-group justify-content-center w-100 p-2">
                                     <div className="col col-14 col-md-2">
-                                        <label htmlFor="cars" className="my-3 p-2 w-100">
+                                        <label htmlFor="selecao" className="my-3 p-2 w-100">
                                             <h5>Tipo de busca:</h5>
                                         </label>
                                     </div>
                                     <div className="col col-14 col-md-2">
-                                        <select name="nome" id="nome" className="custom-select my-3 p-2 w-100" required>
-                                            <option value="">Escolher...</option>
-                                            <option value="nomefuncionario">Funcionário</option>
-                                            <option value="nomeauxiliar">Auxiliar</option>
+                                        <select
+                                            className="custom-select my-3 p-2 w-100"
+                                            name="selecao"
+                                            value={selecao}
+                                            onChange={handleChange}
+                                            required
+                                        >
+                                            <option value="matrícula">Usuário</option>
                                             <option value="cpfrequerimento">Requerimento</option>
                                         </select>
                                     </div>
@@ -54,14 +107,15 @@ export const Home = () => {
                                             type="search"
                                             placeholder="Insira sua pesquisa..."
                                             aria-label="Pesquisar"
-                                            name="buscar"
-                                            id="buscar"
+                                            name="input"
+                                            id="input"
+                                            value={input}
+                                            onChange={handleChange}
                                             required
                                         />
                                         <small>
                                             * Digite o cpf para buscar requerimentos.
-                                            <br />* Digite o cpf para buscar auxiliares.
-                                            <br />* Digite a matricula para buscar funcionário.
+                                            <br />* Digite a matrícula para buscar Usuário.
                                         </small>
                                     </div>
                                     <div className="col col-14 col-md-2">
@@ -71,7 +125,7 @@ export const Home = () => {
                             </form>
                             <div className="row form-group justify-content-center w-100 p-2">
                                 <h4>
-                                    <i><span>{/* Mensagem dinâmica aqui */}</span></i>
+                                    <i><span>{resultado}</span></i>
                                 </h4>
                             </div>
                         </div>

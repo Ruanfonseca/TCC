@@ -14,7 +14,7 @@ const Cadastro:React.FC = () => {
         nome:'',
         login:'',
         matricula:'',
-        setor:'',
+        setor:'Logística',
         role:'ADMIN'
     });
    
@@ -49,7 +49,7 @@ const Cadastro:React.FC = () => {
             nome: '',
             login: '',
             matricula: '',
-            setor:'',
+            setor:'Logística',
             role: 'ADMIN'
           });
         };
@@ -122,7 +122,7 @@ const Cadastro:React.FC = () => {
               value={Usuario.matricula}
               name="matricula"
               className="form-control"
-              placeholder="Ex.:2019233307011"
+              placeholder="Ex.:201923307011"
               onChange={handleChange}
               required
             />
@@ -138,7 +138,7 @@ const Cadastro:React.FC = () => {
               onChange={handleChange}
               required
             >
-              <option value='ADMIN'>Logistica</option>
+              <option value='LOGISTICA'>Logistica</option>
             </select>
           </div>
           <button type="submit" className="btn btn-success btn-submit">Adicionar Usuário</button>

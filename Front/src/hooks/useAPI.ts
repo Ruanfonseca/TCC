@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Sala } from "../types/Sala";
 import { User } from "../types/User";
+import { UserDTO } from "../types/Dtos/UserDTO";
 import { Horario } from './../types/Horario';
 
 
@@ -12,6 +13,7 @@ export const useAPI = () =>({
   //chamada para recuperar dados do backend para popular listas
    
    ListaDeUsuarios: async (): Promise<User[]> => {
+    
     const response = await api.get('/usuario/listagem');
     return response.data;
   },
@@ -51,9 +53,17 @@ export const useAPI = () =>({
     const response = await api.post('/horario/cadastrar',Horario);
 
     return response;
-   }
+   },
 
    
+buscarUsuarioPorMatricula:async (matricula: string): Promise<UserDTO> => {
+  const response = await api.get('/busca/usuario');
+  return response.data;  
+},
 
+buscarRequerimentoPorCpf:async (cpf: string): Promise<string> => {
+    // Implemente a lógica para buscar requerimento pelo CPF (chamada ao backend)
+    return `Requerimento encontrado para CPF: ${cpf}`;
+}
 
 });

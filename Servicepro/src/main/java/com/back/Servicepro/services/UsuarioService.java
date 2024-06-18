@@ -30,6 +30,7 @@ public class UsuarioService implements IUsuarioService{
         }
 
         try {
+
             var matriculaHash = passwordEncoder.encode(usuarioDTO.matricula());
             Usuario entity = new Usuario(usuarioDTO.nome(),usuarioDTO.login(),matriculaHash,usuarioDTO.faculdade(),usuarioDTO.setor(),usuarioDTO.role());
             Usuario novoUsuario = repository.save(entity);

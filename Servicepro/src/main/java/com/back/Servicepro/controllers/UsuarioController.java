@@ -21,6 +21,7 @@ public class UsuarioController {
 
     @PostMapping("/cadastrar")
     private boolean salvar(@RequestBody UsuarioDTO usuarioDto) {
+        System.out.println(usuarioDto);
 
         if (service.salvar(usuarioDto)){
             return true;
@@ -31,7 +32,8 @@ public class UsuarioController {
 
     @PostMapping("/professor/cadastrar")
     private Boolean salvarProfessor(@RequestBody ProfessorDTO dto){
-       if (service.salvarProfessor(dto)){
+        System.out.println(dto);
+        if (service.salvarProfessor(dto)){
            return true;
        }
        return false;

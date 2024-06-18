@@ -8,7 +8,7 @@ export default function FuncaoVerificaEmail(email: string):boolean {
 }
 
 export function VerificaMatricula(input: string): boolean {
-    const expression: RegExp = /^\d{13}$/;
+    const expression: RegExp = /^\d{12}$/;
     const result: boolean = expression.test(input);
     return result;
 }
