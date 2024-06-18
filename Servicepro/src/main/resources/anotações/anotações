@@ -1,0 +1,27 @@
+criando um novo usuario
+{
+  "nome":"Ruan Fonseca",
+
+   "login":"whitelook22@outlook.com",
+
+   "matricula":"2019233307011",
+
+    "role":"ADMIN"
+}
+
+{
+  "nome":"Andre",
+
+   "login":"Andre@outlook.com",
+
+   "matricula":"2019233307013",
+
+    "role":"ADMIN"
+}
+
+
+login  -  http://localhost:8080/auth
+{
+    "login":"whitelook22@outlook.com",
+    "matricula":"2019233307013"
+}
