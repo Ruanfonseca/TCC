@@ -1,11 +1,8 @@
 package com.back.Servicepro.services;
 
 import com.back.Servicepro.dto.sala.SalaDTO;
-import com.back.Servicepro.dto.usuario.UsuarioDTO;
-import com.back.Servicepro.infra.exceptions.BusinessException;
 import com.back.Servicepro.interfaces.ISalaService;
 import com.back.Servicepro.models.Sala;
-import com.back.Servicepro.models.Usuario;
 import com.back.Servicepro.repository.SalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,8 +45,10 @@ public class SalaService implements ISalaService {
     }
 
     @Override
-    public Boolean editar(SalaDTO dto) {
-        return null;
+    public Boolean editar(Sala editado)
+    {
+        repository.save(editado);
+        return true;
     }
 
     @Override
@@ -57,9 +56,17 @@ public class SalaService implements ISalaService {
         return repository.findAll();
     }
 
+    public Optional<Sala> buscarPorNome(String nome) {
+        return repository.findByNome(nome);
+    }
+
 
     @Override
-    public Boolean deletar(SalaDTO dto) {
-        return null;
+    public Boolean deletar(Sala deletado)
+    {
+        repository.delete(deletado);
+        return true;
     }
+
+
 }

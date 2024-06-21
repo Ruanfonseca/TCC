@@ -1,8 +1,6 @@
 package com.back.Servicepro.repository;
 
 import com.back.Servicepro.models.Horario;
-import com.back.Servicepro.models.Sala;
-import com.back.Servicepro.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

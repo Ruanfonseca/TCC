@@ -7,48 +7,51 @@ const api = axios.create({
 
 
 export const useAuthApi = () => ({
-    
-    
-    //chamadas para validação de login
     validateToken: async (token: string) => {
-        
         return {
-            user:{nome:'Jose',login:'jose@gmail.com',role:'ADMIN'}
+           
+            user:{nome:'Jose',login:'jose@gmail.com',matricula:'2019233307013',telefone:'21969232991'
+                ,senha:'Atento2024',
+                role:'ADMIN',setor:'LOGÍSTICA',faculdade:''}
         }
-       
-
         const response = await api.post('/auth/validate', { token });
-        
         return {
-            user:{nome:response.data.nome,login:response.data.login,role:response.data.role}
-        }
+            user: {
+                nome: response.data.nome,
+                login: response.data.login,
+                role: response.data.role,
+                matricula: response.data.matricula || ''
+            }
+        };
     },
 
     signin: async (login: string, matricula: string) => {
-        
         return {
-            user:{nome:'Jose',login:'jose@gmail.com',role:'ADMIN'},
+            user:{nome:'Jose',login:'jose@gmail.com',matricula:'2019233307013',telefone:'21969232991'
+                ,senha:'Atento2024',
+                role:'ADMIN',setor:'LOGÍSTICA',faculdade:''},
             token: '16252616182828'
         }
-
         const response = await api.post('/auth', { login, matricula });
-
         if (response) {
             return {
-                user: {nome:response.data.nome, login:response.data.login , role:response.data.role },
+                user: {
+                    nome: response.data.nome,
+                    login: response.data.login,
+                    role: response.data.role,
+                    matricula: response.data.matricula || ''
+                },
                 token: response.data.token
-            };            
-        }else{
+            };
+        } else {
             return {
                 user: null,
                 token: ''
             };
         }
-
     },
+
     logout: async () => {
         return { status: true };
-    },
-    /********************************************************************** */
-
+    }
 });

@@ -1,0 +1,17 @@
+[
+    {
+        "nome":"205b",
+        "capacidade":"45",
+        "status_da_sala":"D"
+    },
+    {
+        "nome":"201",
+        "capacidade":"5",
+        "status_da_sala":"D"
+    }
+    ,{
+        "nome":"207",
+        "capacidade":"52",
+        "status_da_sala":"D"
+    }
+]

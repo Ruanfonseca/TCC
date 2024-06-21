@@ -9,21 +9,21 @@ export const Login = () => {
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
-    const [matricula, setMatricula] = useState('');
+    const [senha, setSenha] = useState('');
     const [returnMessage,setReturnMessage] = useState(false);
 
     const handleEmailInput = (event: ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
     }
 
-    const handleMatriculaInput = (event: ChangeEvent<HTMLInputElement>) => {
-        setMatricula(event.target.value);
+    const handleSenhaInput = (event: ChangeEvent<HTMLInputElement>) => {
+        setSenha(event.target.value);
     }
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();  
-        if (email && matricula) {
-            const isLogged = await auth.signin(email, matricula);
+        if (email && senha) {
+            const isLogged = await auth.signin(email, senha);
             
             if (isLogged) {
                 navigate('/home');
@@ -38,6 +38,7 @@ export const Login = () => {
             <div className="container">
                 <img src={Logo} className="imglogo" alt="Logo" />
                 <h2>Service Pro</h2>
+
                 <div className="card-login">
                     <form onSubmit={handleLogin}>
                         <input
@@ -47,10 +48,10 @@ export const Login = () => {
                             placeholder="Digite seu e-mail"
                         />
                         <input
-                            type="text"
-                            value={matricula}
-                            onChange={handleMatriculaInput}
-                            placeholder="Digite sua matrícula"
+                            type="password"
+                            value={senha}
+                            onChange={handleSenhaInput}
+                            placeholder="Digite sua Senha"
                         />
                         <button type="submit">Acessar</button>
                     </form>
@@ -59,8 +60,12 @@ export const Login = () => {
                     <div className="messageError">
                          <div className="textMessageError">Senha ou Matrícula incorretas !</div>
                     </div>
- } 
+                    } 
+                    <a className ="criarconta" href="">Criar Conta</a>
+                    <p className="esquecesenha">Esqueceu a senha ? <a href="">Clique aqui</a></p>
+                    
                 </div>
+                
             </div>
         </>
     );

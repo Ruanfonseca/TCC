@@ -2,11 +2,10 @@ package com.back.Servicepro.interfaces;
 
 
 import com.back.Servicepro.dto.sala.SalaDTO;
-import com.back.Servicepro.dto.usuario.UsuarioDTO;
 import com.back.Servicepro.models.Sala;
-import com.back.Servicepro.models.Usuario;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ISalaService {
     //Crud completo
@@ -15,14 +14,16 @@ public interface ISalaService {
     public Boolean salvar(SalaDTO dto);
 
     //editar
-    public Boolean editar(SalaDTO dto);
+    public Boolean editar(Sala dto);
 
 
     //Buscar todos
     public List<Sala> buscarTodos();
 
+    public Optional<Sala> buscarPorNome(String nome);
+
 
     //excluir
-    public Boolean deletar(SalaDTO dto);
+    public Boolean deletar(Sala dto);
 
 }

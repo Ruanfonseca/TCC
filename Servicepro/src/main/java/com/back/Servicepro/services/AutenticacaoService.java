@@ -42,6 +42,7 @@ public class AutenticacaoService implements IAutenticacaoService {
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException{
         return repository.findByLogin(login);
     }
+
     @Override
     public TokenResponseDTO obterToken(AuthDTO dto){
         Usuario usuario = repository.findByLogin(dto.login());
@@ -61,7 +62,7 @@ public class AutenticacaoService implements IAutenticacaoService {
     }
 
 
-    public String geraTokenJWT(Usuario usuario,Integer expiration){
+    public String geraTokenJWT(Usuario usuario, Integer expiration){
         try {
             Algorithm algorithm = Algorithm.HMAC256(chaveSecreta);
 

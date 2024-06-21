@@ -1,6 +1,5 @@
 package com.back.Servicepro.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +14,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -22,29 +26,53 @@ public class SecurityConfiguration {
 
     @Autowired
     private SecurityFilter securityFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authoriza -> authoriza
-                        .requestMatchers(HttpMethod.GET, "/usuarios/admin").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/usuarios/user").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "/usuario/listagem").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/sala/listagem").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/horario/listagem").permitAll()
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/usuario/cadastrar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuario/professor/cadastrar").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/sala/cadastrar").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/horario/cadastrar").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/usuario/listagem").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/usuario/busca/matricula").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/usuario/editar").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/usuario/deletar").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/auth").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/sala/listagem").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/sala/cadastrar").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/sala/busca/nome").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/sala/editar").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/sala/deletar").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/horario/cadastrar").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/horario/listagem").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/horario/busca/nome").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/horario/editar").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/horario/deletar").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/editar/**").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/validate").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
     @Bean
@@ -57,5 +85,4 @@ public class SecurityConfiguration {
             throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
 }

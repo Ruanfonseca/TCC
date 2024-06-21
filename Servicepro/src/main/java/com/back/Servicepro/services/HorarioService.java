@@ -48,10 +48,16 @@ public class HorarioService implements IHorarioService {
         }
     }
 
+    public Optional<Horario> buscarPorNome(String nome){
+       Optional<Horario> horario = repository.findByNome(nome);
+       return horario;
+    }
+
 
     @Override
-    public Boolean editar(HorarioDTO dto) {
-        return null;
+    public Boolean editar(Horario horario) {
+        repository.save(horario);
+        return true;
     }
 
     @Override
@@ -60,7 +66,8 @@ public class HorarioService implements IHorarioService {
     }
 
     @Override
-    public Boolean deletar(HorarioDTO dto) {
-        return null;
+    public Boolean deletar(Horario deletado) {
+         repository.delete(deletado);
+        return true;
     }
 }

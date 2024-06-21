@@ -70,6 +70,13 @@
      color: white;
  }
 
+ .criarconta{
+    margin-top: 10px;
+ }
+ .esquecesenha{
+    
+ }
+
 @media (max-width: 480px) {
     .container {
         padding: 10px;

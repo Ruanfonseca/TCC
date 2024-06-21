@@ -1,4 +1,4 @@
-export type Horario = {
+export type HorarioDTO = {
    nome:string;
    periodo:string;
    horaInicio:string,

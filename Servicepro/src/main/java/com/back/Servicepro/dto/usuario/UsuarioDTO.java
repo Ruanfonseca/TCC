@@ -14,7 +14,8 @@ public record UsuarioDTO(
         String faculdade,
 
         String setor,
-
+        String senha,
+        String telefone,
         RoleEnum role
 ) {
 

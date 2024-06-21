@@ -1,0 +1,35 @@
+[
+    {
+        "nome":"Ruan Fonseca",
+        "login":"whitelook22@outlook.com",
+        "matricula":"201923307011",
+        "faculdade":"FCEE",
+        "telefone":"21969232991",
+        "senha":"Atento2023",
+        "setor":"",
+        "role":"ADMIN"
+    },
+
+    {
+        "nome":"Teste 01",
+        "login":"whitelook22@outlook.com",
+        "matricula":"201923307012",
+        "faculdade":"FCEE",
+        "telefone":"21969232991",
+        "senha":"Atento2023",
+        "setor":"",
+        "role":"ADMIN"
+    },
+
+    {
+        "nome":"Teste 02",
+        "login":"whitelook22@outlook.com",
+        "matricula":"201923307013",
+        "faculdade":"FCEE",
+        "telefone":"21969232991",
+        "senha":"Atento2023",
+        "setor":"",
+        "role":"ADMIN"
+    }
+
+]  

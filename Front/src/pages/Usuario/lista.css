@@ -1,0 +1,43 @@
+.titulo{
+    text-align: center;
+    margin-bottom: 20px;
+}
+.table-responsive {
+    overflow-x: auto; 
+    margin-left: 100px; 
+    margin-right: 100px;
+  }
+  
+  
+  @media (max-width: 768px) {
+    .table-responsive {
+      overflow-x: auto; 
+      margin-left: 0; 
+      margin-right: 0; 
+    }
+  
+    .table-responsive table {
+      width: 100%; 
+      margin-bottom: 15px; 
+      border-collapse: collapse; 
+    }
+  
+    .table-responsive thead {
+      display: none; 
+    }
+  
+    .table-responsive tbody td {
+      display: table-cell;  
+     text-align: center; 
+      padding: 10px; 
+      border-bottom: 1px solid #ddd; 
+    }
+  
+    .table-responsive tbody td::before {
+      content: attr(data-label); 
+      font-weight: bold; 
+      display: block; 
+      margin-bottom: 5px; 
+    }
+  }
+  

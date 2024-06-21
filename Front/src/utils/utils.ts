@@ -12,3 +12,10 @@ export function VerificaMatricula(input: string): boolean {
     const result: boolean = expression.test(input);
     return result;
 }
+
+export function VerificaSenha(input: any): boolean {
+    
+    const expression: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    const result: boolean = expression.test(input);
+    return result;
+}

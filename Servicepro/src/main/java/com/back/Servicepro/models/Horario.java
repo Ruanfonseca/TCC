@@ -21,6 +21,10 @@ public class Horario {
 
     private String periodo;
 
+    private String horaFim;
+
+    private String horaInicio;
+
 
     public Horario(String nome, String periodo) {
         this.nome = nome;

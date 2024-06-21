@@ -1,4 +1,7 @@
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useEffect, useState } from 'react';
+import InputMask from 'react-input-mask';
 import NavScroll from '../../components/navbar';
 import { AuthContext } from '../../contexts/Auth/AuthContext';
 import { useAPI } from '../../hooks/useAPI';
@@ -12,6 +15,8 @@ const CadastroProfessor: React.FC = () => {
         nome:'',
         login:'',
         matricula:'',
+        senha:'',
+        telefone:'',
         faculdade:'',
         role:'USER'
     });
@@ -19,6 +24,8 @@ const CadastroProfessor: React.FC = () => {
     const auth = useContext(AuthContext);
     const [isAdmin, setIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
+  
 
     useEffect(() => {
         if (auth.user) {
@@ -47,9 +54,15 @@ const CadastroProfessor: React.FC = () => {
             nome: '',
             login: '',
             matricula: '',
+            senha:'',
+            telefone:'',
             faculdade:'',
             role: 'USER'
           });
+        };
+        
+        const toggleShowPassword = () => {
+          setShowPassword(!showPassword);
         };
         
         const handleSubmit = async(e: React.FormEvent) => {
@@ -83,25 +96,28 @@ const CadastroProfessor: React.FC = () => {
 
   return (
     <>
-      <NavScroll isAdmin={isAdmin} />
-      <div className='container'>
-        <form method="post" onSubmit={handleSubmit}>
-          <h1 className='Titulo'>Cadastro de Professor</h1>
-          <br />
-          <div className="card-login">
-          <div className="form-group ">
+    <NavScroll isAdmin={isAdmin} />
+    <div className='container'>
+      <form method="post" onSubmit={handleSubmit}>
+        <h1 className='Titulo'>Cadastro de Professor</h1>
+        <br />
+        
+        <div className="card-login">
+
+          <div className="form-group">
             <label htmlFor="nome"><b>Nome:</b></label>
             <input
               type="text"
               className="form-control"
               value={Usuario.nome}
-              placeholder="Insira o nome do funcionário"
+              placeholder="Insira o nome do Usuário"
               name="nome"
               onChange={handleChange}
               required
             />
             <small className="form-text text-muted"><i>* Nome completo.</i></small>
           </div>
+
           <div className="form-group">
             <label htmlFor="email"><b>E-mail:</b></label>
             <input
@@ -114,6 +130,7 @@ const CadastroProfessor: React.FC = () => {
               required
             />
           </div>
+
           <div className="form-group">
             <label htmlFor="matricula"><b>Matricula:</b></label>
             <input
@@ -126,6 +143,41 @@ const CadastroProfessor: React.FC = () => {
               required
             />
           </div>
+
+          <div className="form-group">
+            <label htmlFor="telefone"><b>Telefone:</b></label>
+            <InputMask
+              mask="(99) 99999-9999"
+              className="form-control"
+              value={Usuario.telefone}
+              placeholder="Insira o seu número de celular"
+              name="telefone"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="senha"><b>Senha:</b></label>
+            <div className="input-group">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="form-control"
+                value={Usuario.senha}
+                placeholder="Insira uma senha de 8 dígitos"
+                name="senha"
+                onChange={handleChange}
+                required
+              />
+              <div className="input-group-append">
+                <button type="button" className="btn btn-outline-secondary" onClick={toggleShowPassword}>
+                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </button>
+              </div>
+            </div>
+            <small className="form-text text-muted"><i>* contendo pelo menos uma letra maiúscula, uma letra minúscula e um número.</i></small>
+          </div>
+
 
 
           <div className="form-group">
