@@ -2,11 +2,13 @@ package com.back.Servicepro.controllers;
 import com.back.Servicepro.dto.usuario.ProfessorDTO;
 import com.back.Servicepro.dto.usuario.UsuarioDTO;
 import com.back.Servicepro.dto.usuario.MatriculaRequestDTO;
-import com.back.Servicepro.enums.RoleEnum;
 import com.back.Servicepro.models.Usuario;
 import com.back.Servicepro.services.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,18 +17,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/usuario")
 @CrossOrigin("*")
 public class UsuarioController {
 
-    @Autowired
     private UsuarioService service;
 
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
+
+
+    public UsuarioController(UsuarioService service,PasswordEncoder passwordEncoder) {
+        this.service = service;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @PostMapping("/cadastrar")
     private boolean salvar(@RequestBody UsuarioDTO usuarioDto) {
@@ -46,29 +53,6 @@ public class UsuarioController {
            return true;
        }
        return false;
-    }
-
-    @GetMapping("/listagem")
-    private List<UsuarioDTO> buscarTodos() {
-        List<Usuario> Usuarios = service.buscarTodos();
-        List<UsuarioDTO> retornoUsuarios = new ArrayList<>();
-
-        for (Usuario usuario : Usuarios) {
-            UsuarioDTO usuarioDTO = new UsuarioDTO(
-                    usuario.getNome(),
-                    usuario.getLogin(),
-                    usuario.getFaculdade(),
-                    usuario.getMatricula(),
-                    usuario.getSetor(),
-                    usuario.getSenha(),
-                    usuario.getTelefone(),
-                    usuario.getRole()
-            );
-
-            retornoUsuarios.add(usuarioDTO);
-        }
-
-        return retornoUsuarios;
     }
 
     @GetMapping("/busca/matricula")
@@ -128,6 +112,26 @@ public class UsuarioController {
 
     }
 
+    @GetMapping("/listagem")
+    private List<UsuarioDTO> buscarTodos() {
+        List<Usuario> usuariosPage = service.buscarTodosUsuarios();
 
+        return usuariosPage.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private UsuarioDTO convertToDto(Usuario usuario) {
+        return new UsuarioDTO(
+                usuario.getNome(),
+                usuario.getLogin(),
+                usuario.getMatricula(),
+                usuario.getFaculdade(),
+                usuario.getSetor(),
+                usuario.getSenha(),
+                usuario.getTelefone(),
+                usuario.getRole()
+        );
+    }
 
 }

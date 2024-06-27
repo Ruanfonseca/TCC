@@ -1,6 +1,7 @@
 package com.back.Servicepro.repository;
 
 import com.back.Servicepro.models.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UsuarioRepository extends CrudRepository<Usuario,String> {
+public interface UsuarioRepository extends JpaRepository<Usuario,String> {
 
     Usuario findByLogin(String login);
 

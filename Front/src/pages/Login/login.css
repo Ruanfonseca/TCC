@@ -41,7 +41,7 @@
     font-size: 16px;
 }
 
-.card-login button {
+.buttonForm {
     width: 100%;
     padding: 10px;
     background-color: #007bff;
@@ -52,8 +52,20 @@
     cursor: pointer;
 }
 
-.card-login button:hover {
+.buttonForm:hover {
     background-color: #0056b3;
+}
+
+.buttonRetorno{
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: rgb(230, 33, 33);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
 }
 .messageError {
     display: block;

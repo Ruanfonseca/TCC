@@ -1,0 +1,24 @@
+.detail-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  .detail-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #343a40;
+  }
+  
+  .detail-container p {
+    font-size: 18px;
+    margin-top: 15px 0;
+  }
+  
+  .detail-container .btn-outline-dark {
+    margin-top: 20px;
+  }
+  

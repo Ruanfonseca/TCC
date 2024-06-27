@@ -1,69 +1,87 @@
 import { useContext, useEffect, useState } from "react";
-import { Button, Container, Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import ModalSala from "../../components/SalaModals/modalSala";
 import ModalDeleteSalaConfirmacao from "../../components/SalaModals/modelDelete";
 import Footer from "../../components/footer";
 import NavScroll from "../../components/navbar";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 import { useAPI } from "../../hooks/useAPI";
+import './sala.css';
 
-interface Sala{
-     nome:string;
-     capacidade:string;
-     status_da_sala:string;
-  }
-  
+interface Sala {
+  nome: string;
+  capacidade: string;
+  status_da_sala: string;
+}
 
-function SalasList (){
-  
-    const [Salas, setSalas] = useState<Sala[]>([]);
-    const [selectedUsuario, setSelectedUsuario] = useState<Sala | null>(null);
-    const api = useAPI();
-
-    const auth = useContext(AuthContext);
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [loading, setLoading] = useState(true);
-    
+function SalasList() {
+  const [selectedUsuario, setSelectedUsuario] = useState<Sala | null>(null);
+  const api = useAPI();
+  const auth = useContext(AuthContext);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [modalShow, setModalShow] = useState(false);
-  const [DeletemodalShow, setDeleteModalShow] = useState(false);
+  const [deleteModalShow, setDeleteModalShow] = useState(false);
 
-    useEffect(() => {
-    api.ListaDeSalas()
-        .then(response => {
-          setSalas(response);
-        })
-        .catch(error => {
-        // alert('Erro ao renderizar os dados') 
-         console.error('Erro:', error);
-        });
+  // Paginação
+  const [salas, setSalas] = useState<Sala[]>([]);
+  const [salasPorPage, setSalasPorPage] = useState(5);
+  const [paginaCorrente, setPaginaCorrente] = useState(0);
+  const paginas = Math.ceil(salas.length / salasPorPage);
+  const startIndex = paginaCorrente * salasPorPage;
+  const endIndex = startIndex + salasPorPage;
+  const salasCorrente = salas.slice(startIndex, endIndex);
 
-        if (auth.user) {
-            setIsAdmin(auth.user.role === 'ADMIN');
-            setLoading(false);
-        }
-    },[auth.user]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await api.ListaDeSalas();
+        setSalas(data);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      }
+    };
+    fetchData();
+  }, [api]);
 
-    if (loading) {
-        return <div>Carrengando...</div>; 
+  useEffect(() => {
+    if (auth.user) {
+      setIsAdmin(auth.user.role === 'ADMIN');
+      setLoading(false);
     }
-  
-    const handleEditClick = (sala: Sala) => {
-      setSelectedUsuario(sala);
-      setModalShow(true);
-    };
-  
-    const handleDeleteClick = (sala: Sala) => {
-      setSelectedUsuario(sala);
-      setDeleteModalShow(true);
-    };
-  
-    return (
+  }, [auth.user]);
 
-      <>
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
+  const handleEditClick = (sala: Sala) => {
+    setSelectedUsuario(sala);
+    setModalShow(true);
+  };
+
+  const handleDeleteClick = (sala: Sala) => {
+    setSelectedUsuario(sala);
+    setDeleteModalShow(true);
+  };
+
+  const handleNextPage = () => {
+    if (paginaCorrente < paginas - 1) {
+      setPaginaCorrente(paginaCorrente + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (paginaCorrente > 0) {
+      setPaginaCorrente(paginaCorrente - 1);
+    }
+  };
+
+  return (
+    <>
       <NavScroll isAdmin={isAdmin} />
-      <Container>
         <br />
-        <h1>Lista de Salas</h1>
+        <h1 className="titulo">Lista de Salas</h1>
         <div className="table-responsive">
           <Table striped bordered hover>
             <thead>
@@ -75,12 +93,11 @@ function SalasList (){
               </tr>
             </thead>
             <tbody>
-              {Salas.map((item) => (
+              {salasCorrente.map(item => (
                 <tr key={item.nome}>
                   <td>{item.nome}</td>
                   <td>{item.capacidade}</td>
                   <td>{item.status_da_sala}</td>
-
                   <td>
                     <Button variant="primary" onClick={() => handleEditClick(item)}>
                       Editar
@@ -96,7 +113,21 @@ function SalasList (){
             </tbody>
           </Table>
         </div>
-      </Container>
+
+      <div className="paginacao">
+        <Button
+          onClick={handlePreviousPage}
+          disabled={paginaCorrente === 0}
+        >
+          Anterior
+        </Button>
+        <Button
+          onClick={handleNextPage}
+          disabled={paginaCorrente >= paginas - 1}
+        >
+          Próximo
+        </Button>
+      </div>
 
       {selectedUsuario && (
         <ModalSala
@@ -108,15 +139,15 @@ function SalasList (){
 
       {selectedUsuario && (
         <ModalDeleteSalaConfirmacao
-          show={DeletemodalShow}
+          show={deleteModalShow}
           onHide={() => setDeleteModalShow(false)}
           sala={selectedUsuario}
         />
       )}
 
       <Footer />
-      </>
-    );
-  }
+    </>
+  );
+}
 
-export default SalasList
+export default SalasList;

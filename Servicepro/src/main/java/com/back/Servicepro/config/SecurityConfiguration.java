@@ -36,10 +36,17 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/usuario/cadastrar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuario/professor/cadastrar").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/usuario/listagem").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/usuario/listagem**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/usuario/busca/matricula").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/usuario/editar").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/usuario/deletar").permitAll()
+
+
+                        .requestMatchers(HttpMethod.POST, "/requerimento/cadastrar").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/requerimento/listagem").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/requerimento/busca/nome").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/requerimento/editar").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/requerimento/deletar").permitAll()
 
 
                         .requestMatchers(HttpMethod.GET, "/sala/listagem").permitAll()

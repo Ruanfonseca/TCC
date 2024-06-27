@@ -8,6 +8,9 @@ import com.back.Servicepro.models.Usuario;
 import com.back.Servicepro.services.SalaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -37,20 +41,8 @@ public class SalaController {
 
     @GetMapping("/listagem")
     private List<SalaDTO> buscarTodos() {
-        List<Sala> salas = service.buscarTodos();
-        List<SalaDTO> retornoSalas = new ArrayList<>();
-
-        for (Sala sala : salas) {
-            SalaDTO DTO = new SalaDTO(
-                    sala.getNome(),
-                    sala.getCapacidade(),
-                    sala.getStatus_da_sala()
-            );
-
-            retornoSalas.add(DTO);
-        }
-
-        return retornoSalas;
+        List<Sala> salas = service.buscarTodasSalas();
+        return  salas.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     @GetMapping("/busca/nome")
@@ -102,5 +94,14 @@ public class SalaController {
 
     }
 
+
+
+    private SalaDTO convertToDto(Sala sala) {
+        return new SalaDTO(
+                sala.getNome(),
+                sala.getCapacidade(),
+                sala.getStatus_da_sala()
+        );
+    }
 
 }

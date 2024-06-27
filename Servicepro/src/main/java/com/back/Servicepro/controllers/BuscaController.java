@@ -1,14 +1,20 @@
 package com.back.Servicepro.controllers;
 
 
+import com.back.Servicepro.dto.usuario.MatriculaRequestDTO;
+import com.back.Servicepro.dto.usuario.UsuarioDTO;
+import com.back.Servicepro.dto.usuario.UsuarioOnlineDTO;
 import com.back.Servicepro.dto.usuario.UsuarioOnlineResponseDTO;
 import com.back.Servicepro.models.Usuario;
 import com.back.Servicepro.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/busca")
@@ -21,27 +27,21 @@ public class BuscaController {
     private PasswordEncoder passwordEncoder;
 
 
-    @GetMapping("/usuario/{matricula}")
-    public UsuarioOnlineResponseDTO buscarUsuario(@PathVariable("matricula") String matricula){
+    @GetMapping("/busca/matricula")
+    private ResponseEntity<UsuarioOnlineResponseDTO> buscarPorMatricula(@RequestParam MatriculaRequestDTO MrequestDTO) {
+        Optional<Usuario> usuario = usuarioService.buscarPorMatricula(MrequestDTO.matricula());
 
-        List<Usuario> Usuarios = usuarioService.buscarTodos();
-
-            for (Usuario usuario : Usuarios) {
-
-                if (passwordEncoder.matches(passwordEncoder.encode(matricula), usuario.getMatricula())) {
-
-                    UsuarioOnlineResponseDTO DTO = new UsuarioOnlineResponseDTO(
-                            usuario.getNome(),
-                            usuario.getLogin(),
-                            usuario.getRole()
-                    );
-
-                    return DTO;
-                }
-            }
-            return null;
+        if (usuario.isPresent()) {
+            UsuarioOnlineResponseDTO dto = new UsuarioOnlineResponseDTO(
+                    usuario.get().getNome(),
+                    usuario.get().getLogin(),
+                    usuario.get().getRole()
+            );
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
-
 
 
 

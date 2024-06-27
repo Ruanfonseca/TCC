@@ -9,23 +9,35 @@ import com.back.Servicepro.models.Sala;
 import com.back.Servicepro.models.Usuario;
 import com.back.Servicepro.services.HorarioService;
 import com.back.Servicepro.services.SalaService;
+import com.back.Servicepro.services.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/horario")
 public class HorarioController {
 
-    @Autowired
     private HorarioService service;
+
+
+
+    public HorarioController(HorarioService service) {
+        this.service = service;
+
+    }
 
     @PostMapping("/cadastrar")
     private boolean salvar(@RequestBody HorarioDTO dto) {
@@ -39,25 +51,24 @@ public class HorarioController {
         return false;
     }
 
+
     @GetMapping("/listagem")
     private List<HorarioDTO> buscarTodos() {
-        List<Horario> horarios = service.buscarTodos();
-        List<HorarioDTO> retornoHorario = new ArrayList<>();
+        List<Horario> horariosPage = service.buscarTodosHorarios();
 
-        for (Horario horario : horarios) {
-            HorarioDTO DTO = new HorarioDTO(
-                    horario.getNome(),
-                    horario.getPeriodo(),
-                    horario.getHoraInicio(),
-                    horario.getHoraFim()
-            );
-
-            retornoHorario.add(DTO);
-        }
-
-        return retornoHorario;
+        return horariosPage.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
+    private HorarioDTO convertToDto(Horario horario) {
+        return new HorarioDTO(
+                horario.getNome(),
+                horario.getPeriodo(),
+                horario.getHoraInicio(),
+                horario.getHoraFim()
+        );
+    }
     @GetMapping("/busca/nome")
     private ResponseEntity<HorarioDTO> buscarPorMatricula(@RequestBody HorarioDTO dto)
     {

@@ -5,6 +5,8 @@ import com.back.Servicepro.interfaces.ISalaService;
 import com.back.Servicepro.models.Sala;
 import com.back.Servicepro.repository.SalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,7 +54,8 @@ public class SalaService implements ISalaService {
     }
 
     @Override
-    public List<Sala> buscarTodos() {
+    public List<Sala> buscarTodasSalas()
+    {
         return repository.findAll();
     }
 

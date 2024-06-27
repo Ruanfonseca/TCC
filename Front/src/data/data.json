@@ -1,35 +1,202 @@
 [
     {
-        "nome":"Ruan Fonseca",
-        "login":"whitelook22@outlook.com",
-        "matricula":"201923307011",
-        "faculdade":"FCEE",
-        "telefone":"21969232991",
-        "senha":"Atento2023",
-        "setor":"",
-        "role":"ADMIN"
+        "nome": "Ana Silva",
+        "login": "ana.silva@example.com",
+        "matricula": "201923307011",
+        "faculdade": "FCEE",
+        "telefone": "21969232991",
+        "senha": "SenhaForte123",
+        "setor": "Recursos Humanos",
+        "role": "ADMIN"
     },
-
     {
-        "nome":"Teste 01",
-        "login":"whitelook22@outlook.com",
-        "matricula":"201923307012",
-        "faculdade":"FCEE",
-        "telefone":"21969232991",
-        "senha":"Atento2023",
-        "setor":"",
-        "role":"ADMIN"
+        "nome": "Carlos Souza",
+        "login": "carlos.souza@example.com",
+        "matricula": "201923307012",
+        "faculdade": "FCEE",
+        "telefone": "21969232992",
+        "senha": "SenhaForte123",
+        "setor": "Financeiro",
+        "role": "USER"
     },
-
     {
-        "nome":"Teste 02",
-        "login":"whitelook22@outlook.com",
-        "matricula":"201923307013",
-        "faculdade":"FCEE",
-        "telefone":"21969232991",
-        "senha":"Atento2023",
-        "setor":"",
-        "role":"ADMIN"
+        "nome": "Mariana Lima",
+        "login": "mariana.lima@example.com",
+        "matricula": "201923307013",
+        "faculdade": "FCEE",
+        "telefone": "21969232993",
+        "senha": "SenhaForte123",
+        "setor": "Marketing",
+        "role": "USER"
+    },
+    {
+        "nome": "Pedro Alves",
+        "login": "pedro.alves@example.com",
+        "matricula": "201923307014",
+        "faculdade": "FCEE",
+        "telefone": "21969232994",
+        "senha": "SenhaForte123",
+        "setor": "Vendas",
+        "role": "USER"
+    },
+    {
+        "nome": "Julia Oliveira",
+        "login": "julia.oliveira@example.com",
+        "matricula": "201923307015",
+        "faculdade": "FCEE",
+        "telefone": "21969232995",
+        "senha": "SenhaForte123",
+        "setor": "TI",
+        "role": "ADMIN"
+    },
+    {
+        "nome": "Bruno Ferreira",
+        "login": "bruno.ferreira@example.com",
+        "matricula": "201923307016",
+        "faculdade": "FCEE",
+        "telefone": "21969232996",
+        "senha": "SenhaForte123",
+        "setor": "Logística",
+        "role": "USER"
+    },
+    {
+        "nome": "Fernanda Costa",
+        "login": "fernanda.costa@example.com",
+        "matricula": "201923307017",
+        "faculdade": "FCEE",
+        "telefone": "21969232997",
+        "senha": "SenhaForte123",
+        "setor": "Compras",
+        "role": "USER"
+    },
+    {
+        "nome": "Lucas Rocha",
+        "login": "lucas.rocha@example.com",
+        "matricula": "201923307018",
+        "faculdade": "FCEE",
+        "telefone": "21969232998",
+        "senha": "SenhaForte123",
+        "setor": "TI",
+        "role": "USER"
+    },
+    {
+        "nome": "Renata Martins",
+        "login": "renata.martins@example.com",
+        "matricula": "201923307019",
+        "faculdade": "FCEE",
+        "telefone": "21969232999",
+        "senha": "SenhaForte123",
+        "setor": "Recursos Humanos",
+        "role": "USER"
+    },
+    {
+        "nome": "André Santos",
+        "login": "andre.santos@example.com",
+        "matricula": "201923307020",
+        "faculdade": "FCEE",
+        "telefone": "21969232900",
+        "senha": "SenhaForte123",
+        "setor": "Financeiro",
+        "role": "USER"
+    },
+    {
+        "nome": "Patrícia Rodrigues",
+        "login": "patricia.rodrigues@example.com",
+        "matricula": "201923307021",
+        "faculdade": "FCEE",
+        "telefone": "21969232901",
+        "senha": "SenhaForte123",
+        "setor": "Marketing",
+        "role": "USER"
+    },
+    {
+        "nome": "Ricardo Almeida",
+        "login": "ricardo.almeida@example.com",
+        "matricula": "201923307022",
+        "faculdade": "FCEE",
+        "telefone": "21969232902",
+        "senha": "SenhaForte123",
+        "setor": "Vendas",
+        "role": "USER"
+    },
+    {
+        "nome": "Sofia Lopes",
+        "login": "sofia.lopes@example.com",
+        "matricula": "201923307023",
+        "faculdade": "FCEE",
+        "telefone": "21969232903",
+        "senha": "SenhaForte123",
+        "setor": "TI",
+        "role": "ADMIN"
+    },
+    {
+        "nome": "Daniel Teixeira",
+        "login": "daniel.teixeira@example.com",
+        "matricula": "201923307024",
+        "faculdade": "FCEE",
+        "telefone": "21969232904",
+        "senha": "SenhaForte123",
+        "setor": "Logística",
+        "role": "USER"
+    },
+    {
+        "nome": "Laura Mendes",
+        "login": "laura.mendes@example.com",
+        "matricula": "201923307025",
+        "faculdade": "FCEE",
+        "telefone": "21969232905",
+        "senha": "SenhaForte123",
+        "setor": "Compras",
+        "role": "USER"
+    },
+    {
+        "nome": "Gustavo Araújo",
+        "login": "gustavo.araujo@example.com",
+        "matricula": "201923307026",
+        "faculdade": "FCEE",
+        "telefone": "21969232906",
+        "senha": "SenhaForte123",
+        "setor": "Recursos Humanos",
+        "role": "USER"
+    },
+    {
+        "nome": "Camila Ramos",
+        "login": "camila.ramos@example.com",
+        "matricula": "201923307027",
+        "faculdade": "FCEE",
+        "telefone": "21969232907",
+        "senha": "SenhaForte123",
+        "setor": "Financeiro",
+        "role": "USER"
+    },
+    {
+        "nome": "Thiago Barbosa",
+        "login": "thiago.barbosa@example.com",
+        "matricula": "201923307028",
+        "faculdade": "FCEE",
+        "telefone": "21969232908",
+        "senha": "SenhaForte123",
+        "setor": "Marketing",
+        "role": "USER"
+    },
+    {
+        "nome": "Gabriela Sousa",
+        "login": "gabriela.sousa@example.com",
+        "matricula": "201923307029",
+        "faculdade": "FCEE",
+        "telefone": "21969232909",
+        "senha": "SenhaForte123",
+        "setor": "Vendas",
+        "role": "USER"
+    },
+    {
+        "nome": "Felipe Nascimento",
+        "login": "felipe.nascimento@example.com",
+        "matricula": "201923307030",
+        "faculdade": "FCEE",
+        "telefone": "21969232910",
+        "senha": "SenhaForte123",
+        "setor": "TI",
+        "role": "USER"
     }
-
-]  
+]

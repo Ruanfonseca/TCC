@@ -1,0 +1,63 @@
+ [
+      {
+        "sala": "Sala 101",
+        "horarioInicial": "08:00",
+        "horarioFinal": "09:00",
+        "data": "2024-07-01",
+        "matricula": "123456",
+        "nome": "João da Silva",
+        "email": "joao.silva@example.com",
+        "telefone": "11987654321",
+        "motivoJustificativa": "Reunião de planejamento trimestral",
+        "status": "Aprovado"
+      },
+      {
+        "sala": "Sala 202",
+        "horarioInicial": "10:00",
+        "horarioFinal": "11:30",
+        "data": "2024-07-01",
+        "matricula": "654321",
+        "nome": "Maria Oliveira",
+        "email": "maria.oliveira@example.com",
+        "telefone": "11987654322",
+        "motivoJustificativa": "Treinamento de equipe",
+        "status": "Pendente"
+      },
+      {
+        "sala": "Sala 303",
+        "horarioInicial": "14:00",
+        "horarioFinal": "15:00",
+        "data": "2024-07-01",
+        "matricula": "789012",
+        "nome": "Carlos Souza",
+        "email": "carlos.souza@example.com",
+        "telefone": "11987654323",
+        "motivoJustificativa": "Apresentação de novos produtos",
+        "status": "Rejeitado"
+      },
+      {
+        "sala": "Sala 404",
+        "horarioInicial": "09:00",
+        "horarioFinal": "10:30",
+        "data": "2024-07-04",
+        "matricula": "210987",
+        "nome": "Ana Lima",
+        "email": "ana.lima@example.com",
+        "telefone": "11987654324",
+        "motivoJustificativa": "Reunião com clientes",
+        "status": "Aprovado"
+      },
+      {
+        "sala": "Sala 505",
+        "horarioInicial": "16:00",
+        "horarioFinal": "17:00",
+        "data": "2024-07-05",
+        "matricula": "345678",
+        "nome": "Pedro Costa",
+        "email": "pedro.costa@example.com",
+        "telefone": "11987654325",
+        "motivoJustificativa": "Sessão de brainstorming",
+        "status": "Pendente"
+      }
+    ]
+  

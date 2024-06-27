@@ -1,0 +1,17 @@
+/* Define the size of the container */
+.containerAgenda{
+  width: 100%;
+  max-width: 800px; /* Define a largura máxima do conteúdo */
+  margin: 0 auto; /* Centraliza o conteúdo horizontalmente */
+  padding: 20px;
+}
+
+
+  
+  .rs-calendar {
+    padding: 20px;
+  }
+  
+  .titulo-agenda{
+    text-align: center;
+  }

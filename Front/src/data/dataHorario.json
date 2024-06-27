@@ -4,5 +4,17 @@
      "periodo":"50",
      "horaInicio":"17:00",
      "horaFim":"17:50"
-    }
+    },
+    {
+        "nome":"M2",
+        "periodo":"50",
+        "horaInicio":"17:00",
+        "horaFim":"17:50"
+       }
+       ,{
+        "nome":"M3",
+        "periodo":"50",
+        "horaInicio":"17:00",
+        "horaFim":"17:50"
+       }
 ]

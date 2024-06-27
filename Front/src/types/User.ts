@@ -1,3 +1,5 @@
+import { Requerimento } from "./Requerimento";
+
 export type User = {
     nome: string;
     login: string;
@@ -7,4 +9,5 @@ export type User = {
     role?:string;
     setor?:string;
     faculdade?:string;
+    requerimentos?: Requerimento[];
 }

@@ -3,6 +3,9 @@ package com.back.Servicepro.interfaces;
 
 import com.back.Servicepro.dto.sala.SalaDTO;
 import com.back.Servicepro.models.Sala;
+import com.back.Servicepro.models.Usuario;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +21,7 @@ public interface ISalaService {
 
 
     //Buscar todos
-    public List<Sala> buscarTodos();
+    List<Sala> buscarTodasSalas();
 
     public Optional<Sala> buscarPorNome(String nome);
 

@@ -1,0 +1,11 @@
+.retorno {
+    text-decoration: none; /* Remove o sublinhado */
+    font-size: 14px; /* Diminui o tamanho do texto */
+    color: blue; /* Adiciona uma cor se necessário */
+    cursor: pointer; /* Altera o cursor para pointer */
+  }
+  
+  .retorno:hover {
+    text-decoration: underline; /* Adiciona um sublinhado ao passar o mouse */
+  }
+  

@@ -1,0 +1,68 @@
+/* formulario.css */
+
+.containerReq {
+    width: 100%;
+    max-width: 800px; /* Define a largura máxima do conteúdo */
+    margin: 0 auto; /* Centraliza o conteúdo horizontalmente */
+    padding: 20px;
+}
+
+.card-loginReq {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.titulo{
+    text-align: center;
+    margin-bottom: 20px;
+}
+.table-responsive {
+    overflow-x: auto; 
+    margin-left: 100px; 
+    margin-right: 100px;
+    margin-bottom: 100px;
+  }
+  
+.paginacao{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 100px;
+}  
+.paginacao > button{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+@media (max-width: 768px) {
+    .table-responsive {
+      overflow-x: auto; 
+      margin-left: 0; 
+      margin-right: 0; 
+    }
+  
+    .table-responsive table {
+      width: 100%; 
+      margin-bottom: 15px; 
+      border-collapse: collapse; 
+    }
+  
+    .table-responsive thead {
+      display: none; 
+    }
+  
+    .table-responsive tbody td {
+      display: table-cell;  
+     text-align: center; 
+      padding: 10px; 
+      border-bottom: 1px solid #ddd; 
+    }
+  
+    .table-responsive tbody td::before {
+      content: attr(data-label); 
+      font-weight: bold; 
+      display: block; 
+      margin-bottom: 5px; 
+    }
+  }

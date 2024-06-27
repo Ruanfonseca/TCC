@@ -10,7 +10,7 @@ export const Login = () => {
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const [returnMessage,setReturnMessage] = useState(false);
+    const [returnMessage, setReturnMessage] = useState(false);
 
     const handleEmailInput = (event: ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -31,6 +31,14 @@ export const Login = () => {
                 setReturnMessage(true);
             }
         }
+    }
+    const handleRecuperarConta =  (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        event.preventDefault();
+        navigate('/recuperacao');
+    }
+    const handleCriarConta = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        event.preventDefault();
+        navigate('/criarConta');
     }
 
     return (
@@ -53,19 +61,13 @@ export const Login = () => {
                             onChange={handleSenhaInput}
                             placeholder="Digite sua Senha"
                         />
-                        <button type="submit">Acessar</button>
+                        <button className='buttonForm' type="submit">Acessar</button>
                     </form>
 
-                    {returnMessage &&
-                    <div className="messageError">
-                         <div className="textMessageError">Senha ou Matrícula incorretas !</div>
-                    </div>
-                    } 
-                    <a className ="criarconta" href="">Criar Conta</a>
-                    <p className="esquecesenha">Esqueceu a senha ? <a href="">Clique aqui</a></p>
                     
+                    <a className="criarconta" href="" onClick={handleCriarConta}>Criar Conta</a>
+                    <p className="esquecesenha">Esqueceu a senha ? <a href="" onClick={handleRecuperarConta}>Clique aqui</a></p>
                 </div>
-                
             </div>
         </>
     );

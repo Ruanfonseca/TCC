@@ -19,3 +19,14 @@ export function VerificaSenha(input: any): boolean {
     const result: boolean = expression.test(input);
     return result;
 }
+
+export function GeradordeCodigo(): string {
+    const length:number = 7;
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters[randomIndex];
+    }
+    return result;
+  }

@@ -7,6 +7,8 @@ import com.back.Servicepro.models.Usuario;
 import com.back.Servicepro.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,10 +59,8 @@ public class UsuarioService implements IUsuarioService {
 
         repository.save(editado);
     }
-
     @Override
-    @Cacheable("Usuarios")
-    public List<Usuario> buscarTodos() {
+    public List<Usuario> buscarTodosUsuarios() {
         return repository.findAll();
     }
 
