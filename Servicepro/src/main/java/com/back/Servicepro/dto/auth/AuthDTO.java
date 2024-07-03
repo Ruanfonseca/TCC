@@ -1,4 +1,4 @@
-package com.back.Servicepro.dto.usuario;
+package com.back.Servicepro.dto.auth;
 
 public record AuthDTO(String login,String senha) {
 

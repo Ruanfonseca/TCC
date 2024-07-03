@@ -84,7 +84,7 @@ const CadastroCriarConta: React.FC = () => {
                 console.error(error);
             }
         } else {
-            alert("Email ou Matrícula incorretos!");
+            alert("Email,Matrícula ou Senha incorretos!");
         }
     };
 

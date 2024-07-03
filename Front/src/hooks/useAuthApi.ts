@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { MatriculaRequestDTO } from '../types/Dtos/MatriculaRequestDTO';
+import { User } from '../types/User';
 
 const api = axios.create({
     baseURL: process.env.REACT_APP_API
@@ -53,5 +55,18 @@ export const useAuthApi = () => ({
 
     logout: async () => {
         return { status: true };
+    },
+
+    verificaExistente : async(matricula : MatriculaRequestDTO)=>{
+        
+        const response = await api.post('/auth/recuperacao', { matricula });
+
+        return response.data;
+    },
+
+    alterarSenha:async(user:User)=>{
+        const response = await api.put('/auth/recuperacao/alterarsenha', { user });
+
+        return response.data;
     }
 });

@@ -41,7 +41,7 @@ function App() {
         {/***************************************************************************************/}
         <Route path="/criarConta" element={<CadastroCriarConta />} />
         <Route path="/recuperacao" element={<Recuperacao />} />
-        <Route path="/recuperacao/segundaetapa" element={<RecuperacaoEtapa2 />} />
+        <Route path="/recuperacao/segundaEtapa" element={<RecuperacaoEtapa2 />} />
       </Routes>
     </div>
   );

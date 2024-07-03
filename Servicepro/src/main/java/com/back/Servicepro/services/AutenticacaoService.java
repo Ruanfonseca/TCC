@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.back.Servicepro.dto.usuario.AuthDTO;
+import com.back.Servicepro.dto.auth.AuthDTO;
 import com.back.Servicepro.dto.usuario.TokenResponseDTO;
 import com.back.Servicepro.dto.usuario.UsuarioOnlineResponseDTO;
 import com.back.Servicepro.infra.exceptions.UnauthorizedException;

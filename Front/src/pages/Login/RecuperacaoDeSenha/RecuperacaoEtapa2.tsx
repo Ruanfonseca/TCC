@@ -1,12 +1,19 @@
-import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useContext, useState } from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../../../assets/logouerj.png';
 import '../login.css';
+
+import { AuthContext } from '../../../contexts/Auth/AuthContext';
+import { User } from "../../../types/User";
 
 const RecuperacaoEtapa2 = () => {
     const [senha, setSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
+    
     const navigate = useNavigate();
+    const location = useLocation();
+    const { user } = location.state as { user: User };
 
     const handleSenhaInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSenha(e.target.value);
@@ -16,15 +23,27 @@ const RecuperacaoEtapa2 = () => {
         setConfirmarSenha(e.target.value);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (senha !== confirmarSenha) {
             alert("As senhas não coincidem!");
             return;
         }
-        // Adicione a lógica para enviar a nova senha para o servidor
-        alert("Senha alterada com sucesso!");
-        navigate('/login'); // Redirecionar para a página de login após a alteração da senha
+
+        try {
+            const updatedUser = { ...user, senha };
+            const auth = useContext(AuthContext);
+         
+         const response = await auth.updateUserPassword(updatedUser);
+           
+           if (response) {
+            alert("Senha alterada com sucesso!");
+           }
+            
+            navigate('/login'); 
+        } catch (error) {
+            alert("Erro ao alterar a senha!");
+        }
     };
 
     return (
