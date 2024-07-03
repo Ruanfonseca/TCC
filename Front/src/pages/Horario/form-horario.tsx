@@ -1,3 +1,4 @@
+
 import arSaLocale from 'date-fns/locale/ar-SA';
 import enLocale from 'date-fns/locale/en-US';
 import frLocale from 'date-fns/locale/fr';
@@ -7,7 +8,6 @@ import { useContext, useEffect, useState } from "react";
 import NavScroll from "../../components/navbar";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 import { useAPI } from "../../hooks/useAPI";
-
 interface Horario {
   nome: string;
   periodo: string;

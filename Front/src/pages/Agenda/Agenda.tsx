@@ -11,25 +11,25 @@ import { RequerimentoDTO } from '../../types/Dtos/RequerimentoDTO';
 import './Agenda.css';
 
 
-// Configuração inicial do locale para português
+
 moment.locale('pt-br');
 
-// Criação do localizer utilizando o momentLocalizer com o locale configurado
+
 const localizer = momentLocalizer(moment);
 
 const Agenda = () => {
   const [events, setEvents] = useState<RequerimentoDTO[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedRequerimento, setSelectedRequerimento] = useState<RequerimentoDTO | null>(null);
-  const api = useAPI(); // Assumindo que useAPI é uma função customizada para acessar a API
+  const api = useAPI(); 
 
   useEffect(() => {
     async function fetchEvents() {
       try {
-        // Simulação de busca de requerimentos
+       
         const dataReq = await api.ListaDeReqsFinalizados();
 
-        // Atualiza o estado com os requerimentos obtidos
+        
         setEvents(dataReq);
       } catch (error) {
         console.error('Erro ao buscar requerimentos:', error);
@@ -56,22 +56,22 @@ const Agenda = () => {
         <h1 className="titulo-agenda">Agenda de Requerimentos</h1>
         <div className="calendar-container">
           <Calendar
-            localizer={localizer} // Configura o localizer para utilizar o momento localizado
+            localizer={localizer} 
             events={events.map(event => ({
               ...event,
               start: new Date(`${event.data}T${event.horarioInicial}`),
               end: new Date(`${event.data}T${event.horarioFinal}`),
               title: event.sala,
             }))}
-            startAccessor="start" // Acessor para o início do evento
-            endAccessor="end" // Acessor para o fim do evento
-            defaultView="week" // Exibe a visualização padrão como semana
+            startAccessor="start" 
+            endAccessor="end" 
+            defaultView="week" 
             selectable={true}
             popup={true}
             style={{ height: 500 }}
             formats={{
-              agendaDateFormat: "DD/MM ddd", // Formato da data na visualização de agenda
-              weekdayFormat: "dddd" // Formato do nome do dia da semana
+              agendaDateFormat: "DD/MM ddd", 
+              weekdayFormat: "dddd"  
             }}
             messages={{
               date: "Data",

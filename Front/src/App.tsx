@@ -1,3 +1,4 @@
+
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { RequireAuth } from './contexts/Auth/RequireAuth';
@@ -17,7 +18,6 @@ import SalasList from './pages/Sala/lista-salas';
 import Suporte from './pages/Suporte/suporte';
 import Cadastro from './pages/Usuario/form-usuario';
 import UsuariosList from './pages/Usuario/lista-usuarios';
-
 
 function App() {
   return (

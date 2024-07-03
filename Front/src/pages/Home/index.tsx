@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useContext, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import DetalhesRequerimentoModal from '../../components/HomeModals/modalReqHome';
 import DetalhesUsuarioModal from '../../components/HomeModals/modalUsuHome';
 import Footer from '../../components/footer';
@@ -19,7 +19,6 @@ export const Home = () => {
   const [input, setInput] = useState<string>('');
 
   const [selecao, setSelecao] = useState('matrícula');
-
   const [resultado, setResultado] = useState<any | null>(null);
   const [showUserModal, setShowUserModal] = useState(false);
   const [showRequerimentoModal, setShowRequerimentoModal] = useState(false);
@@ -31,34 +30,26 @@ export const Home = () => {
     }
   }, [auth.user]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    switch (name) {
-      case 'selecao':
-        setSelecao(value);
-        break;
-      case 'input':
-        setInput(value);
-        break;
-      default:
-        break;
-    }
+  const handleSelecaoChange = (e:ChangeEvent<HTMLSelectElement>) => {
+    setSelecao(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleInputChange = (e:ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+  };
+
+  const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (selecao === 'matrícula') {
       if (VerificaMatricula(input)) {
         const user = await api.buscarUsuarioPorMatricula({ matricula: input } as MatriculaRequestDTO);
         setResultado(user);
-        
       } else {
         alert('Matrícula Incorreta !');
       }
     } else if (selecao === 'codigo') {
-      const code: CodigoDTO = { codigo: input };
-      const requerimento = await api.buscarRequerimentoPorCodigo(code);
+      const requerimento = await api.buscarRequerimentoPorCodigo({ codigo: input } as CodigoDTO);
       setResultado(requerimento);
     }
   };
@@ -117,7 +108,7 @@ export const Home = () => {
                       className="custom-select my-3 p-2 w-100"
                       name="selecao"
                       value={selecao}
-                      onChange={handleChange}
+                      onChange={handleSelecaoChange}
                       required
                     >
                       <option value="matrícula">Usuário</option>
@@ -133,7 +124,7 @@ export const Home = () => {
                       name="input"
                       id="input"
                       value={input}
-                      onChange={handleChange}
+                      onChange={handleInputChange}
                       required
                     />
                   </div>
@@ -143,16 +134,15 @@ export const Home = () => {
                     </button>
                   </div>
                   <div className="row form-group justify-content-center w-100 p-2">
-                  <h4>
-                    <i>
-                      <a href="#" className="retorno" onClick={handleClick}>
-                        {resultado && (resultado.login || resultado.codigo)}
-                      </a>
-                    </i>
-                  </h4>
+                    <h4>
+                      <i>
+                        <a href="#" className="retorno" onClick={handleClick}>
+                          {resultado && (resultado.login || resultado.codigo)}
+                        </a>
+                      </i>
+                    </h4>
+                  </div>
                 </div>
-                </div>
-                
               </form>
             </div>
           </div>

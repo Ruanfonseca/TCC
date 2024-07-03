@@ -142,9 +142,7 @@ export const useAPI = () => ({
 
   return mockRequerimento;
     
-    const response = await api.get('/requerimento/buscarporcodigo', {
-      params: code
-    });
+    const response = await api.get('/busca/requerimento',{data:code});
     return response.data;
   },
 
