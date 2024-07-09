@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { ChangeEvent, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../../assets/logouerj.png';
@@ -5,7 +6,6 @@ import { AuthContext } from '../../../contexts/Auth/AuthContext';
 import { MatriculaRequestDTO } from '../../../types/Dtos/MatriculaRequestDTO';
 import { VerificaMatricula } from '../../../utils/utils';
 import '../login.css';
-
 
 const Recuperacao = () => {
   const [matricula, setMatricula] = useState<string>('');

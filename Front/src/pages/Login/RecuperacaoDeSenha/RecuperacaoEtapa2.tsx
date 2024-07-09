@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext, useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../../../assets/logouerj.png';
-import '../login.css';
-
 import { AuthContext } from '../../../contexts/Auth/AuthContext';
 import { User } from "../../../types/User";
+import '../login.css';
 
 const RecuperacaoEtapa2 = () => {
     const [senha, setSenha] = useState('');

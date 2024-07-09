@@ -1,10 +1,5 @@
-
-import arSaLocale from 'date-fns/locale/ar-SA';
-import enLocale from 'date-fns/locale/en-US';
-import frLocale from 'date-fns/locale/fr';
-import ruLocale from 'date-fns/locale/ru';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import * as React from 'react';
-import { useContext, useEffect, useState } from "react";
 import NavScroll from "../../components/navbar";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 import { useAPI } from "../../hooks/useAPI";
@@ -15,46 +10,26 @@ interface Horario {
   horaFim: string;
 }
 
-const localeMap = {
-  en: enLocale,
-  fr: frLocale,
-  ru: ruLocale,
-  ar: arSaLocale,
-};
-
 const CadastroHorario: React.FC = () => {
   const api = useAPI();
-
-  const [horario, setHorario] = useState<Horario>({
+  const auth = React.useContext(AuthContext);
+  const [isAdmin, setIsAdmin] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [horario, setHorario] = React.useState<Horario>({
     nome: '',
     periodo: '',
     horaInicio: '',
     horaFim: '',
   });
 
-  const [locale, setLocale] = useState<keyof typeof localeMap>('ru');
-
-  const resetForm = () => {
-    setHorario({
-      nome: '',
-      periodo: '',
-      horaInicio: '',
-      horaFim: '',
-    });
-  };
-
-  const auth = useContext(AuthContext);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
+  React.useEffect(() => {
     if (auth.user) {
       setIsAdmin(auth.user.role === 'ADMIN');
       setLoading(false);
     }
   }, [auth.user]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setHorario({
       ...horario,
@@ -64,34 +39,30 @@ const CadastroHorario: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    
 
     try {
-      const cadastrado = await api.CadastrarHorario(horario);
-      
-      if (cadastrado.data) {
-          alert('Horario salvo!');
-          resetForm();
-      } else {
-          alert("Horario já cadastrado !");
-      }
-  } catch (error) {
+      // const cadastrado = await api.CadastrarHorario(horario);
 
-      console.error(error);
-  
+      // if (cadastrado.data) {
+      //   alert('Horário salvo!');
+      //   setHorario({
+      //     nome: '',
+      //     periodo: '',
+      //     horaInicio: '',
+      //     horaFim: '',
+      //   });
+      // } else {
+      //   alert("Horário já cadastrado!");
+      // }
+
+      console.log(horario);
+    } catch (error) {
+      console.error('Erro ao cadastrar horário:', error);
     }
-
-
-    resetForm();
-  };
-
-  const selectLocale = (newLocale: keyof typeof localeMap) => {
-    setLocale(newLocale);
   };
 
   if (loading) {
-    return <div>Carregando ...</div>;
+    return <div>Carregando...</div>;
   }
 
   return (
@@ -99,62 +70,54 @@ const CadastroHorario: React.FC = () => {
       <NavScroll isAdmin={isAdmin} />
       <div className="container">
         <form method="post" onSubmit={handleSubmit}>
-          <h1 className="Titulo">Cadastro de Horario</h1>
+          <h1 className="Titulo">Cadastro de Horário</h1>
           <br />
           <div className="card-login">
-
             <div className="form-group">
-              <label htmlFor="nome"><b>Nome: </b></label>
+              <label htmlFor="nome"><b>Nome:</b></label>
               <input
                 type="text"
                 className="form-control"
-                value={horario.nome}
-                placeholder="Insira o nome do periodo"
+                placeholder="Insira o nome do período"
                 name="nome"
+                
                 onChange={handleChange}
                 required
               />
-              <small className="form-text text-muted">
-                <i>* Nome do Horario ex.: M1,M2,T1,N1 ..</i>
-              </small>
             </div>
-          
-             
+
             <div className="form-group">
-              <label htmlFor="periodo"><b>Tempo: </b></label>
+              <label htmlFor="periodo"><b>Tempo:</b></label>
               <input
                 type="text"
                 className="form-control"
-                value={horario.periodo}
-                placeholder="Insira o periodo"
+                placeholder="Insira o período em minutos"
                 name="periodo"
+               
                 onChange={handleChange}
                 required
               />
-              <small className="form-text text-muted">
-                <i>*Em Minutos</i>
-              </small>
             </div>
 
-
             <div className="form-group">
-              <label htmlFor="horaInicio"><b>Hora Início: </b></label>
+              <label htmlFor="horaInicio"><b>Hora Início:</b></label>
               <input
                 type="time"
                 className="form-control"
-                value={horario.horaInicio}
                 name="horaInicio"
+                
                 onChange={handleChange}
                 required
               />
             </div>
+
             <div className="form-group">
-              <label htmlFor="horaFim"><b>Hora Fim: </b></label>
+              <label htmlFor="horaFim"><b>Hora Fim:</b></label>
               <input
                 type="time"
                 className="form-control"
-                value={horario.horaFim}
                 name="horaFim"
+                
                 onChange={handleChange}
                 required
               />

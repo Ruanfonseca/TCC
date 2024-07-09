@@ -4,6 +4,7 @@ import com.back.Servicepro.dto.usuario.UsuarioDTO;
 import com.back.Servicepro.dto.usuario.MatriculaRequestDTO;
 import com.back.Servicepro.models.Usuario;
 import com.back.Servicepro.services.UsuarioService;
+import com.back.Servicepro.util.UsuarioUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -117,21 +118,10 @@ public class UsuarioController {
         List<Usuario> usuariosPage = service.buscarTodosUsuarios();
 
         return usuariosPage.stream()
-                .map(this::convertToDto)
+                .map(UsuarioUtil::convertToDto)
                 .collect(Collectors.toList());
     }
 
-    private UsuarioDTO convertToDto(Usuario usuario) {
-        return new UsuarioDTO(
-                usuario.getNome(),
-                usuario.getLogin(),
-                usuario.getMatricula(),
-                usuario.getFaculdade(),
-                usuario.getSetor(),
-                usuario.getSenha(),
-                usuario.getTelefone(),
-                usuario.getRole()
-        );
-    }
+
 
 }

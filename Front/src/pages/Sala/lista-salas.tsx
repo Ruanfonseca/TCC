@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext, useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import ModalSala from "../../components/SalaModals/modalSala";

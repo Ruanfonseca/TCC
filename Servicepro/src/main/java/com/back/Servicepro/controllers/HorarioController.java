@@ -10,6 +10,7 @@ import com.back.Servicepro.models.Usuario;
 import com.back.Servicepro.services.HorarioService;
 import com.back.Servicepro.services.SalaService;
 import com.back.Servicepro.services.UsuarioService;
+import com.back.Servicepro.util.HorarioUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,18 +58,10 @@ public class HorarioController {
         List<Horario> horariosPage = service.buscarTodosHorarios();
 
         return horariosPage.stream()
-                .map(this::convertToDto)
+                .map(HorarioUtil::convertToDto)
                 .collect(Collectors.toList());
     }
 
-    private HorarioDTO convertToDto(Horario horario) {
-        return new HorarioDTO(
-                horario.getNome(),
-                horario.getPeriodo(),
-                horario.getHoraInicio(),
-                horario.getHoraFim()
-        );
-    }
     @GetMapping("/busca/nome")
     private ResponseEntity<HorarioDTO> buscarPorMatricula(@RequestBody HorarioDTO dto)
     {

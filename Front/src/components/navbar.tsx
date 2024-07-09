@@ -52,7 +52,9 @@ function NavScroll({ isAdmin }: NavScrollProps) {
           <Navbar.Brand href="#">
             <a href='/home'><img src={Logo} className='imagemLogo' alt="Logo" /></a>
           </Navbar.Brand>
+          
           <Navbar.Toggle aria-controls="navbarScroll" />
+
           <Navbar.Collapse id="navbarScroll">
             <Nav
               className="me-auto my-2 my-lg-0"
@@ -75,16 +77,20 @@ function NavScroll({ isAdmin }: NavScrollProps) {
                     <NavDropdown.Item href="/home/form-usuario">Usuário</NavDropdown.Item>
                     <NavDropdown.Item href="/home/form-professor">Professor</NavDropdown.Item>
                   </NavDropdown>
+                  <Nav.Link href="/home/relatorio">Relatórios</Nav.Link>
                 </>
               )}
               <Nav.Link href="/home/form-requerimento">Requerimento SALA</Nav.Link>
               <Nav.Link href="https://www.uerj.br/" target='_blank'>Portal UERJ</Nav.Link>
               <Nav.Link href="/home/suporte">Suporte</Nav.Link>
+              
             </Nav>
-            <Navbar.Text className="me-4">
+            
+            <Navbar.Text className="ms-auto">
               Usuário logado: <a className='link' onClick={handleDetail}>{auth.user?.nome}</a>
             </Navbar.Text>
           </Navbar.Collapse>
+          
         </Container>
       </Navbar>
       

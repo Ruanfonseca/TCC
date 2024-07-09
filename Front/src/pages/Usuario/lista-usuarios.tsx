@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext, useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import ModalUser from "../../components/UsuarioModals/modalUser";
@@ -19,18 +20,17 @@ interface Usuario {
 }
 
 function UsuariosList() {
-  
   const [selectedUsuario, setSelectedUsuario] = useState<Usuario | null>(null);
+  const [usuarioParaDeletar, setUsuarioParaDeletar] = useState<Usuario | null>(null); // Estado separado para deletar usuário
   const api = useAPI();
   const auth = useContext(AuthContext);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [modalShow, setModalShow] = useState(false);
-  const [deleteModalShow, setDeleteModalShow] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Paginação 
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [usuariosPorPage, setUsuariosPorPage] = useState(5);
   const [paginaCorrente, setPaginaCorrente] = useState(0);
+
   const paginas = Math.ceil(usuarios.length / usuariosPorPage);  
   const startIndex = paginaCorrente * usuariosPorPage;
   const endIndex = startIndex + usuariosPorPage;
@@ -43,6 +43,8 @@ function UsuariosList() {
         setUsuarios(data);
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -56,12 +58,10 @@ function UsuariosList() {
 
   const handleEditClick = (usuario: Usuario) => {
     setSelectedUsuario(usuario);
-    setModalShow(true);
   };
 
   const handleDeleteClick = (usuario: Usuario) => {
-    setSelectedUsuario(usuario);
-    setDeleteModalShow(true);
+    setUsuarioParaDeletar(usuario); // Definindo estado separado para deletar usuário
   };
 
   const handleNextPage = () => {
@@ -75,6 +75,10 @@ function UsuariosList() {
       setPaginaCorrente(paginaCorrente - 1);
     }
   };
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
 
   return (
     <>
@@ -97,12 +101,12 @@ function UsuariosList() {
           <tbody>
             {usuariosCorrente.map(item => (
               <tr key={item.matricula}>
-                <td>{item.nome}</td>
-                <td>{item.login}</td>
-                <td>{item.faculdade}</td>
-                <td>{item.matricula}</td>
-                <td>{item.setor}</td>
-                <td>{item.role}</td>
+                <td data-label="Nome">{item.nome}</td>
+                <td data-label="Login">{item.login}</td>
+                <td data-label="Faculdade">{item.faculdade}</td>
+                <td data-label="Matrícula">{item.matricula}</td>
+                <td data-label="Setor">{item.setor}</td>
+                <td data-label="Role">{item.role}</td>
                 <td>
                   <Button variant="primary" onClick={() => handleEditClick(item)}>
                     Editar
@@ -119,33 +123,27 @@ function UsuariosList() {
         </Table>
       </div>
       <div className="paginacao">
-          <Button
-            onClick={handlePreviousPage}
-            disabled={paginaCorrente === 0}
-          >
-            Anterior
-          </Button>
-          <Button
-            onClick={handleNextPage}
-            disabled={paginaCorrente >= paginas - 1}
-          >
-            Próximo
-          </Button>
-        </div>
+        <Button onClick={handlePreviousPage} disabled={paginaCorrente === 0}>
+          Anterior
+        </Button>
+        <Button onClick={handleNextPage} disabled={paginaCorrente >= paginas - 1}>
+          Próximo
+        </Button>
+      </div>
 
       {selectedUsuario && (
         <ModalUser
-          show={modalShow}
-          onHide={() => setModalShow(false)}
+          show={true}
+          onHide={() => setSelectedUsuario(null)}
           usuario={selectedUsuario}
         />
       )}
 
-      {selectedUsuario && (
+      {usuarioParaDeletar && (
         <ModalDeleteUserConfirmacao
-          show={deleteModalShow}
-          onHide={() => setDeleteModalShow(false)}
-          usuario={selectedUsuario}
+          show={true}
+          onHide={() => setUsuarioParaDeletar(null)}
+          usuario={usuarioParaDeletar}
         />
       )}
     </>

@@ -3,8 +3,10 @@ package com.back.Servicepro.controllers;
 import com.back.Servicepro.dto.requerimento.RequerimentoDTO;
 import com.back.Servicepro.dto.requerimento.StatusDTO;
 import com.back.Servicepro.models.Requerimento;
+import com.back.Servicepro.models.Sala;
 import com.back.Servicepro.models.Usuario;
 import com.back.Servicepro.services.ReqService;
+import com.back.Servicepro.services.SalaService;
 import com.back.Servicepro.services.UsuarioService;
 import com.back.Servicepro.util.RequerimentoUtil;
 import jakarta.validation.Valid;
@@ -31,6 +33,9 @@ public class RequerimentoController {
 
     @Autowired
     private UsuarioService Uservice;
+
+    @Autowired
+    private SalaService Sservice;
 
 
     @PostMapping("/cadastrar")
@@ -66,6 +71,14 @@ public class RequerimentoController {
 
             if (usuario.isPresent() && usuario.get().getRole().equals("ADMIN")){
                 Requerimento atual = existente.get();
+
+                Optional<Sala> salaReservada = Sservice.buscarPorNome(dto.sala());
+                   if (salaReservada.isPresent()){
+                       salaReservada.get().setStatus_da_sala("A");
+                       Sservice.salvarReserva(salaReservada.get());
+                   }
+
+
                 atual.setSala(dto.sala());
                 atual.setHorarioInicial(dto.horarioInicial());
                 atual.setHorarioFinal(dto.horarioFinal());
@@ -123,6 +136,31 @@ public class RequerimentoController {
         }
     }
 
+    //requerimento do modal da lista
+    @PutMapping("/requerimento/editar/pendente")
+    public ResponseEntity<?>atualizarReqPendente(@Valid @RequestBody RequerimentoDTO dto){
+
+        Optional<Requerimento> existente = service.buscarPorCodigo(dto.codigo());
+
+        if (existente.isPresent()) {
+
+              Requerimento atual = existente.get();
+                atual.setSala(dto.sala());
+                atual.setHorarioInicial(dto.horarioInicial());
+                atual.setHorarioFinal(dto.horarioFinal());
+                atual.setNome(dto.nome());
+                atual.setData(dto.data());
+                atual.setEmail(dto.email());
+                atual.setTelefone(dto.telefone());
+                atual.setMatricula(dto.matricula());
+                atual.setMotivoJustificativa(dto.motivoJustificativa());
+
+                service.editar(atual);
+                return new ResponseEntity<>(true, HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+            }
+    }
     @DeleteMapping("/deletar")
     public ResponseEntity<Boolean> deletar(@RequestParam String nome) {
         Optional<Requerimento> requerimento = service.buscarPorNome(nome);

@@ -1,9 +1,9 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { ChangeEvent, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from '../../assets/logouerj.png';
 import { AuthContext } from '../../contexts/Auth/AuthContext';
 import './login.css';
-
 export const Login = () => {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
@@ -51,13 +51,13 @@ export const Login = () => {
                     <form onSubmit={handleLogin}>
                         <input
                             type="text"
-                            value={email}
+                            
                             onChange={handleEmailInput}
                             placeholder="Digite seu e-mail"
                         />
                         <input
                             type="password"
-                            value={senha}
+                            
                             onChange={handleSenhaInput}
                             placeholder="Digite sua Senha"
                         />

@@ -46,6 +46,12 @@ public class SalaService implements ISalaService {
         }
     }
 
+    public void salvarReserva(Sala dto) {
+
+        repository.save(dto);
+
+    }
+
     @Override
     public Boolean editar(Sala editado)
     {
@@ -58,7 +64,10 @@ public class SalaService implements ISalaService {
     {
         return repository.findAll();
     }
-
+    @Override
+    public List<Sala> buscarTodasSalasDisponiveis(){
+        return repository.findByStatus("P");
+    }
     public Optional<Sala> buscarPorNome(String nome) {
         return repository.findByNome(nome);
     }

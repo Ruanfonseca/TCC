@@ -1,8 +1,8 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { useAPI } from '../../../hooks/useAPI';
 import { Sala } from '../../../types/Sala';
-
 
 interface SalaSelectProps {
     onSelect: (sala: Sala) => void;
@@ -15,7 +15,7 @@ const SalaSelect: React.FC<SalaSelectProps> = ({ onSelect }) => {
     useEffect(() => {
         const fetchSalas = async () => {
             try {
-                const data = await api.ListaDeSalas();
+                const data = await api.ListaDeSalasDisponiveis();
                 setSalas(data);
             } catch (error) {
                 console.error("Erro ao buscar salas:", error);

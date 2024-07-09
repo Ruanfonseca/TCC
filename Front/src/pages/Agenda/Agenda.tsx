@@ -1,12 +1,12 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import { useEffect, useState } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import ModalAgenda from '../../components/AgendaModals/modalAgenda';
 import NavScroll from '../../components/navbar';
 import { useAPI } from '../../hooks/useAPI';
-
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import ModalAgenda from '../../components/AgendaModals/modalAgenda';
 import { RequerimentoDTO } from '../../types/Dtos/RequerimentoDTO';
 import './Agenda.css';
 

@@ -2,6 +2,7 @@
 /* eslint-disable react/jsx-no-undef */
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext, useEffect, useState } from "react";
 import InputMask from 'react-input-mask';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +11,6 @@ import { useAPI } from "../../../hooks/useAPI";
 import FuncaoVerificaEmail, { VerificaMatricula, VerificaSenha } from "../../../utils/utils";
 import '../../Usuario/usuario.css';
 import '../login.css';
-
 const CadastroCriarConta: React.FC = () => {
     const api = useAPI();
     const navigate = useNavigate();

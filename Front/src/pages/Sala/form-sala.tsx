@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext, useEffect, useState } from "react";
 import NavScroll from "../../components/navbar";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
@@ -10,20 +11,19 @@ interface Sala {
 }
 
 const CadastroSala: React.FC = () => {
-
     const api = useAPI();
 
-    const [sala, setSala] = useState<Sala>({
+    const [formData, setFormData] = useState<Sala>({
         nome: '',
         capacidade: '0',
         status_da_sala: '',
     });
 
     const resetForm = () => {
-        setSala({
+        setFormData({
             nome: '',
             capacidade: '0',
-            status_da_sala: ''
+            status_da_sala: '',
         });
     };
 
@@ -39,28 +39,28 @@ const CadastroSala: React.FC = () => {
     }, [auth.user]);
 
     if (loading) {
-        return <div>Carregando ...</div>;
+        return <div>Carregando...</div>;
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setSala({
-            ...sala,
-            [name]: value
-        });
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         try {
-            const cadastrado = await api.CadastrarSala(sala);
+            const cadastrado = await api.CadastrarSala(formData);
             
             if (cadastrado.data) {
                 alert('Sala cadastrada');
                 resetForm();
             } else {
-                alert("Sala já cadastrada !");
+                alert("Sala já cadastrada!");
             }
         } catch (error) {
             console.error(error);
@@ -75,20 +75,19 @@ const CadastroSala: React.FC = () => {
                     <h1 className="Titulo">Cadastro de Sala</h1>
                     <br />
                     <div className="card-login">
-
                         <div className="form-group">
                             <label htmlFor="nome"><b>Nome: </b></label>
                             <input
                                 type="text"
                                 className="form-control"
-                                value={sala.nome}
                                 placeholder="Insira o nome da sala"
                                 name="nome"
                                 onChange={handleChange}
                                 required
                             />
                             <small className="form-text text-muted">
-                                <i>* Nome da sala</i></small>
+                                <i>* Nome da sala</i>
+                            </small>
                         </div>
 
                         <div className="form-group">
@@ -96,14 +95,14 @@ const CadastroSala: React.FC = () => {
                             <input
                                 type="text"
                                 className="form-control"
-                                value={sala.capacidade}
                                 placeholder="Quantidade de lugares"
                                 name="capacidade"
                                 onChange={handleChange}
                                 required
                             />
                             <small className="form-text text-muted">
-                                <i>* Quantidade de lugares</i></small>
+                                <i>* Quantidade de lugares</i>
+                            </small>
                         </div>
 
                         <div className="form-group">
@@ -111,7 +110,6 @@ const CadastroSala: React.FC = () => {
                             <select
                                 className="form-select"
                                 name="status_da_sala"
-                                value={sala.status_da_sala}
                                 onChange={handleChange}
                                 required
                             >
@@ -119,15 +117,14 @@ const CadastroSala: React.FC = () => {
                                 <option value="D">Disponível</option>
                             </select>
                             <small className="form-text text-muted">
-                                <i>* Status da sala</i></small>
+                                <i>* Status da sala</i>
+                            </small>
                         </div>
 
                         <button type="submit" className="btn btn-success btn-submit">Adicionar Sala</button>
                     </div>
-
                 </form>
             </div>
-
         </>
     );
 }

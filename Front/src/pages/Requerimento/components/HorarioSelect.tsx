@@ -1,8 +1,8 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { useAPI } from '../../../hooks/useAPI';
 import { Horario } from '../../../types/Horario';
-
 interface HorarioSelectProps {
     onSelect: (horario: Horario) => void;
     nome:string;

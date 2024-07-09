@@ -11,6 +11,8 @@ import CadastroCriarConta from './pages/Login/CriarConta/cadastroCriarConta';
 import Recuperacao from './pages/Login/RecuperacaoDeSenha/Recuperacao';
 import RecuperacaoEtapa2 from './pages/Login/RecuperacaoDeSenha/RecuperacaoEtapa2';
 import CadastroProfessor from './pages/Professor/form-professor';
+
+import Relatorios from './pages/Relatorios/relatorio';
 import FormularioRequerimento from './pages/Requerimento/FormularioRequerimento';
 import ReqList from './pages/Requerimento/lista-requerimentos';
 import CadastroSala from './pages/Sala/form-sala';
@@ -38,6 +40,7 @@ function App() {
         <Route path="/home/salaList" element={<RequireAuth><SalasList/></RequireAuth>} />
         <Route path="/home/horarioList" element={<RequireAuth><HorariosList/></RequireAuth>} />
         <Route path="/home/suporte" element={<RequireAuth><Suporte /></RequireAuth>} />
+        <Route path="/home/relatorio" element={<RequireAuth><Relatorios /></RequireAuth>} />
         {/***************************************************************************************/}
         <Route path="/criarConta" element={<CadastroCriarConta />} />
         <Route path="/recuperacao" element={<Recuperacao />} />

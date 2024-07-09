@@ -23,7 +23,11 @@ public interface ISalaService {
     //Buscar todos
     List<Sala> buscarTodasSalas();
 
+    List<Sala> buscarTodasSalasDisponiveis();
+
     public Optional<Sala> buscarPorNome(String nome);
+
+    public void salvarReserva(Sala dto);
 
 
     //excluir

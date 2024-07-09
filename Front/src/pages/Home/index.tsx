@@ -30,20 +30,23 @@ export const Home = () => {
     }
   }, [auth.user]);
 
-  const handleSelecaoChange = (e:ChangeEvent<HTMLSelectElement>) => {
+  const handleSelecaoChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelecao(e.target.value);
   };
 
-  const handleInputChange = (e:ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
-  const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (selecao === 'matrícula') {
+
       if (VerificaMatricula(input)) {
+      
         const user = await api.buscarUsuarioPorMatricula({ matricula: input } as MatriculaRequestDTO);
+      
         setResultado(user);
       } else {
         alert('Matrícula Incorreta !');
@@ -84,6 +87,7 @@ export const Home = () => {
   return (
     <>
       <NavScroll isAdmin={isAdmin} />
+      
       <div className="container">
         <div className="row">
           <div className="col">
@@ -107,7 +111,7 @@ export const Home = () => {
                     <select
                       className="custom-select my-3 p-2 w-100"
                       name="selecao"
-                      value={selecao}
+
                       onChange={handleSelecaoChange}
                       required
                     >
@@ -118,12 +122,9 @@ export const Home = () => {
                   <div className="col-12 col-md-4">
                     <input
                       className="form-control form-control-lg my-3 p-2 w-100"
-                      type="search"
+                      type="text"
                       placeholder="Insira sua pesquisa..."
                       aria-label="Pesquisar"
-                      name="input"
-                      id="input"
-                      value={input}
                       onChange={handleInputChange}
                       required
                     />

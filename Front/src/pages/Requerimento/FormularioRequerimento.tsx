@@ -1,9 +1,10 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import InputMask from 'react-input-mask';
 import NavScroll from '../../components/navbar';
 import { AuthContext } from '../../contexts/Auth/AuthContext';
-import { useAPI } from '../../hooks/useAPI'; // Certifique-se de importar useAPI
+import { useAPI } from '../../hooks/useAPI';
 import { Horario } from '../../types/Horario';
 import { Sala } from '../../types/Sala';
 import { GeradordeCodigo } from '../../utils/utils';
@@ -49,7 +50,7 @@ const FormularioRequerimento: React.FC = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
     const auth = useContext(AuthContext);
-    const api = useAPI(); // Hook personalizado para acesso à API
+    const api = useAPI(); 
 
     useEffect(() => {
         if (auth.user) {
@@ -148,7 +149,6 @@ const FormularioRequerimento: React.FC = () => {
                             <Form.Control
                                 type="date"
                                 name="data"
-                                value={formData.data}
                                 onChange={handleChange}
                                 required
                             />
@@ -159,7 +159,6 @@ const FormularioRequerimento: React.FC = () => {
                             <Form.Control
                                 type="text"
                                 name="nome"
-                                value={formData.nome}
                                 onChange={handleChange}
                                 placeholder="Insira seu nome"
                                 required
@@ -171,7 +170,6 @@ const FormularioRequerimento: React.FC = () => {
                             <Form.Control
                                 type="email"
                                 name="email"
-                                value={formData.email}
                                 onChange={handleChange}
                                 placeholder="email@example.com"
                                 required
@@ -183,7 +181,6 @@ const FormularioRequerimento: React.FC = () => {
                             <Form.Control
                                 type="text"
                                 name="matricula"
-                                value={formData.matricula}
                                 onChange={handleChange}
                                 placeholder="Ex.: 201923307011"
                                 required
@@ -196,7 +193,6 @@ const FormularioRequerimento: React.FC = () => {
                                 mask="(99) 99999-9999"
                                 className="form-control"
                                 name="telefone"
-                                value={formData.telefone}
                                 onChange={handleChange}
                                 placeholder="Insira o seu número de celular"
                                 required
@@ -208,7 +204,6 @@ const FormularioRequerimento: React.FC = () => {
                             <Form.Control
                                 as="textarea"
                                 name="motivoJustificativa"
-                                value={formData.motivoJustificativa}
                                 onChange={handleChange}
                                 required
                             />

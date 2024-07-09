@@ -46,6 +46,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/requerimento/listagem").permitAll()
                         .requestMatchers(HttpMethod.POST, "/requerimento/busca/nome").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/requerimento/editar").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/requerimento/editar/pendente").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/requerimento/deletar").permitAll()
 
 
@@ -60,7 +61,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/horario/busca/nome").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/horario/editar").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/horario/deletar").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/editar/**").permitAll()
+
 
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/validate").permitAll()

@@ -1,6 +1,6 @@
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext, useEffect, useState } from "react";
 import InputMask from 'react-input-mask';
 import NavScroll from "../../components/navbar";
@@ -102,7 +102,7 @@ const Cadastro: React.FC = () => {
               <input
                 type="text"
                 className="form-control"
-                value={Usuario.nome}
+                
                 placeholder="Insira o nome do Usuário"
                 name="nome"
                 onChange={handleChange}
@@ -115,7 +115,7 @@ const Cadastro: React.FC = () => {
               <label htmlFor="email"><b>E-mail:</b></label>
               <input
                 type="email"
-                value={Usuario.login}
+                
                 name="login"
                 className="form-control"
                 placeholder="email@example.com"
@@ -128,7 +128,7 @@ const Cadastro: React.FC = () => {
               <label htmlFor="matricula"><b>Matricula:</b></label>
               <input
                 type="text"
-                value={Usuario.matricula}
+                
                 name="matricula"
                 className="form-control"
                 placeholder="Ex.:201923307011"
@@ -142,7 +142,7 @@ const Cadastro: React.FC = () => {
               <InputMask
                 mask="(99) 99999-9999"
                 className="form-control"
-                value={Usuario.telefone}
+                
                 placeholder="Insira o seu número de celular"
                 name="telefone"
                 onChange={handleChange}
@@ -156,7 +156,7 @@ const Cadastro: React.FC = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   className="form-control"
-                  value={Usuario.senha}
+                  
                   placeholder="Insira uma senha de 8 dígitos"
                   name="senha"
                   onChange={handleChange}
@@ -176,7 +176,7 @@ const Cadastro: React.FC = () => {
               <select
                 className="form-select"
                 name="setor"
-                value={Usuario.setor}
+                
                 onChange={handleChange}
                 required
               >

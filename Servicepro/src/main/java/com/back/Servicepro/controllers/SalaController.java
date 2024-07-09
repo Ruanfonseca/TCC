@@ -6,6 +6,7 @@ import com.back.Servicepro.dto.usuario.UsuarioDTO;
 import com.back.Servicepro.models.Sala;
 import com.back.Servicepro.models.Usuario;
 import com.back.Servicepro.services.SalaService;
+import com.back.Servicepro.util.SalaUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,7 +43,13 @@ public class SalaController {
     @GetMapping("/listagem")
     private List<SalaDTO> buscarTodos() {
         List<Sala> salas = service.buscarTodasSalas();
-        return  salas.stream().map(this::convertToDto).collect(Collectors.toList());
+        return  salas.stream().map(SalaUtil::convertToDto).collect(Collectors.toList());
+    }
+
+    @GetMapping("/listagem/disponiveis")
+    private List<SalaDTO> buscarTodosDisponiveis() {
+        List<Sala> salas = service.buscarTodasSalasDisponiveis();
+        return  salas.stream().map(SalaUtil::convertToDto).collect(Collectors.toList());
     }
 
     @GetMapping("/busca/nome")
@@ -96,12 +103,6 @@ public class SalaController {
 
 
 
-    private SalaDTO convertToDto(Sala sala) {
-        return new SalaDTO(
-                sala.getNome(),
-                sala.getCapacidade(),
-                sala.getStatus_da_sala()
-        );
-    }
+
 
 }

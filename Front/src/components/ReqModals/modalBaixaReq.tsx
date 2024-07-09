@@ -173,7 +173,7 @@ function ModalBaixaReq({ show, onHide, requerimento }: ModalReqProps) {
                             onChange={(e) => setStatus(e.target.value)}
                         >
                             <option value="P">Pendente</option>
-                            <option value="A">Deferido</option>
+                            <option value="D">Deferido</option>
                         </Form.Control>
                     </Form.Group>
 

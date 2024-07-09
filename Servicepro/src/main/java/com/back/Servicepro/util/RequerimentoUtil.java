@@ -21,7 +21,8 @@ public class RequerimentoUtil {
                 requerimento.getStatus(),
                 requerimento.getNomeFunc(),
                 requerimento.getMatriculaFunc(),
-                requerimento.getRetorno()
+                requerimento.getRetorno(),
+                requerimento.getCodigo()
         );
     }
 

@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext, useEffect, useState } from 'react';
 import Imagem from '../../assets/FAQ.jpg';
 import Footer from "../../components/footer";

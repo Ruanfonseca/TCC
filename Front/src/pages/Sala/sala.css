@@ -3,9 +3,9 @@
     margin-bottom: 20px;
 }
 .table-responsive {
-    overflow-x: auto; 
-    margin-left: 100px; 
-    margin-right: 100px;
+  overflow-x: auto; 
+  margin-left: 100px;
+  margin-right: 100px;
   }
   
 .paginacao{
@@ -20,8 +20,9 @@
 @media (max-width: 768px) {
     .table-responsive {
       overflow-x: auto; 
-      margin-left: 0; 
-      margin-right: 0; 
+      padding-left: 50px;
+      padding-right: 50px;
+      
     }
   
     .table-responsive table {

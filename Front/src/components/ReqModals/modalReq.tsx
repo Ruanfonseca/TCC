@@ -12,6 +12,7 @@ interface Req {
     email: string;
     telefone: string;
     motivoJustificativa: string;
+    codigo:string;
 }
 
 interface ModalReqProps {
@@ -30,6 +31,7 @@ function ModalReq({ show, onHide, requerimento }: ModalReqProps) {
     const [email, setEmail] = useState(requerimento.email);
     const [telefone, setTelefone] = useState(requerimento.telefone);
     const [motivoJustificativa, setMotivoJustificativa] = useState(requerimento.motivoJustificativa);
+    const [codigo, setCodigo] = useState(requerimento.codigo);
 
     const api = useAPI();
 
@@ -47,7 +49,7 @@ function ModalReq({ show, onHide, requerimento }: ModalReqProps) {
         };
 
         try {
-            // const response = await api.SalvarSalaEditada(requerimentoAtualizado);
+            // const response = await api.AtualizarReq(requerimentoAtualizado);
             onHide();
         } catch (error) {
             console.error('Erro ao salvar o usuário:', error);
@@ -69,6 +71,15 @@ function ModalReq({ show, onHide, requerimento }: ModalReqProps) {
             </Modal.Header>
             <Modal.Body>
                 <Form>
+                  <Form.Group controlId="formCode">
+                        <Form.Label>Código</Form.Label>
+                        <Form.Control
+                            type="text"
+                            defaultValue={codigo}
+                            onChange={(e) => setCodigo(e.target.value)}
+                            disabled
+                        />
+                    </Form.Group>
                     <Form.Group controlId="formSala">
                         <Form.Label>Sala</Form.Label>
                         <Form.Control

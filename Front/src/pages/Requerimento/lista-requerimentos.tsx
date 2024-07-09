@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /**Somente requerimentos pendentes */
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext, useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import ModalBaixaReq from "../../components/ReqModals/modalBaixaReq";
@@ -23,6 +24,7 @@ interface Requerimento {
     telefone:string;   
     motivoJustificativa: string;
     status?:string;
+    codigo:string;
 }
 
 
@@ -34,7 +36,7 @@ function ReqList(){
     const [loading, setLoading] = useState(true);
     const [modalShow, setModalShow] = useState(false);
     const [BaixaModalShow, setBaixaModalShow] = useState(false);
-  
+    
     // Paginação
     const [reqs, setReqs] = useState<Requerimento[]>([]);
     const [reqsPorPage, setReqsPorPage] = useState(5);
@@ -105,6 +107,7 @@ function ReqList(){
             <Table striped bordered hover>
               <thead>
                 <tr>
+                   <th>Código</th>
                    <th>Sala</th>          
                    <th>Horario Inicial</th>  
                    <th>Horario Final</th>     
@@ -121,6 +124,7 @@ function ReqList(){
               <tbody>
                 {ReqsCorrente.map(item => (
                   <tr key={item.sala}>
+                    <td>{item.codigo}</td>
                     <td>{item.sala}</td>
                     <td>{item.horarioInicial}</td>
                     <td>{item.horarioFinal}</td>
