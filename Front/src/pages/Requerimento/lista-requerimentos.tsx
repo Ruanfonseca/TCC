@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-/**Somente requerimentos pendentes */
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext, useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
@@ -27,7 +24,6 @@ interface Requerimento {
     codigo:string;
 }
 
-
 function ReqList(){
     const [selectedReq, setSelectedReq] = useState<Requerimento | null>(null);
     const api = useAPI();
@@ -50,13 +46,10 @@ function ReqList(){
     useEffect(() => {
       const fetchData = async () => {
         try {
-          
-        const dto: StatusDTO = {
-           status:'P'
-          }
-
+          const dto: StatusDTO = {
+            status: 'P'
+          };
           const data = await api.ListaDeReqs(dto);
-          
           setReqs(data);
         } catch (error) {
           console.error("Erro ao buscar dados:", error);
@@ -101,55 +94,55 @@ function ReqList(){
     return (
       <>
         <NavScroll isAdmin={isAdmin} />
-          <br />
-          <h1 className="titulo">Lista de Requerimentos Pendentes</h1>
-          <div className="table-responsive">
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                   <th>Código</th>
-                   <th>Sala</th>          
-                   <th>Horario Inicial</th>  
-                   <th>Horario Final</th>     
-                   <th>Data Solicitada</th>  
-                   <th>Matricula do solicitante</th> 
-                   <th>Nome do Solicitante</th>    
-                   <th>Email do Solicitante</th> 
-                   <th>Telefone</th>   
-                   <th>Justificativa</th> 
-                   <th>Status</th>
-                  <th colSpan={2}>Ações</th>
+        <br />
+        <h1 className="titulo">Lista de Requerimentos Pendentes</h1>
+        <div className="table-responsive">
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Sala</th>          
+                <th>Horario Inicial</th>  
+                <th>Horario Final</th>     
+                <th>Data Solicitada</th>  
+                <th>Matricula do solicitante</th> 
+                <th>Nome do Solicitante</th>    
+                <th>Email do Solicitante</th> 
+                <th>Telefone</th>   
+                <th>Justificativa</th> 
+                <th>Status</th>
+                <th colSpan={2}>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ReqsCorrente.map(item => (
+                <tr key={item.sala}>
+                  <td data-label="Código">{item.codigo}</td>
+                  <td data-label="Sala">{item.sala}</td>
+                  <td data-label="Horario Inicial">{item.horarioInicial}</td>
+                  <td data-label="Horario Final">{item.horarioFinal}</td>
+                  <td data-label="Data Solicitada">{item.data}</td>
+                  <td data-label="Matricula do solicitante">{item.matricula}</td>
+                  <td data-label="Nome do Solicitante">{item.nome}</td>
+                  <td data-label="Email do Solicitante">{item.email}</td>
+                  <td data-label="Telefone">{item.telefone}</td>
+                  <td data-label="Justificativa">{item.motivoJustificativa}</td>
+                  <td data-label="Status">{item.status}</td>
+                  <td>
+                    <Button variant="primary" onClick={() => handleEditClick(item)}>
+                      Editar
+                    </Button>
+                  </td>
+                  <td>
+                    <Button variant="dark" onClick={() => handleBaixaClick(item)}>
+                      Dar baixa
+                    </Button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {ReqsCorrente.map(item => (
-                  <tr key={item.sala}>
-                    <td>{item.codigo}</td>
-                    <td>{item.sala}</td>
-                    <td>{item.horarioInicial}</td>
-                    <td>{item.horarioFinal}</td>
-                    <td>{item.data}</td>
-                    <td>{item.matricula}</td>
-                    <td>{item.nome}</td>
-                    <td>{item.email}</td>
-                    <td>{item.telefone}</td>
-                    <td>{item.motivoJustificativa}</td>
-                    <td>{item.status}</td>
-                    <td>
-                      <Button variant="primary" onClick={() => handleEditClick(item)}>
-                        Editar
-                      </Button>
-                    </td>
-                    <td>
-                      <Button variant="dark" onClick={() => handleBaixaClick(item)}>
-                        Dar baixa
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </div>
+              ))}
+            </tbody>
+          </Table>
+        </div>
   
         <div className="paginacao">
           <Button
@@ -182,9 +175,9 @@ function ReqList(){
           />
         )}
   
-      <Footer/>
+        <Footer />
       </>
     );
-  }
+}
 
 export default ReqList;

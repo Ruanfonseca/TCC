@@ -60,4 +60,9 @@ public class ReqService implements IReqService{
     public void deletar(Requerimento requerimento) {
         repository.delete(requerimento);
     }
+
+    @Override
+    public List<Requerimento> buscarPorMatricula(String Matricula, String dataInicio, String dataFim) {
+        return repository.findByMatriculaAndPeriodo(Matricula,dataInicio,dataFim);
+    }
 }

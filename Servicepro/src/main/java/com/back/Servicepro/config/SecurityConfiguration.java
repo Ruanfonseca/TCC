@@ -49,6 +49,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, "/requerimento/editar/pendente").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/requerimento/deletar").permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/relatorio/listagem").permitAll()
+
 
                         .requestMatchers(HttpMethod.GET, "/sala/listagem").permitAll()
                         .requestMatchers(HttpMethod.POST, "/sala/cadastrar").permitAll()

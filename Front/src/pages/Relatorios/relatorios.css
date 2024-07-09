@@ -11,3 +11,15 @@
   .section {
     margin-bottom: 10px;
   }
+
+  .estiloPDF {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .imagem {
+    width: 150px; /* Ajuste o tamanho conforme necessário */
+    margin-bottom: 20px;
+  }

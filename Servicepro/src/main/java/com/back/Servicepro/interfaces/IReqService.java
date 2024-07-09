@@ -29,4 +29,7 @@ public interface IReqService {
     //excluir
     public void deletar(Requerimento requerimento);
 
+    //relatorio
+    public List<Requerimento>buscarPorMatricula(String Matricula,String dataInicio,String dataFim);
+
 }

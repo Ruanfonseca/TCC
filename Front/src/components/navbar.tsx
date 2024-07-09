@@ -82,13 +82,13 @@ function NavScroll({ isAdmin }: NavScrollProps) {
               )}
               <Nav.Link href="/home/form-requerimento">Requerimento SALA</Nav.Link>
               <Nav.Link href="https://www.uerj.br/" target='_blank'>Portal UERJ</Nav.Link>
-              <Nav.Link href="/home/suporte">Suporte</Nav.Link>
-              
+              <Nav.Link href="/home/suporte" >Suporte</Nav.Link>
             </Nav>
-            
-            <Navbar.Text className="ms-auto">
+            <Navbar.Text className="ml-auto p-2">
               Usuário logado: <a className='link' onClick={handleDetail}>{auth.user?.nome}</a>
             </Navbar.Text>
+            
+            
           </Navbar.Collapse>
           
         </Container>

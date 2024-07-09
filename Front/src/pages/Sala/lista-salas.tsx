@@ -81,39 +81,39 @@ function SalasList() {
   return (
     <>
       <NavScroll isAdmin={isAdmin} />
-        <br />
-        <h1 className="titulo">Lista de Salas</h1>
-        <div className="table-responsive">
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Capacidade</th>
-                <th>Status</th>
-                <th colSpan={2}>Ações</th>
+      <br />
+      <h1 className="titulo">Lista de Salas</h1>
+      <div className="table-responsive">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Capacidade</th>
+              <th>Status</th>
+              <th colSpan={2}>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {salasCorrente.map(item => (
+              <tr key={item.nome}>
+                <td>{item.nome}</td>
+                <td>{item.capacidade}</td>
+                <td>{item.status_da_sala}</td>
+                <td>
+                  <Button variant="primary" onClick={() => handleEditClick(item)}>
+                    Editar
+                  </Button>
+                </td>
+                <td>
+                  <Button variant="danger" onClick={() => handleDeleteClick(item)}>
+                    Deletar
+                  </Button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {salasCorrente.map(item => (
-                <tr key={item.nome}>
-                  <td>{item.nome}</td>
-                  <td>{item.capacidade}</td>
-                  <td>{item.status_da_sala}</td>
-                  <td>
-                    <Button variant="primary" onClick={() => handleEditClick(item)}>
-                      Editar
-                    </Button>
-                  </td>
-                  <td>
-                    <Button variant="danger" onClick={() => handleDeleteClick(item)}>
-                      Deletar
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
+            ))}
+          </tbody>
+        </Table>
+      </div>
 
       <div className="paginacao">
         <Button

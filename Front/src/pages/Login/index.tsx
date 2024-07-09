@@ -65,7 +65,7 @@ export const Login = () => {
                     </form>
 
                     
-                    <a className="criarconta" href="" onClick={handleCriarConta}>Criar Conta</a>
+                   {/* <a className="criarconta" href="" onClick={handleCriarConta}>Criar Conta</a> */}
                     <p className="esquecesenha">Esqueceu a senha ? <a href="" onClick={handleRecuperarConta}>Clique aqui</a></p>
                 </div>
             </div>

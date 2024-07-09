@@ -1,12 +1,14 @@
 import axios from "axios";
 import data from '../data/data.json';
 import datahorario from '../data/dataHorario.json';
+import dataRelatorio from '../data/dataRelatorio.json';
 import dataReq from '../data/dataReq.json';
 import dataReqFinalizado from '../data/dataReqFinalizado.json';
 import datasala from '../data/datasala.json';
 import { CodigoDTO } from "../types/Dtos/CodigoDTO";
 
 import { HorarioDTO } from "../types/Dtos/HorarioDTO";
+import { relatorioRequestDTO } from "../types/Dtos/RelatorioRequestDTO";
 import { RequerimentoDTO } from '../types/Dtos/RequerimentoDTO';
 import { StatusDTO } from "../types/Dtos/StatusDTO";
 import { Sala } from "../types/Sala";
@@ -58,11 +60,24 @@ export const useAPI = () => ({
     return response.data;
   },
 
+  ListaParaRelatorio : async (dto: relatorioRequestDTO) => {
+
+    return dataRelatorio;
+
+    const response = await api.get('/relatorio/listagem', {
+      params: {
+        dto
+      }
+    });
+   
+    return response.data;
+  },
   SalvarEditado: async (usuario: User) => {
     const response = await api.put('/editar', usuario);
     return response;
   },
 
+  
   AtualizarReq: async (req:RequerimentoDTO) => {
     const response = await api.put('/requerimento/editar/pendente', req);
     return response;
