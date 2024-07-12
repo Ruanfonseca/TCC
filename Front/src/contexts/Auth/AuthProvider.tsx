@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuthApi } from "../../hooks/useAuthApi";
-import { MatriculaRequestDTO } from "../../types/Dtos/MatriculaRequestDTO";
+import { requestDTO } from "../../types/Dtos/RequestDTO";
 import { User } from "../../types/User";
 import { AuthContext } from "./AuthContext";
 
@@ -58,8 +58,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem('authToken', token);
   };
 
-  const verificaExistente = async (matriculaDTO: MatriculaRequestDTO): Promise<User | null> => {
-    const response = await api.verificaExistente(matriculaDTO);
+  const verificaExistente = async (dto: requestDTO): Promise<User | null> => {
+    const response = await api.verificaExistente(dto);
     return response.data;
   };
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { MatriculaRequestDTO } from '../types/Dtos/MatriculaRequestDTO';
+import { requestDTO } from '../types/Dtos/RequestDTO';
 import { User } from '../types/User';
 
 const api = axios.create({
@@ -57,9 +57,9 @@ export const useAuthApi = () => ({
         return { status: true };
     },
 
-    verificaExistente : async(matricula : MatriculaRequestDTO)=>{
+    verificaExistente : async(dto : requestDTO)=>{
         
-        const response = await api.post('/auth/recuperacao', { matricula });
+        const response = await api.post('/auth/recuperacao', { dto });
 
         return response.data;
     },

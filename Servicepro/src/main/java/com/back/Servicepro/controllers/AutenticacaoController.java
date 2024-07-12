@@ -2,6 +2,7 @@ package com.back.Servicepro.controllers;
 
 import com.back.Servicepro.dto.auth.AuthDTO;
 import com.back.Servicepro.dto.auth.RecuperationDTO;
+import com.back.Servicepro.dto.auth.RequestDTO;
 import com.back.Servicepro.dto.usuario.*;
 import com.back.Servicepro.enums.RoleEnum;
 import com.back.Servicepro.models.Usuario;
@@ -51,7 +52,7 @@ public class AutenticacaoController {
 
 
     @PostMapping("/recuperacao")
-    private ResponseEntity<?>verificaExistente(@Valid @RequestBody MatriculaRequestDTO dto){
+    private ResponseEntity<?>verificaExistente(@Valid @RequestBody RequestDTO dto){
 
         Optional<Usuario> usuario = service.buscarPorMatricula(dto.matricula());
 
