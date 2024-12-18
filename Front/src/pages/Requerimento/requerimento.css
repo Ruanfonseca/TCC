@@ -19,9 +19,10 @@
   margin-bottom: 20px;
 }
 
-.table-responsive {
+.table-responsive Table {
   overflow-x: auto; 
-  margin-left: 100px; 
+  margin-left: 300px; 
+  padding-left: 100px;
   margin-right: 100px;
   margin-bottom: 100px;
 }
@@ -41,11 +42,11 @@
 @media (max-width: 768px) {
   .table-responsive {
       overflow-x: auto; 
-      margin-left: 0; 
-      margin-right: 0; 
+      margin-left: 50px; /* Margem menor para telas menores */
+    margin-right: 0;
   }
 
-  .table-responsive table {
+  .table-responsive Table {
       width: 100%; 
       margin-bottom: 15px; 
       border-collapse: collapse; 
