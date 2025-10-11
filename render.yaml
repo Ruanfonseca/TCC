@@ -1,0 +1,65 @@
+# render.yaml
+services:
+  - type: web
+    name: alpha
+    env: docker
+    dockerfilePath: ./Dockerfile # ou deixe vazio se usar diretamente a imagem
+    image: ruanfonseca2023/alpha:latest
+    envVars:
+      - key: JAVA_OPTS
+        value: ""
+      - key: SERVER_PORT
+        value: "8080"
+      - key: SPRING_RABBITMQ_HOST
+        value: rabbitmq
+      - key: SPRING_RABBITMQ_PORT
+        value: "5672"
+      - key: SPRING_RABBITMQ_USERNAME
+        value: admin
+      - key: SPRING_RABBITMQ_PASSWORD
+        value: 123456
+    ports:
+      - 8080
+    dependsOn:
+      - rabbitmq
+    restartPolicy: always
+
+  - type: web
+    name: consumer
+    env: docker
+    dockerfilePath: ./Dockerfile # ou deixe vazio se usar a imagem diretamente
+    image: ruanfonseca2023/consumer:latest
+    envVars:
+      - key: JAVA_OPTS
+        value: ""
+      - key: SERVER_PORT
+        value: "9191"
+      - key: SPRING_RABBITMQ_HOST
+        value: rabbitmq
+      - key: SPRING_RABBITMQ_PORT
+        value: "5672"
+      - key: SPRING_RABBITMQ_USERNAME
+        value: admin
+      - key: SPRING_RABBITMQ_PASSWORD
+        value: 123456
+    dependsOn:
+      - rabbitmq
+    restartPolicy: always
+
+  - type: background
+    name: rabbitmq
+    env: docker
+    image: rabbitmq:3.8-management
+    envVars:
+      - key: RABBITMQ_DEFAULT_USER
+        value: admin
+      - key: RABBITMQ_DEFAULT_PASS
+        value: 123456
+    restartPolicy: always
+    mounts:
+      - type: volume
+        name: rabbitmq_data
+        path: /var/lib/rabbitmq
+
+volumes:
+  - name: rabbitmq_data
