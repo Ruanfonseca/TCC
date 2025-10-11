@@ -3,7 +3,6 @@ services:
   - type: web
     name: alpha
     env: docker
-    dockerfilePath: ./Dockerfile # ou deixe vazio se usar diretamente a imagem
     image: ruanfonseca2023/alpha:latest
     envVars:
       - key: JAVA_OPTS
@@ -27,7 +26,6 @@ services:
   - type: web
     name: consumer
     env: docker
-    dockerfilePath: ./Dockerfile # ou deixe vazio se usar a imagem diretamente
     image: ruanfonseca2023/consumer:latest
     envVars:
       - key: JAVA_OPTS
