@@ -4,60 +4,46 @@ services:
     name: alpha
     env: docker
     image: ruanfonseca2023/alpha:latest
+    plan: free
+    autoDeploy: true
     envVars:
-      - key: JAVA_OPTS
-        value: ""
       - key: SERVER_PORT
         value: "8080"
       - key: SPRING_RABBITMQ_HOST
-        value: rabbitmq
+        value: rabbitmq.render.internal
       - key: SPRING_RABBITMQ_PORT
         value: "5672"
       - key: SPRING_RABBITMQ_USERNAME
         value: admin
       - key: SPRING_RABBITMQ_PASSWORD
         value: 123456
-    ports:
-      - 8080
-    dependsOn:
-      - rabbitmq
-    restartPolicy: always
 
   - type: worker
     name: consumer
     env: docker
     image: ruanfonseca2023/consumer:latest
+    plan: free
+    autoDeploy: true
     envVars:
-      - key: JAVA_OPTS
-        value: ""
       - key: SERVER_PORT
         value: "9191"
       - key: SPRING_RABBITMQ_HOST
-        value: rabbitmq
+        value: rabbitmq.render.internal
       - key: SPRING_RABBITMQ_PORT
         value: "5672"
       - key: SPRING_RABBITMQ_USERNAME
         value: admin
       - key: SPRING_RABBITMQ_PASSWORD
         value: 123456
-    dependsOn:
-      - rabbitmq
-    restartPolicy: always
 
-  - type: worker
+  - type: private_service
     name: rabbitmq
     env: docker
     image: rabbitmq:3.8-management
+    plan: free
+    autoDeploy: false
     envVars:
       - key: RABBITMQ_DEFAULT_USER
         value: admin
       - key: RABBITMQ_DEFAULT_PASS
         value: 123456
-    restartPolicy: always
-    mounts:
-      - type: volume
-        name: rabbitmq_data
-        path: /var/lib/rabbitmq
-
-volumes:
-  - name: rabbitmq_data
