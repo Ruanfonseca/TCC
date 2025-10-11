@@ -1,6 +1,6 @@
 # render.yaml
 services:
-  - type: web
+  - type: web_service
     name: alpha
     env: docker
     image: ruanfonseca2023/alpha:latest
@@ -23,7 +23,7 @@ services:
       - rabbitmq
     restartPolicy: always
 
-  - type: web
+  - type: web_service
     name: consumer
     env: docker
     image: ruanfonseca2023/consumer:latest
@@ -44,7 +44,7 @@ services:
       - rabbitmq
     restartPolicy: always
 
-  - type: background
+  - type: private_service
     name: rabbitmq
     env: docker
     image: rabbitmq:3.8-management
