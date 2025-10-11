@@ -8,7 +8,7 @@ WORKDIR /app
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
-# Copia apenas o POM primeiro para aproveitar o cache das dependências
+# Copia apenas o POM primeiro para aproveitar cache de dependências
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
@@ -32,5 +32,5 @@ ENV SERVER_PORT=9191
 # Expõe a porta do Spring Boot
 EXPOSE 9191
 
-# Executa a aplicação informando a porta
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar consumer.jar --server.port=$SERVER_PORT"]
+# Executa a aplicação com Java 11 usando exec para gerenciamento correto de sinais
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar consumer.jar --server.port=$SERVER_PORT"]
