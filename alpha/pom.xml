@@ -19,8 +19,11 @@
 	<name>alpha</name>
 	<description>Sistema de gestão de salas</description>
 
+	<!-- ✅ propriedades unificadas -->
 	<properties>
 		<java.version>11</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 
 	<dependencies>
@@ -71,8 +74,6 @@
 			<scope>runtime</scope>
 		</dependency>
 
-
-
 		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -80,12 +81,12 @@
 			<version>1.18.30</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-
 
 		<!-- Testes -->
 		<dependency>

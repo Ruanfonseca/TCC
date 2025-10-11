@@ -4,6 +4,10 @@
 FROM maven:3.9.4-eclipse-temurin-11 AS build
 WORKDIR /app
 
+# Garante ambiente com UTF-8
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
 # Copia apenas o POM primeiro para aproveitar o cache das dependências
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
