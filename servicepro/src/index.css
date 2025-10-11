@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* UERJ Design System - Baseado nas cores do logo da universidade
+Todas as cores DEVEM ser HSL para máxima flexibilidade
+*/
+
+@layer base {
+  :root {
+    /* Cores principais da UERJ */
+    --uerj-blue: 204 90% 45%;          /* Azul principal da UERJ */
+    --uerj-blue-dark: 204 90% 35%;     /* Azul escuro */
+    --uerj-blue-light: 204 80% 85%;    /* Azul claro */
+    --uerj-orange: 18 95% 60%;         /* Laranja da chama */
+    --uerj-orange-light: 18 85% 75%;   /* Laranja claro */
+    --uerj-gold: 45 85% 55%;           /* Dourado da tocha */
+    --uerj-gold-light: 45 75% 75%;     /* Dourado claro */
+    
+    /* Sistema de cores base */
+    --background: 0 0% 99%;
+    --foreground: 204 95% 15%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 204 95% 15%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 204 95% 15%;
+    
+    --primary: 204 90% 45%;             /* UERJ Blue */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 204 80% 96%;
+    --secondary-foreground: 204 90% 25%;
+    
+    --muted: 204 25% 96%;
+    --muted-foreground: 204 15% 45%;
+    
+    --accent: 18 95% 60%;               /* UERJ Orange */
+    --accent-foreground: 0 0% 100%;
+    
+    --success: 140 70% 45%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 45 85% 55%;              /* UERJ Gold */
+    --warning-foreground: 45 95% 15%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 204 25% 88%;
+    --input: 204 25% 94%;
+    --ring: 204 90% 45%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 204 30% 8%;
+    --foreground: 204 80% 95%;
+    
+    --card: 204 25% 12%;
+    --card-foreground: 204 80% 95%;
+    
+    --popover: 204 25% 12%;
+    --popover-foreground: 204 80% 95%;
+    
+    --primary: 204 80% 60%;
+    --primary-foreground: 204 95% 15%;
+    
+    --secondary: 204 20% 20%;
+    --secondary-foreground: 204 80% 85%;
+    
+    --muted: 204 20% 18%;
+    --muted-foreground: 204 20% 65%;
+    
+    --accent: 18 85% 65%;
+    --accent-foreground: 18 95% 15%;
+    
+    --success: 140 60% 50%;
+    --success-foreground: 140 95% 15%;
+    
+    --warning: 45 75% 60%;
+    --warning-foreground: 45 95% 15%;
+    
+    --destructive: 0 75% 65%;
+    --destructive-foreground: 0 95% 15%;
+    
+    --border: 204 20% 25%;
+    --input: 204 20% 22%;
+    --ring: 204 80% 60%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}

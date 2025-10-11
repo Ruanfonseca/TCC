@@ -1,0 +1,32 @@
+# ======================================================
+# Etapa de build - Maven + Java 11
+# ======================================================
+FROM maven:3.9.4-eclipse-temurin-11 AS build
+WORKDIR /app
+
+# Copia apenas o POM primeiro para aproveitar o cache das dependências
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# Copia o código-fonte e faz o build sem rodar testes
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# ======================================================
+# Etapa de execução - Imagem leve com JRE 11
+# ======================================================
+FROM eclipse-temurin:11-jre
+WORKDIR /app
+
+# Copia o JAR gerado da etapa de build
+COPY --from=build /app/target/*.jar alpha.jar
+
+# Define variáveis padrão (podem ser sobrescritas)
+ENV JAVA_OPTS=""
+ENV SERVER_PORT=8080
+
+# Expõe a porta do Spring Boot
+EXPOSE 8080
+
+# Executa a aplicação
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar alpha.jar"]
