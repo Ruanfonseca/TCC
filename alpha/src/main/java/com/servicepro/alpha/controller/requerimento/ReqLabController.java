@@ -49,7 +49,6 @@ public class ReqLabController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody RequerimentoLabDTO req) {
-        System.out.println("Criando requerimento"+req);
         try {
             // Verifica se já existe um professor cadastrado
             Professor profExiste = professorRepository.findByMatricula(req.getMatriculaDocente());
@@ -113,7 +112,6 @@ public class ReqLabController {
 
     @PutMapping("/{id}/baixa")
     public ResponseEntity<?> baixaRequerimento(@RequestBody RequerimentoLabResponseDTO dto) {
-        System.out.println("Dando baixa no requerimento"+dto);
         try {
             RequerimentoLaboratorio reqExistente = service.buscarPorId(dto.getId());
             Usuario usuarioExistente = userService.buscarPorMatricula(
