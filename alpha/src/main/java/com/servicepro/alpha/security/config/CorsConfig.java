@@ -14,9 +14,10 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(
-                                "http://localhost:8081",
-                                "https://service-pro-prod.vercel.app"
+                        .allowedOriginPatterns(
+                                "http://localhost:*",
+                                "https://service-pro-prod.vercel.app",
+                                "http://127.0.0.1:8081:*"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
