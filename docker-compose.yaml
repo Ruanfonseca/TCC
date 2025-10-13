@@ -20,11 +20,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+      start_period: 10s
 
   rabbitmq:
     image: rabbitmq:3.8-management
     container_name: rabbitmq
     hostname: rabbitmq
+    restart: always
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: 123456
@@ -34,16 +36,19 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
       interval: 5s
       timeout: 5s
       retries: 10
+      start_period: 10s
 
   alpha:
-    image: ruanfonseca2023/alpha:d9aa464a66d96f618865b38c896616a5a83c4774
+    image: ruanfonseca2023/alpha:latest
     container_name: alpha
+    restart: always
     environment:
       JAVA_OPTS: ""
       SERVER_PORT: 8080
@@ -58,12 +63,15 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
-      - rabbitmq
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   consumer:
     image: ruanfonseca2023/consumer:latest
     container_name: consumer
+    restart: always
     environment:
       JAVA_OPTS: ""
       SERVER_PORT: 9191
