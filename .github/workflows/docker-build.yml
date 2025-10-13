@@ -29,9 +29,7 @@ jobs:
           context: ./alpha
           file: ./alpha/Dockerfile
           push: true
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/alpha:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/alpha:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/alpha:latest
 
       # Build Consumer image
       - name: Build and push Consumer image
@@ -40,8 +38,4 @@ jobs:
           context: ./consumer
           file: ./consumer/Dockerfile
           push: true
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/consumer:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/consumer:${{ github.sha }}
-
-
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/consumer:latest

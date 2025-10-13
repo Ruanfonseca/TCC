@@ -52,9 +52,16 @@ export default function NewSolicitation() {
   });
 
   useEffect(() => {
-    scheduleService.getSchedule().then(setSchedules);
+    scheduleService
+      .getSchedule()
+      .then((data) => {
+        setSchedules(data || []);
+      })
+      .catch((err) => {
+        console.error("Erro ao buscar horários:", err);
+        setSchedules([]);
+      });
   }, []);
-  console.log(schedules);
 
   const handleCreateSolicitation = async () => {
     try {
@@ -256,13 +263,14 @@ export default function NewSolicitation() {
                         <SelectValue placeholder="Selecione o horário" />
                       </SelectTrigger>
                       <SelectContent>
-                        {schedules
-                          .filter((s) => s.status === "active")
-                          .map((s) => (
-                            <SelectItem key={s.id} value={s.name}>
-                              {s.name} ({s.startTime} - {s.endTime})
-                            </SelectItem>
-                          ))}
+                        {Array.isArray(schedules) &&
+                          schedules
+                            .filter((s) => s.status === "active")
+                            .map((s) => (
+                              <SelectItem key={s.id} value={s.name}>
+                                {s.name} ({s.startTime} - {s.endTime})
+                              </SelectItem>
+                            ))}
                       </SelectContent>
                     </Select>
                   )}

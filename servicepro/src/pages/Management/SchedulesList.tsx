@@ -164,10 +164,16 @@ export default function SchedulesList() {
   };
 
   useEffect(() => {
-    scheduleService.getSchedule().then(setSchedules);
+    scheduleService
+      .getSchedule()
+      .then((data) => {
+        setSchedules(Array.isArray(data) ? data : []);
+      })
+      .catch((err) => {
+        console.error("Erro ao buscar horários:", err);
+        setSchedules([]);
+      });
   }, []);
-
-  console.log("Horarios - ", schedules);
 
   return (
     <div className="space-y-6 p-4">

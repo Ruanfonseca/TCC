@@ -123,7 +123,16 @@ export default function LabList() {
   });
 
   useEffect(() => {
-    labService.getLaboratorios().then(setLabs);
+    labService
+      .getLaboratorios()
+      .then((data) => {
+        setLabs(Array.isArray(data) ? data : []);
+      })
+      .catch((err) => {
+        console.error("Erro ao buscar laboratorios:", err);
+
+        setLabs([]);
+      });
   }, []);
 
   const availableEquipment = [

@@ -21,52 +21,6 @@ export interface AgendaDTO {
   dataSolicitada: string; // formato 'YYYY-MM-DD'
 }
 
-const MOCK_AGENDA: AgendaItem[] = [
-  {
-    id: "1",
-    type: "sala",
-    date: "2025-10-09",
-    timeStart: "08:00",
-    timeEnd: "10:00",
-    title: "Aula de Algoritmos",
-    professorName: "Prof. João Silva",
-    subject: "Algoritmos e Programação",
-    numberOfStudents: "25",
-    status: "approved",
-    location: "Bloco A - Sala 101",
-    observations: "Projetor necessário",
-    token: "REQ-12345",
-  },
-  {
-    id: "2",
-    type: "laboratorio",
-    date: "2025-10-09",
-    timeStart: "10:00",
-    timeEnd: "12:00",
-    title: "Prática de Redes",
-    professorName: "Profa. Maria Souza",
-    subject: "Redes de Computadores",
-    numberOfStudents: "18",
-    status: "pending",
-    location: "Lab 3 - Informática",
-    token: "REQ-67890",
-  },
-  {
-    id: "3",
-    type: "sala",
-    date: "2025-10-10",
-    timeStart: "13:00",
-    timeEnd: "15:00",
-    title: "Reunião do Departamento",
-    professorName: "Prof. Carlos Oliveira",
-    subject: "Gestão Acadêmica",
-    numberOfStudents: "10",
-    status: "cancelled",
-    location: "Sala de Reuniões - Bloco C",
-    token: "REQ-11111",
-  },
-];
-
 class AgendaService {
   private readonly AGENDA_ENDPOINT = "/analise/agenda";
 
@@ -77,20 +31,12 @@ class AgendaService {
     return `${year}-${month}-${day}`;
   }
 
-  private handleError(error: any, context: string): AgendaItem[] {
-    console.warn(
-      `[AgendaService] Falha ao carregar ${context}. Usando lista mockada.`,
-      error
-    );
-    return MOCK_AGENDA;
-  }
-
   async getAll(date: Date): Promise<AgendaItem[]> {
     const dto: AgendaDTO = { dataSolicitada: this.formatDate(date) };
     try {
       return await api.post<AgendaItem[]>(this.AGENDA_ENDPOINT, dto);
     } catch (error) {
-      return this.handleError(error, "getAll");
+      console.error(error);
     }
   }
 
@@ -99,7 +45,7 @@ class AgendaService {
     try {
       return await api.post<AgendaItem[]>(this.AGENDA_ENDPOINT, dto);
     } catch (error) {
-      return this.handleError(error, "getByDate");
+      console.error(error);
     }
   }
 
@@ -126,7 +72,7 @@ class AgendaService {
 
       return allItems;
     } catch (error) {
-      return this.handleError(error, "getByDateRange");
+      console.error(error);
     }
   }
 }

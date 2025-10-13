@@ -156,15 +156,18 @@ export default function UsersList() {
   });
 
   // Carrega usuários ao montar
+  // Carrega usuários ao montar
   useEffect(() => {
-    const load = async () => {
-      const data = await userService.getUsers();
-      setUsers(data);
-    };
-    load();
+    userService
+      .getUsers()
+      .then((data) => {
+        setUsers(Array.isArray(data) ? data : []);
+      })
+      .catch((err) => {
+        console.error("Erro ao buscar usuários:", err);
+        setUsers([]);
+      });
   }, []);
-
-  console.log("Usuários - ", users);
 
   const filteredUsers = Array.isArray(users)
     ? users.filter((user) => {

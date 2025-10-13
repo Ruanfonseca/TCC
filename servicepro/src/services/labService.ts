@@ -6,30 +6,6 @@ export interface LaboratorioResponse extends Laboratorio {
   updatedAt: string;
 }
 
-// 🔹 Mock de laboratórios
-const mockLaboratorios: LaboratorioResponse[] = [
-  {
-    id: 1,
-    nome: "Labeng",
-    bloco: "Bloco A",
-    capacidade: "5 pessoas",
-    equipamento: [
-      "Chuveiro de Emergência",
-      "Centrífuga",
-      "Termociclador",
-      "Multímetros",
-      "Osciloscópio",
-    ],
-    status: "active",
-    andar: "1",
-    descricao: "",
-    tipoLab: "DIDATICO",
-    createdAt: "2025-10-07",
-    updatedAt: "2025-10-07",
-    equipment: [],
-  },
-];
-
 class LabService {
   private baseUrl = "/solicitations/lab";
   private baseUrlLab = "/labs";
@@ -43,10 +19,7 @@ class LabService {
       const response = await api.get<LaboratorioResponse[]>(this.baseUrlLab);
       return response;
     } catch (error) {
-      console.warn(
-        "⚠️ Falha ao acessar backend, retornando mock de laboratórios."
-      );
-      return mockLaboratorios;
+      console.error(error);
     }
   }
 

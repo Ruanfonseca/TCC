@@ -2,117 +2,6 @@
 import { NewSolicitation, SolicitationResponse } from "@/types/solutionType";
 import { api } from "@/utils/api";
 
-// 🔹 Mock de solicitações de salas
-const mockSolicitations: SolicitationResponse[] = [
-  {
-    id: "4",
-    room: null,
-    scheduleInitial: {
-      id: 1,
-      name: "M1",
-      startTime: "08:00",
-      endTime: "08:50",
-      days: ["Segunda", "Quarta", "Sexta", "Terça", "Quinta"],
-      semester: "2025.2",
-      status: "active",
-      description: "",
-      createdAt: "2025-10-07",
-      updatedAt: null,
-    },
-    scheduleEnd: {
-      id: 1,
-      name: "M1",
-      startTime: "08:00",
-      endTime: "08:50",
-      days: ["Segunda", "Quarta", "Sexta", "Terça", "Quinta"],
-      semester: "2025.2",
-      status: "active",
-      description: "",
-      createdAt: "2025-10-07",
-      updatedAt: null,
-    },
-    materia: "Calculo 2",
-    numberOfPeople: "40",
-    dia: "2025-10-14",
-    requiredBy: null,
-    token: "SAL-2025-7683",
-    blockPrefer: "",
-    typeOfRoom: "",
-    registration: "2019233070",
-    rejectedBy: null,
-    approvedReason: null,
-    equipament: ["Computador", "Projetor"],
-    userOfAction: null,
-    observations: "",
-    status: "approved",
-    approvedBy: "201923307011",
-    rejectionReason: null,
-    createdAt: "2025-10-07",
-    updatedAt: "2025-10-08",
-  },
-  {
-    id: "5",
-    room: null,
-    scheduleInitial: {
-      id: 1,
-      name: "M1",
-      startTime: "08:00",
-      endTime: "08:50",
-      days: ["Segunda", "Quarta", "Sexta", "Terça", "Quinta"],
-      semester: "2025.2",
-      status: "active",
-      description: "",
-      createdAt: "2025-10-07",
-      updatedAt: null,
-    },
-    scheduleEnd: {
-      id: 1,
-      name: "M1",
-      startTime: "08:00",
-      endTime: "08:50",
-      days: ["Segunda", "Quarta", "Sexta", "Terça", "Quinta"],
-      semester: "2025.2",
-      status: "active",
-      description: "",
-      createdAt: "2025-10-07",
-      updatedAt: null,
-    },
-    materia: "Calculo 2",
-    numberOfPeople: "40",
-    dia: "2025-10-14",
-    requiredBy: {
-      id: 1,
-      nome: "Denis Cople",
-      matricula: "2019233070",
-      email: "whitelook22@outlook.com",
-      phone: "21991203947",
-      departamento: "FCEE",
-      status: "active",
-      especialidade: "Computação",
-      totalRequests: null,
-      approvedRequests: null,
-      senha: null,
-      createdAt: "2025-10-06",
-      updatedAt: "2025-10-06",
-    },
-    token: "SAL-2025-3755",
-    blockPrefer: "",
-    typeOfRoom: "",
-    registration: "2019233070",
-    rejectedBy: null,
-    approvedReason: null,
-    equipament: ["Projetor", "Sistema de Som"],
-    userOfAction: null,
-    observations: "",
-    status: "approved",
-    approvedBy: "201923307011",
-    rejectionReason: null,
-    createdAt: "2025-10-07",
-    updatedAt: "2025-10-08",
-  },
-  // ... outros registros podem ser adicionados aqui seguindo o mesmo padrão
-];
-
 class SolicitationService {
   private baseUrl = "/solicitations";
 
@@ -135,10 +24,7 @@ class SolicitationService {
       });
       return response;
     } catch (error) {
-      console.warn(
-        "⚠️ Falha ao acessar backend, retornando mock de solicitações."
-      );
-      return mockSolicitations;
+      console.error(error);
     }
   }
 
