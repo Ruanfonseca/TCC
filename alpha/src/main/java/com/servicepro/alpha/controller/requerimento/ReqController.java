@@ -53,11 +53,13 @@ public class ReqController {
                         .body("Já existe um requerimento cadastrado com essa sala no dia solicitado.");
             }
 
-            service.salvarReq(req);
+            Requerimento requerimento = service.salvarReq(req);
+
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .build();
+                    .body(requerimento.getToken());
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity

@@ -61,11 +61,11 @@ public class ReqLabController {
             }
 
 
-            service.salvarReq(req, profExiste);
+            RequerimentoLaboratorio requerimento = service.salvarReq(req, profExiste);
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .build();
+                    .body(requerimento.getToken());
 
         } catch (Exception e) {
             e.printStackTrace();

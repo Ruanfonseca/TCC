@@ -27,17 +27,26 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon, Send } from "lucide-react";
+import { CalendarIcon, Copy, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { scheduleService } from "@/services/scheduleService";
 import { solicitationService } from "@/services/solicitationService";
 import { ScheduleResponse } from "@/types/schedule";
 import { newSolicitationSchema, NewSolicitationForm } from "@/schemas/schemas";
 import { getMinDatePlus7Days } from "@/utils/util";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function NewSolicitation() {
   const [schedules, setSchedules] = useState<ScheduleResponse[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [tokenModal, setTokenModal] = useState<any | null>(null); // Token retornado
+  const [copied, setCopied] = useState(false);
 
   const {
     register,
@@ -46,6 +55,7 @@ export default function NewSolicitation() {
     setValue,
     watch,
     getValues,
+    reset,
     formState: { errors },
   } = useForm<NewSolicitationForm>({
     resolver: zodResolver(newSolicitationSchema),
@@ -107,14 +117,42 @@ export default function NewSolicitation() {
         },
       };
 
-      await solicitationService.createSolicitation(solicitation);
-      alert("Solicitação enviada com sucesso!");
+      const token = await solicitationService.createSolicitation(solicitation);
+      if (token) {
+        setTokenModal(token); // Abre o modal com o token
+      } else {
+        alert("Solicitação enviada, mas nenhum token foi retornado.");
+      }
     } catch (err) {
       console.error("❌ Erro ao enviar solicitação:", err);
       alert("Erro ao enviar solicitação.");
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleCopy = async () => {
+    if (tokenModal) {
+      await navigator.clipboard.writeText(tokenModal);
+      setCopied(true);
+      resetForm();
+      setTimeout(() => setCopied(false), 1500);
+    }
+  };
+
+  const resetForm = () => {
+    reset({
+      materia: "",
+      registration: "",
+      numberOfPeople: "",
+      dia: "",
+      blockPrefer: "",
+      typeOfRoom: "",
+      equipament: [],
+      observations: "",
+      scheduleInitial: null,
+      scheduleEnd: null,
+    });
   };
 
   const selectedEquipament = watch("equipament") || [];
@@ -361,6 +399,43 @@ export default function NewSolicitation() {
           </form>
         </CardContent>
       </Card>
+
+      {/* Modal de Token */}
+      <Dialog open={!!tokenModal} onOpenChange={() => setTokenModal(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Solicitação Enviada com Sucesso!</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Guarde este token para acompanhar sua solicitação:
+            </p>
+
+            <div className="flex items-center justify-between bg-muted p-3 rounded-lg">
+              <span className="font-mono text-sm break-all">{tokenModal}</span>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={handleCopy}
+                title="Copiar Token"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {copied && (
+              <p className="text-green-600 text-sm text-center font-medium">
+                Copiado!
+              </p>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button onClick={() => setTokenModal(null)}>Fechar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

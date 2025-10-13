@@ -24,15 +24,15 @@ class LabService {
   }
 
   async createLab(lab: Laboratorio): Promise<LaboratorioResponse> {
-    return api.post<LaboratorioResponse>(this.baseUrl, lab);
+    return api.post<LaboratorioResponse>(this.baseUrlLab, lab);
   }
 
   async updateLab(id: string, lab: Laboratorio): Promise<LaboratorioResponse> {
-    return api.put<LaboratorioResponse>(`${this.baseUrl}/${id}`, lab);
+    return api.put<LaboratorioResponse>(`${this.baseUrlLab}/${id}`, lab);
   }
 
   async deleteLab(id: string): Promise<void> {
-    return api.delete(`${this.baseUrl}/${id}`);
+    return api.delete(`${this.baseUrlLab}/${id}`);
   }
 
   async darBaixaSolicitacao(id: string, data: any): Promise<any> {

@@ -67,7 +67,7 @@ export default function SolicitationLabList() {
   const [baixaModalOpen, setBaixaModalOpen] = useState(false);
 
   const currentUser = authService.getUser();
-  const isLogistica = currentUser?.role === "LOGISTICA";
+  const isLogistica = currentUser?.role === "ADMIN";
 
   useEffect(() => {
     setUser(currentUser);
@@ -273,7 +273,6 @@ export default function SolicitationLabList() {
       </Card>
 
       {/* Lista de Solicitações */}
-      {/* Lista de Solicitações */}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg md:text-xl">
@@ -345,7 +344,7 @@ export default function SolicitationLabList() {
                               </Button>
                             )}
 
-                            {isLogistica && (
+                            {isLogistica && s.status === "pending" && (
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -515,6 +514,7 @@ export default function SolicitationLabList() {
       </AlertDialog>
 
       {/* MODAL: Excluir requerimento */}
+
       <AlertDialog open={actionType === "delete"} onOpenChange={closeDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>

@@ -3,7 +3,7 @@ import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { requerimentoLabSchema } from "@/schemas/labSchema";
 
-import { Plus, Send, Trash, ArrowLeft, ArrowRight } from "lucide-react";
+import { Plus, Send, Trash, ArrowLeft, ArrowRight, Copy } from "lucide-react";
 import { ScheduleResponse } from "@/types/schedule";
 import { scheduleService } from "@/services/scheduleService";
 import { RequerimentoLab } from "@/types/labType";
@@ -27,10 +27,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { getDateLimits } from "@/utils/util";
 import { solicitationLabService } from "@/services/SolicitationLabService";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function NewSolicitationLab() {
   const [schedules, setSchedules] = useState<ScheduleResponse[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
+  const [tokenModal, setTokenModal] = useState<string | null>(null); // Token retornado
+  const [copied, setCopied] = useState(false);
   const { minDate } = getDateLimits();
 
   const {
@@ -94,12 +103,16 @@ export default function NewSolicitationLab() {
 
   const onSubmit = async (data: RequerimentoLab) => {
     try {
-      const response = await solicitationLabService.createLabSolicitation(data);
+      const token = await solicitationLabService.createLabSolicitation(data);
 
-      if (response.status === 201) {
-        alert(response.data || "✅ Solicitação criada com sucesso!");
-        reset();
+      if (token) {
+        setTokenModal(token);
+        resetForm();
         setCurrentStep(1);
+
+        alert(token.data || "✅ Solicitação criada com sucesso!");
+      } else {
+        alert("Solicitação enviada, mas nenhum token foi retornado.");
       }
     } catch (error: any) {
       console.error("❌ Erro ao enviar solicitação:", error);
@@ -117,6 +130,54 @@ export default function NewSolicitationLab() {
 
   const handleBack = () => {
     setCurrentStep(1);
+  };
+
+  // Função para resetar o formulário completamente
+  const resetForm = () => {
+    reset({
+      tipoLab: 0,
+      utilitarios: [
+        {
+          reagentes: "",
+          quantidadeReagentes: "",
+          equipamentosVidraria: "",
+          quantidadeVidraria: "",
+        },
+      ],
+      horarioInicio: {
+        id: "",
+        name: "",
+        status: "active",
+        description: "",
+        startTime: "",
+        endTime: "",
+        days: [],
+        semester: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+      horarioFinal: {
+        id: "",
+        name: "",
+        status: "active",
+        description: "",
+        startTime: "",
+        endTime: "",
+        days: [],
+        semester: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+    });
+    setCurrentStep(1);
+  };
+
+  const handleCopy = async () => {
+    if (tokenModal) {
+      await navigator.clipboard.writeText(tokenModal);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
   };
 
   return (
@@ -544,6 +605,43 @@ export default function NewSolicitationLab() {
           </form>
         </CardContent>
       </Card>
+
+      {/* Modal de Token */}
+      <Dialog open={!!tokenModal} onOpenChange={() => setTokenModal(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Solicitação Enviada com Sucesso!</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Guarde este token para acompanhar sua solicitação:
+            </p>
+
+            <div className="flex items-center justify-between bg-muted p-3 rounded-lg">
+              <span className="font-mono text-sm break-all">{tokenModal}</span>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={handleCopy}
+                title="Copiar Token"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {copied && (
+              <p className="text-green-600 text-sm text-center font-medium">
+                Copiado!
+              </p>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button onClick={() => setTokenModal(null)}>Fechar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
