@@ -50,6 +50,7 @@ public class ReqLabController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody RequerimentoLabDTO req) {
         try {
+
             // Verifica se já existe um professor cadastrado
             Professor profExiste = professorRepository.findByMatricula(req.getMatriculaDocente());
 
