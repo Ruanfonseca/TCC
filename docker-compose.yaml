@@ -49,6 +49,7 @@ services:
     image: ruanfonseca2023/alpha:latest
     container_name: alpha
     restart: always
+    pull_policy: always
     environment:
       JAVA_OPTS: ""
       SERVER_PORT: 8080
@@ -72,6 +73,7 @@ services:
     image: ruanfonseca2023/consumer:latest
     container_name: consumer
     restart: always
+    pull_policy: always
     environment:
       JAVA_OPTS: ""
       SERVER_PORT: 9191
