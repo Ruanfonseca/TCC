@@ -1,4 +1,4 @@
-# 🎓 Sistema de Salas UERJ - Modo Demonstração
+# 🎓 Sistema de Salas UERJ (Service Pro)
 
 Este documento contém as credenciais e informações para acessar o sistema.
 
