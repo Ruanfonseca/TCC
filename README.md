@@ -28,3 +28,5 @@ Este documento contém as credenciais e informações para acessar o sistema.
 
 - não altere o yml sem uma comunicação prévia.
 - os dados são armazenados em volumes.
+
+  Link para visualização do seu funcionamento - https://youtu.be/L9oeMEU0HSE
