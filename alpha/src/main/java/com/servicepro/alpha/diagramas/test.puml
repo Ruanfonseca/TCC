@@ -1,0 +1,672 @@
+@startuml
+class com.servicepro.alpha.domain.Report {
+- Long id
+- Date startDate
+- Date endDate
+- String reportType
+}
+
+class com.servicepro.alpha.controller.professor.ProfessorController {
+- ProfessorService service
++ ResponseEntity<?> getTeachers()
++ ResponseEntity<?> createProfessor(ProfessorDTO)
++ ResponseEntity<?> update(String,ProfessorDTO)
++ ResponseEntity<?> delete(String)
+}
+
+
+class com.servicepro.alpha.dto.auth.UserInfo {
+- String id
+- String email
+- String registration
+- String name
+- String role
+}
+
+class com.servicepro.alpha.controller.usuarios.UsuarioController {
+- UserService service
++ ResponseEntity<?> getUsers()
++ ResponseEntity<?> createUser(UsuarioDTO)
++ ResponseEntity<?> update(Long,UsuarioDTO)
++ ResponseEntity<?> delete(Long)
+}
+
+
+class com.servicepro.alpha.mensageria.RabbitMQConexao {
+- {static} String NOME_EXCHANGE
+- AmqpAdmin ampqAdmin
+- Queue fila(String)
+- DirectExchange envioDeMsg()
+- Binding relacionamento(Queue,DirectExchange)
++ void run(ApplicationArguments)
+}
+
+
+class com.servicepro.alpha.domain.Laboratorio {
+- Long id
+- String nome
+- String bloco
+- String capacidade
+- List<String> equipamento
+- String status
+- String andar
+- String descricao
+- TipoLab tipoLab
+- LocalDate createdAt
+- LocalDate updatedAt
+}
+
+class com.servicepro.alpha.dto.laboratorio.LaboratorioDTO {
+- String nome
+- String bloco
+- String capacidade
+- List<String> equipamento
+- String status
+- String andar
+- String descricao
+- TipoLab tipoLab
+}
+
+class com.servicepro.alpha.dto.requerimentoLab.RequerimentoLabDTO {
+- String curso
+- String dia
+- String token
+- String disciplina
+- String emailDocente
+- Horario horarioFinal
+- Horario horarioInicio
+- String matriculaDocente
+- String nomeDocente
+- String numeroAluno
+- String numeroGruposAlunos
+- Boolean presencaTecnicoLaboratorista
+- String tipoLab
+- String tituloAula
+- String unidadeAcademica
+- String nomeTecnicoLaboratorista
+- String status
+- List<UtilitariosDTO> utilitarios
+- String confirmacaoLeitura
+}
+
+enum com.servicepro.alpha.enums.TipoLab {
++  DIDATICO
++  DIDATICO_PESQUISA
+}
+
+class com.servicepro.alpha.security.config.CorsConfig {
++ WebMvcConfigurer corsConfigurer()
+}
+
+interface com.servicepro.alpha.repository.ProfessorRepository {
+~ Professor findByMatricula(String)
+}
+
+interface com.servicepro.alpha.repository.RequerimentolabRepository {
+~ RequerimentoLaboratorio findByLaboratorioReq(Laboratorio,Horario,Horario,String)
+~ RequerimentoLaboratorio findByToken(String)
+~ List<RequerimentoLaboratorio> findByDate(String)
+}
+
+class com.servicepro.alpha.dto.requerimentoLab.RequerimentoLabResponseDTO {
+- Long id
+- Long laboratorioId
+- Laboratorio laboratorio
+- String observations
+- String status
+- String approvedBy
+- String rejectedBy
+- String rejectionReason
+- String approvedReason
+- String updatedAt
+}
+
+class com.servicepro.alpha.security.JwtTokenProvider {
+- String JWT_SECRET
+- long JWT_EXPIRATION
++ String generateToken(String,String)
++ String getEmailFromToken(String)
++ boolean validateToken(String)
++ {static} String generateHS512Key()
+}
+
+
+class com.servicepro.alpha.domain.Usuario {
+- Long id
+- String name
+- String email
+- String password
+- String department
+- String registerNumber
+- Role role
+- String status
+- String phone
+- LocalDate updatedAt
+- LocalDate createdAt
+}
+
+class com.servicepro.alpha.controller.horario.HorarioController {
+- HorarioService service
++ ResponseEntity<?> getSchedule()
++ ResponseEntity<?> createSchedule(HorarioDTO)
++ ResponseEntity<?> update(String,HorarioDTO)
++ ResponseEntity<?> delete(String)
+}
+
+
+interface com.servicepro.alpha.repository.LaboratorioRepository {
+~ Laboratorio findByNome(String)
+}
+
+class com.servicepro.alpha.util.TokenGenerator {
+- {static} Random RANDOM
++ {static} String generateToken(String)
++ {static} String generateLabToken()
++ {static} String generateSalToken()
+}
+
+
+class com.servicepro.alpha.domain.Sala {
+- Long id
+- String name
+- String block
+- String capacity
+- String type
+- List<String> equipment
+- String status
+- String floor
+- String description
+- LocalDate createdAt
+- LocalDate updatedAt
+}
+
+class com.servicepro.alpha.AlphaApplication {
++ {static} void main(String[])
+}
+
+class com.servicepro.alpha.dto.dataAnalise.agenda.AgendaDTO {
+- String dataSolicitada
+}
+
+class com.servicepro.alpha.controller.laboratorio.LaboratorioController {
+- LaboratorioService service
++ ResponseEntity<?> getLabs()
++ ResponseEntity<?> createLabs(LaboratorioDTO)
++ ResponseEntity<?> update(String,LaboratorioDTO)
++ ResponseEntity<?> delete(String)
+}
+
+
+interface com.servicepro.alpha.repository.SalaRepository {
+~ Sala findByName(String)
+}
+
+class com.servicepro.alpha.dto.dataAnalise.DataAnailiseDTO {
+- long qtdApproved
+- long qtdPending
+- long qtdRejected
+- long qtdCancelled
+- long qtdTotal
+}
+
+class com.servicepro.alpha.dto.horario.HorarioDTO {
+- String name
+- String startTime
+- String endTime
+- List<String> days
+- String semester
+- String status
+- String description
+- String createdAt
+- String updatedAt
+}
+
+class com.servicepro.alpha.security.config.SecurityConfig {
+- JwtTokenProvider tokenProvider
+- UserDetailsService userDetailsService
++ PasswordEncoder passwordEncoder()
++ JwtAuthenticationFilter jwtAuthenticationFilter()
++ AuthenticationManager authenticationManagerBean()
+# void configure(AuthenticationManagerBuilder)
+# void configure(HttpSecurity)
+}
+
+
+class com.servicepro.alpha.domain.Log {
+}
+class com.servicepro.alpha.service.UserService {
+- UsuarioRepository repository
+- PasswordEncoder passwordEncoder
++ Usuario buscarPorMatricula(String)
++ List<Usuario> buscarUsuarios()
++ Usuario salvarUsuario(UsuarioDTO)
++ Usuario atualizarUsuario(Long,UsuarioDTO)
++ boolean deletarUsuario(Long)
+}
+
+
+class com.servicepro.alpha.security.config.filter.CorsDebugFilter {
++ void doFilter(ServletRequest,ServletResponse,FilterChain)
+}
+
+interface com.servicepro.alpha.repository.RequerimentoRepository {
+~ Requerimento findByToken(String)
+~ Requerimento findByReq(Horario,Horario,String)
+~ List<Requerimento> findByDate(String)
+}
+
+class com.servicepro.alpha.controller.analise.AnaliseController {
+- RequerimentoService requerimentoService
+- RequerimentoLabService requimentoLabService
++ ResponseEntity<?> getAnalise()
++ ResponseEntity<Map<String,Object>> getReport(ReportDTO)
++ ResponseEntity<?> obterPorToken(String)
++ ResponseEntity<?> obterAgenda(AgendaDTO)
+}
+
+
+class com.servicepro.alpha.security.JwtAuthenticationFilter {
+- JwtTokenProvider tokenProvider
+# void doFilterInternal(HttpServletRequest,HttpServletResponse,FilterChain)
+- String getJwtFromRequest(HttpServletRequest)
+}
+
+
+class com.servicepro.alpha.domain.Horario {
+- Long id
+- String name
+- String startTime
+- String endTime
+- List<String> days
+- String semester
+- String status
+- String description
+- LocalDate createdAt
+- LocalDate updatedAt
+}
+
+class com.servicepro.alpha.domain.RequerimentoLaboratorio {
+- Long id
+- String nomeDocente
+- String matriculaDocente
+- String emailDocente
+- String disciplina
+- String curso
+- String tipoLab
+- String unidadeAcademica
+- String tituloAula
+- String dia
+- Boolean presencaTecnicoLaboratorista
+- String token
+- String numeroGruposAlunos
+- String nomeTecnicoLaboratorista
+- String confirmacaoLeitura
+- Horario horarioInicio
+- Horario horarioFinal
+- Laboratorio laboratorio
+- Professor requiredBy
+- Usuario userOfAction
+- String numeroAluno
+- List<UtilitariosDTO> utilitarios
+- String approvedReason
+- String status
+- String observations
+- String approvedBy
+- String rejectedBy
+- String rejectionReason
+- LocalDate createdAt
+- LocalDate updatedAt
+}
+
+class com.servicepro.alpha.domain.Requerimento {
+- Long id
+- Sala room
+- Horario scheduleInitial
+- Horario scheduleEnd
+- String materia
+- String numberOfPeople
+- String dia
+- Professor requiredBy
+- String token
+- String blockPrefer
+- String typeOfRoom
+- String registration
+- String rejectedBy
+- String approvedReason
+- List<String> equipament
+- Usuario userOfAction
+- String observations
+- String status
+- String approvedBy
+- String rejectionReason
+- LocalDate createdAt
+- LocalDate updatedAt
+}
+
+interface com.servicepro.alpha.repository.HorarioRepository {
+~ Horario findByName(String)
+}
+
+class com.servicepro.alpha.mensageria.RabbitMQService {
+- RabbitTemplate rabbitTemplate
+- ObjectMapper obj
++ void enviaMensagem(String,Object)
+}
+
+
+class com.servicepro.alpha.dto.usuario.UsuarioDTO {
+- String name
+- String email
+- Role role
+- String status
+- String departament
+- String phone
+- String password
+- String lastLogin
+- String registerNumber
+}
+
+class com.servicepro.alpha.service.RequerimentoLabService {
+- RequerimentolabRepository repository
+- LaboratorioRepository laboratorioRepository
+- UsuarioRepository usuarioRepository
+- RabbitMQService rabbitmqService
++ List<RequerimentoLaboratorio> obterTodosRequerimentos()
++ RequerimentoLaboratorio buscarRequerimento(Laboratorio,String,Horario,Horario)
++ RequerimentoLaboratorio obterPorToken(String)
++ RequerimentoLaboratorio buscarPorId(Long)
++ RequerimentoLaboratorio salvarReq(RequerimentoLabDTO,Professor)
++ RequerimentoLaboratorio atualizarReq(String,RequerimentoLabResponseDTO)
++ RequerimentoLaboratorio buscarToken(String)
++ boolean delete(String)
++ List<RequerimentoLaboratorio> obterPorData(String)
++ RequerimentoLaboratorio darBaixa(Long,RequerimentoLabResponseDTO,Usuario)
+}
+
+
+class com.servicepro.alpha.dto.auth.LoginResponse {
+- String token
+- String type
+- UserInfo user
+}
+
+class com.servicepro.alpha.controller.sala.SalaController {
+- SalaService service
++ ResponseEntity<?> getRooms()
++ ResponseEntity<?> createRoom(SalaDTO)
++ ResponseEntity<?> update(String,SalaDTO)
++ ResponseEntity<?> delete(String)
+}
+
+
+class com.servicepro.alpha.dto.requerimento.RequerimentoResponseDTO {
+- Long id
+- String token
+- Sala room
+- Horario schedule
+- String professorName
+- String subject
+- Integer numberOfStudents
+- String date
+- String time
+- String block
+- String roomType
+- List<String> equipment
+- String observations
+- String status
+- String approvedBy
+- String rejectionReason
+- String createdAt
+- String updatedAt
+}
+
+class com.servicepro.alpha.controller.auth.AuthController {
+- AuthenticationManager authenticationManager
+- JwtTokenProvider tokenProvider
+- UsuarioRepository usuarioRepository
++ ResponseEntity<?> login(LoginRequest)
++ ResponseEntity<String> validate(String)
+}
+
+
+class com.servicepro.alpha.service.ProfessorService {
+- ProfessorRepository repository
++ List<Professor> buscarProfessor()
++ Professor buscarProfessorPorMatricula(String)
++ Professor salvarProfessor(ProfessorDTO)
++ Professor atualizarProfessor(String,ProfessorDTO)
++ boolean deletarProfessor(String)
+}
+
+
+class com.servicepro.alpha.mensageria.template.PayloadSmtp {
+- String MSG
+- String EMAIL
+- String NOME
+}
+
+class com.servicepro.alpha.util.Util {
++ String generateToken()
+}
+
+class com.servicepro.alpha.dto.dataAnalise.agenda.AgendaResponseDTO {
+- String id
+- String type
+- String date
+- String timeStart
+- String timeEnd
+- String title
+- String professorName
+- String subject
+- String numberOfStudents
+- String status
+- String location
+- String observations
+- String token
+}
+
+class com.servicepro.alpha.service.LaboratorioService {
+- LaboratorioRepository repository
++ List<Laboratorio> buscarLabs()
++ Laboratorio buscarLab(String)
++ void salvarLab(LaboratorioDTO)
++ Laboratorio atualizarLab(String,LaboratorioDTO)
++ boolean deletarLaboratorio(String)
+}
+
+
+class com.servicepro.alpha.dto.requerimento.RequerimentoBaixaDTO {
+- Long id
+- Long roomId
+- String observations
+- String status
+- String approvedBy
+- String rejectedBy
+- String rejectionReason
+- String approvedReason
+- String updatedAt
+}
+
+class com.servicepro.alpha.dto.sala.SalaDTO {
+~ String name
+~ String block
+~ String capacity
+~ String type
+~ List<String> equipment
+~ String status
+~ String floor
+~ String description
+}
+
+class com.servicepro.alpha.dto.professor.ProfessorDTO {
+~ String name
+~ String email
+~ String phone
+~ String department
+~ String status
+~ String specialization
+~ Integer totalRequests
+~ String password
+~ String approvedRequests
+~ String registerNumber
+}
+
+class com.servicepro.alpha.service.HorarioService {
+~ HorarioRepository repository
++ List<Horario> buscarHorarios()
++ Horario buscarHorarioPorNome(String)
++ Horario salvarHorario(HorarioDTO)
++ Horario atualizarHorario(String,HorarioDTO)
++ boolean deletarHorario(String)
+}
+
+
+class com.servicepro.alpha.controller.requerimento.ReqController {
+~ RequerimentoService service
+~ UserService userService
++ ResponseEntity<?> getReqs()
++ ResponseEntity<?> create(RequerimentoDTO)
++ ResponseEntity<?> update(String,RequerimentoDTO)
++ ResponseEntity<?> deleteReq(String)
++ ResponseEntity<?> baixaRequerimento(String,RequerimentoBaixaDTO)
++ ResponseEntity<?> buscarPorToken(String)
+}
+
+
+class com.servicepro.alpha.controller.requerimento.ReqLabController {
+~ RequerimentoLabService service
+~ ProfessorRepository professorRepository
+~ UserService userService
++ ResponseEntity<?> getLabReqs()
++ ResponseEntity<?> create(RequerimentoLabDTO)
++ ResponseEntity<?> update(String,RequerimentoLabResponseDTO)
++ ResponseEntity<?> deleteReqLab(String)
++ ResponseEntity<?> baixaRequerimento(RequerimentoLabResponseDTO)
++ ResponseEntity<?> buscarPorToken(String)
+}
+
+
+class com.servicepro.alpha.dto.auth.LoginRequest {
+~ String email
+~ String password
+}
+
+class com.servicepro.alpha.mensageria.RabbbitMQConstantes {
++ {static} String FILA_SALA
++ {static} String FILA_LAB
+}
+
+class com.servicepro.alpha.security.service.CustomUserDetailsService {
+- UsuarioRepository userRepository
++ UserDetails loadUserByUsername(String)
+}
+
+
+class com.servicepro.alpha.dto.requerimento.RequerimentoDTO {
+- String blockPrefer
+- String dia
+- List<String> equipament
+- String materia
+- String numberOfPeople
+- String observations
+- String registration
+- Horario scheduleInitial
+- Horario scheduleEnd
+- String status
+- String typeOfRoom
+}
+
+class com.servicepro.alpha.service.RequerimentoService {
+- RequerimentoRepository repository
+- UsuarioRepository userRepository
+- SalaRepository salaRepository
+- ProfessorRepository profRepository
+- RabbitMQService rabbitmqService
++ List<Requerimento> obterTodosRequerimentos()
++ Requerimento obterPorToken(String)
++ Requerimento buscarRequerimento(String,Horario,Horario)
++ Requerimento buscarPorId(Long)
++ Requerimento salvarReq(RequerimentoDTO)
++ Requerimento atualizarReq(String,RequerimentoDTO)
++ Requerimento darBaixa(Long,RequerimentoBaixaDTO,Usuario)
++ Requerimento buscarToken(String)
++ boolean delete(String)
++ List<Requerimento> obterPorData(String)
+}
+
+
+enum com.servicepro.alpha.enums.Role {
++  ADMIN
++  LOGISTICA
++  PROFESSOR
++  ADMIN_LAB
+}
+
+class com.servicepro.alpha.dto.relatorio.ReportDTO {
+- String reportType
+- LocalDate startDate
+- LocalDate endDate
+}
+
+class com.servicepro.alpha.service.SalaService {
+- SalaRepository repository
++ List<Sala> buscarSalas()
++ Sala buscarSala(String)
++ Sala salvarSala(SalaDTO)
++ Sala atualizarSala(String,SalaDTO)
++ boolean deletarSala(String)
+}
+
+
+class com.servicepro.alpha.dto.requerimentoLab.UtilitariosDTO {
+- String reagentes
+- String quantidadeReagentes
+- String equipamentosVidraria
+- String quantidadeVidraria
+}
+
+class com.servicepro.alpha.domain.Professor {
+- Long id
+- String nome
+- String matricula
+- String email
+- String phone
+- String departamento
+- String status
+- String especialidade
+- Integer totalRequests
+- String approvedRequests
+- String senha
+- LocalDate createdAt
+- LocalDate updatedAt
+}
+
+interface com.servicepro.alpha.repository.UsuarioRepository {
+~ Optional<Usuario> findByEmail(String)
+~ Usuario findByMatricula(String)
+}
+
+class com.servicepro.alpha.config.DataInitializer {
+- UsuarioRepository usuarioRepository
+~ CommandLineRunner initRootUser()
+}
+
+
+
+
+org.springframework.boot.ApplicationRunner <|.. com.servicepro.alpha.mensageria.RabbitMQConexao
+org.springframework.data.jpa.repository.JpaRepository <|-- com.servicepro.alpha.repository.ProfessorRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- com.servicepro.alpha.repository.RequerimentolabRepository
+com.servicepro.alpha.dto.requerimentoLab.RequerimentoLabDTO <|-- com.servicepro.alpha.dto.requerimentoLab.RequerimentoLabResponseDTO
+org.springframework.data.jpa.repository.JpaRepository <|-- com.servicepro.alpha.repository.LaboratorioRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- com.servicepro.alpha.repository.SalaRepository
+org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter <|-- com.servicepro.alpha.security.config.SecurityConfig
+com.servicepro.alpha.security.config.filter.Filter <|.. com.servicepro.alpha.security.config.filter.CorsDebugFilter
+org.springframework.data.jpa.repository.JpaRepository <|-- com.servicepro.alpha.repository.RequerimentoRepository
+org.springframework.web.filter.OncePerRequestFilter <|-- com.servicepro.alpha.security.JwtAuthenticationFilter
+org.springframework.data.jpa.repository.JpaRepository <|-- com.servicepro.alpha.repository.HorarioRepository
+com.servicepro.alpha.dto.requerimento.RequerimentoDTO <|-- com.servicepro.alpha.dto.requerimento.RequerimentoBaixaDTO
+org.springframework.security.core.userdetails.UserDetailsService <|.. com.servicepro.alpha.security.service.CustomUserDetailsService
+java.io.Serializable <|.. com.servicepro.alpha.dto.requerimentoLab.UtilitariosDTO
+org.springframework.data.jpa.repository.JpaRepository <|-- com.servicepro.alpha.repository.UsuarioRepository
+@enduml

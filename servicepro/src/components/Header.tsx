@@ -9,13 +9,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import uerjLogo from "@/assets/uerj-logo.png";
-import authService from "@/services/authService";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "@/store/features/auth/authSlice";
 import { UserInfo } from "@/types/auth";
+import authService from "@/services/authService";
 
 export function Header() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [user, setUser] = useState<UserInfo | null>(null);
 
   useEffect(() => {
@@ -24,7 +27,7 @@ export function Header() {
   }, []);
 
   const handleLogout = () => {
-    authService.logout();
+    dispatch(logout());
     navigate("/");
   };
 
@@ -55,6 +58,7 @@ export function Header() {
               </span>
             </Button>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent align="end" className="w-56">
             <div className="px-2 py-1.5 text-sm">
               <p className="font-medium">{user?.name}</p>
@@ -71,6 +75,7 @@ export function Header() {
                   : "Professor"}
               </p>
             </div>
+
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="flex items-center gap-2 text-destructive cursor-pointer"

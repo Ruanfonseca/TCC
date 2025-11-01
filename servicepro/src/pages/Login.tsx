@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,43 +15,39 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import authService from "@/services/authService";
 import uerjLogo from "@/assets/uerj-logo.png";
+import { RootState } from "@/store/app/store";
+import { loginRequest } from "@/store/features/auth/authSlice";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
+  // Estado local do formulário
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    try {
-      const response = await authService.login(email, password);
+  // Estado global do Redux
+  const { isAuthenticated, user, error, loading } = useSelector(
+    (state: RootState) => state.auth
+  );
 
+  // Redireciona se logado com sucesso
+  useEffect(() => {
+    if (isAuthenticated && user) {
       toast({
         title: "Login realizado com sucesso!",
-        description: `Bem-vindo, ${response.user.name}`,
+        description: `Bem-vindo, ${user.name}`,
       });
       navigate("/dashboard");
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Erro ao fazer login";
-      setError(errorMessage);
-
-      toast({
-        variant: "destructive",
-        title: "Erro no login",
-        description: errorMessage,
-      });
-    } finally {
-      setIsLoading(false);
     }
+  }, [isAuthenticated, user, navigate]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Submit clicado", { email, password });
+
+    dispatch(loginRequest({ email, password }));
   };
 
   return (
@@ -105,9 +103,9 @@ export default function Login() {
             <Button
               type="submit"
               className="w-full bg-primary hover:bg-primary/90"
-              disabled={isLoading}
+              disabled={loading}
             >
-              {isLoading ? "Entrando..." : "Entrar"}
+              {loading ? "Entrando..." : "Entrar"}
             </Button>
           </form>
         </CardContent>

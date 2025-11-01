@@ -13,4 +13,5 @@ public class UserInfo {
     private String registration;
     private String name;
     private String role;
+
 }

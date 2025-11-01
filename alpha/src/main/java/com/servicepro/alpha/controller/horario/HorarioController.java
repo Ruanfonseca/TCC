@@ -28,14 +28,13 @@ public class HorarioController {
 
             return ResponseEntity.ok(horarios);
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao buscar horários.");
         }
     }
-
 
     @PostMapping
     public ResponseEntity<?> createSchedule(@RequestBody HorarioDTO dto) {
@@ -53,14 +52,13 @@ public class HorarioController {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao criar horario.");
         }
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable String id, @RequestBody HorarioDTO dto) {
@@ -72,7 +70,7 @@ public class HorarioController {
                         .body("Horario não encontrado.");
             }
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -90,7 +88,7 @@ public class HorarioController {
                         .body("Horário não encontrado.");
             }
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

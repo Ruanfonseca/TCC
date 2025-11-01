@@ -39,7 +39,7 @@ public class ReqLabController {
         try {
             List<RequerimentoLaboratorio> reqs = service.obterTodosRequerimentos();
             return ResponseEntity.ok(reqs);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -67,7 +67,7 @@ public class ReqLabController {
                     .status(HttpStatus.CREATED)
                     .body(requerimento.getToken());
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -79,14 +79,18 @@ public class ReqLabController {
     public ResponseEntity<?> update(@PathVariable String id, @RequestBody RequerimentoLabResponseDTO dto) {
         try {
             RequerimentoLaboratorio req = service.atualizarReq(id, dto);
+
             if (req == null) {
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body("Requerimento não encontrado.");
             }
+
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
+
+        } catch (Throwable e) {
             e.printStackTrace();
+
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao atualizar requerimento.");
@@ -97,14 +101,18 @@ public class ReqLabController {
     public ResponseEntity<?> deleteReqLab(@PathVariable String id) {
         try {
             boolean deletado = service.delete(id);
+
             if (!deletado) {
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body("Requerimento não encontrado.");
             }
+
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
+
+        } catch (Throwable e) {
             e.printStackTrace();
+
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao deletar requerimento.");
@@ -115,9 +123,11 @@ public class ReqLabController {
     public ResponseEntity<?> baixaRequerimento(@RequestBody RequerimentoLabResponseDTO dto) {
         try {
             RequerimentoLaboratorio reqExistente = service.buscarPorId(dto.getId());
+
             Usuario usuarioExistente = userService.buscarPorMatricula(
                     dto.getApprovedBy() != null ? dto.getApprovedBy() : dto.getRejectedBy()
             );
+
             if (reqExistente == null) {
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
@@ -136,7 +146,7 @@ public class ReqLabController {
 
             return ResponseEntity.ok().build();
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro no servidor.");
@@ -157,7 +167,7 @@ public class ReqLabController {
             }
 
             return ResponseEntity.ok(reqExistente);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }

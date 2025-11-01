@@ -227,7 +227,7 @@ export default function SolicitationLabList() {
       {/* Cabeçalho */}
       <div>
         <h1 className="text-2xl md:text-3xl font-bold text-primary">
-          Solicitações de Laboratório
+          Lista de Requerimentos
         </h1>
         <p className="text-muted-foreground mt-2 text-sm md:text-base">
           Gerencie e acompanhe os requerimentos de uso de laboratórios.

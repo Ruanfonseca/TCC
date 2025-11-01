@@ -18,8 +18,11 @@ export interface UserInfo {
   role: "ADMIN" | "LOGISTICA" | "PROFESSOR" | "ADMIN_LAB";
 }
 
+// Estado global de autenticação usado pelo Redux
 export interface AuthState {
   isAuthenticated: boolean;
   user: UserInfo | null;
   token: string | null;
+  loading?: boolean;
+  error?: string | null;
 }

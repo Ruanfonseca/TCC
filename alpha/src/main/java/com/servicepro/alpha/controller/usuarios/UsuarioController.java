@@ -23,7 +23,7 @@ public class UsuarioController {
         try {
             List<Usuario> usuarios = service.buscarUsuarios();
             return ResponseEntity.ok(usuarios);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -48,7 +48,7 @@ public class UsuarioController {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -67,7 +67,7 @@ public class UsuarioController {
                         .body("Usuario não encontrado.");
             }
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -85,7 +85,7 @@ public class UsuarioController {
                         .body("Usuario não encontrado.");
             }
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

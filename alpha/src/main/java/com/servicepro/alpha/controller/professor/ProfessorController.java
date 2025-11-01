@@ -22,7 +22,7 @@ public class ProfessorController {
         try {
             List<Professor> professores = service.buscarProfessor();
             return ResponseEntity.ok(professores);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -48,7 +48,7 @@ public class ProfessorController {
                     .status(HttpStatus.CREATED)
                     .build();
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -70,7 +70,7 @@ public class ProfessorController {
 
             return ResponseEntity.ok(professor);
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
 
             return ResponseEntity
@@ -89,7 +89,7 @@ public class ProfessorController {
                         .body("Professor não encontrado.");
             }
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

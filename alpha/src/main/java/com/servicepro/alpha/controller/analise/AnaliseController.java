@@ -81,7 +81,7 @@ public class AnaliseController {
 
             return ResponseEntity.ok(dto);
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -117,7 +117,7 @@ public class AnaliseController {
 
             return ResponseEntity.ok(response);
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.singletonMap("error", e.getMessage()));

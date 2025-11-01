@@ -140,6 +140,7 @@ public class RequerimentoLabService {
         requerimento.setRejectedBy(dto.getRejectedBy());
         requerimento.setRejectionReason(dto.getRejectionReason());
         requerimento.setApprovedReason(dto.getApprovedReason());
+
         if (dto.getLaboratorioId() != null) {
             Laboratorio laboratorio = laboratorioRepository.findById(dto.getLaboratorioId())
                     .orElseThrow(() -> new RuntimeException("Laboratório não encontrado"));

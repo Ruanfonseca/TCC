@@ -38,6 +38,19 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+//integração com o redux-saga
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/";
+    }
+    return Promise.reject(error);
+  }
+);
+
 // API wrapper para facilitar uso
 export const api = {
   async get<T>(endpoint: string, config?: AxiosRequestConfig): Promise<T> {

@@ -1,0 +1,19 @@
+@startuml
+package "com.servicepro.alpha.domain" {
+
+class Horario {
+  +Long id
+  +String name
+  +String startTime
+  +String endTime
+  +List<String> days
+  +String semester
+  +String status
+  +String description
+  +LocalDate createdAt
+  +LocalDate updatedAt
+}
+
+}
+
+@enduml

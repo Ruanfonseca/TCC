@@ -26,7 +26,7 @@ public class LaboratorioController {
         try {
             List<Laboratorio> labs = service.buscarLabs();
             return ResponseEntity.ok(labs);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -51,7 +51,7 @@ public class LaboratorioController {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -69,7 +69,7 @@ public class LaboratorioController {
                         .body("laboratorio não encontrado.");
             }
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -87,7 +87,7 @@ public class LaboratorioController {
                         .body("Laboratorio não encontrado.");
             }
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

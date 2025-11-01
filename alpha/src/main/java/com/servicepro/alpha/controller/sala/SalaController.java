@@ -23,10 +23,13 @@ public class SalaController {
     @GetMapping
     public ResponseEntity<?> getRooms() {
         try {
+
             List<Sala> salas = service.buscarSalas();
+
             return ResponseEntity.ok(salas);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
+
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao buscar salas.");
@@ -50,8 +53,9 @@ public class SalaController {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
+
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao criar professor.");
@@ -61,15 +65,20 @@ public class SalaController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable String id,@RequestBody SalaDTO dto) {
         try {
+
             Sala sala = service.atualizarSala(id, dto);
+
             if (sala == null) {
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body("Sala não encontrado.");
             }
+
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
+
             e.printStackTrace();
+
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao atualizar sala.");
@@ -80,13 +89,14 @@ public class SalaController {
     public ResponseEntity<?> delete(@PathVariable String id) {
         try {
             boolean deletado = service.deletarSala(id);
+
             if (!deletado) {
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body("Sala não encontrado.");
             }
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

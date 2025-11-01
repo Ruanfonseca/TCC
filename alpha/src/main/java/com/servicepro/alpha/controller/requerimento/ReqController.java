@@ -33,7 +33,7 @@ public class ReqController {
         try {
             List<Requerimento> reqs = service.obterTodosRequerimentos();
             return ResponseEntity.ok(reqs);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -60,7 +60,7 @@ public class ReqController {
                     .status(HttpStatus.CREATED)
                     .body(requerimento.getToken());
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -78,7 +78,7 @@ public class ReqController {
                         .body("Requerimento não encontrado.");
             }
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -96,7 +96,7 @@ public class ReqController {
                         .body("Requerimento não encontrado.");
             }
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -111,6 +111,7 @@ public class ReqController {
 
         try {
             Requerimento reqExistente = service.buscarPorId(Long.valueOf(id));
+
             Usuario usuarioExistente = userService.buscarPorMatricula(
                     dto.getApprovedBy() != null ? dto.getApprovedBy() : dto.getRejectedBy()
             );
@@ -134,7 +135,7 @@ public class ReqController {
 
             return ResponseEntity.ok().build();
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -155,7 +156,7 @@ public class ReqController {
             }
 
             return ResponseEntity.ok(reqExistente);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             throw new RuntimeException(e);
         }
     }
