@@ -79,7 +79,7 @@ const navigationItems = [
   {
     title: "Gerenciamento",
     icon: Settings,
-    allowedRoles: ["ADMIN"],
+    allowedRoles: ["ADMIN", "ADMIN_LAB"],
     items: [
       {
         title: "Professores",
