@@ -31,8 +31,8 @@ services:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: 123456
     ports:
-      - "5672:5672" # Porta AMQP
-      - "15672:15672" # Painel web
+      - "5672:5672"
+      - "15672:15672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     depends_on:
@@ -90,6 +90,28 @@ services:
     depends_on:
       - alpha
 
+  # FRONTEND (Servicepro-Front) + NGINX
+  servicepro-front:
+    image: ruanfonseca2023/servicepro-front:latest
+    container_name: servicepro-front
+    pull_policy: always
+    volumes:
+      - servicepro_front_build:/usr/share/nginx/html
+    command: ["/bin/sh", "-c", "cp -r /app/dist/* /usr/share/nginx/html"]
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - "8085:80"
+    volumes:
+      - servicepro_front_build:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - servicepro-front
+
 volumes:
   rabbitmq_data:
   mysql_data:
+  servicepro_front_build:

@@ -96,7 +96,7 @@ const navigationItems = [
       {
         title: "Laboratório",
         url: "/management/labs",
-        allowedRoles: ["ADMIN"],
+        allowedRoles: ["ADMIN", "ADMIN_LAB"],
       },
     ],
   },
