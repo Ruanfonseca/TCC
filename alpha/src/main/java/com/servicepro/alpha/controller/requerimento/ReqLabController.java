@@ -135,8 +135,7 @@ public class ReqLabController {
             }
 
             if (usuarioExistente == null ||
-                    (usuarioExistente.getRole() != Role.LOGISTICA &&
-                            usuarioExistente.getRole() != Role.ADMIN)) {
+                    (usuarioExistente.getRole() != Role.ADMIN_LAB)) {
                 return ResponseEntity
                         .status(HttpStatus.FORBIDDEN)
                         .body("Funcionário não credenciado para dar baixa");
