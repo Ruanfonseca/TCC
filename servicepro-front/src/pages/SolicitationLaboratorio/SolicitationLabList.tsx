@@ -215,6 +215,8 @@ export default function SolicitationLabList() {
     return <Badge variant={config.variant}>{config.label}</Badge>;
   };
 
+  console.log(solicitations);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -514,7 +516,6 @@ export default function SolicitationLabList() {
       </AlertDialog>
 
       {/* MODAL: Excluir requerimento */}
-
       <AlertDialog open={actionType === "delete"} onOpenChange={closeDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -605,8 +606,8 @@ export default function SolicitationLabList() {
                   </p>
                   <p>
                     <strong>Laboratório Atribuído:</strong>{" "}
-                    {viewSolicitation.room
-                      ? `${viewSolicitation.room.name} (${viewSolicitation.room.capacity} pessoas)`
+                    {viewSolicitation.laboratorio
+                      ? `${viewSolicitation.laboratorio.nome} (${viewSolicitation.laboratorio.capacidade})`
                       : "Não atribuída"}
                   </p>
                   <p>
