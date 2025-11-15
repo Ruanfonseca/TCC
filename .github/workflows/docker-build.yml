@@ -41,3 +41,13 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/consumer:latest
+
+      # Build Servicepro Front image
+      - name: Build and push Servicepro Front image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./servicepro-front
+          file: ./servicepro-front/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/servicepro-front:latest
