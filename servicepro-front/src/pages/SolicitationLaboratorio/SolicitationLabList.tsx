@@ -67,7 +67,8 @@ export default function SolicitationLabList() {
   const [baixaModalOpen, setBaixaModalOpen] = useState(false);
 
   const currentUser = authService.getUser();
-  const isLogistica = currentUser?.role === "ADMIN";
+  const isLogistica =
+    currentUser?.role === "ADMIN" || currentUser?.role === "ADMIN_LAB";
 
   useEffect(() => {
     setUser(currentUser);
@@ -93,7 +94,6 @@ export default function SolicitationLabList() {
     try {
       setLoading(true);
       const response = await solicitationLabService.getLabSolicitations();
-      console.log(response);
 
       setSolicitations(response);
     } catch (error) {

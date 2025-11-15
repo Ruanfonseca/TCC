@@ -752,7 +752,8 @@ export default function LabList() {
           </div>
         </CardContent>
       </Card>
-      ;{/* Edit Dialog */}
+
+      {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
