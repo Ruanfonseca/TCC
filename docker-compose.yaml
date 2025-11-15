@@ -97,7 +97,12 @@ services:
     pull_policy: always
     volumes:
       - servicepro_front_build:/usr/share/nginx/html
-    command: ["/bin/sh", "-c", "cp -r /app/dist/* /usr/share/nginx/html"]
+    command:
+      [
+        "/bin/sh",
+        "-c",
+        "rm -rf /usr/share/nginx/html/* && cp -r /app/dist/* /usr/share/nginx/html",
+      ]
 
   nginx:
     image: nginx:stable-alpine

@@ -62,7 +62,7 @@ const navigationItems = [
   {
     title: "Listas",
     icon: Calendar,
-    allowedRoles: ["ADMIN", "LOGISTICA"],
+    allowedRoles: ["ADMIN", "LOGISTICA", "ADMIN_LAB"],
     items: [
       {
         title: "Requerimentos Salas",
