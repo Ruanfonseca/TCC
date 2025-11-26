@@ -30,7 +30,7 @@ public class DataInitializer {
                         .department("Administration")
                         .registerNumber("ROOT001")
                         .role(Role.ADMIN)
-                        .status("ACTIVE")
+                        .status("active")
                         .phone("+55 21 99999-9999")
                         .createdAt(LocalDate.now())
                         .updatedAt(LocalDate.now())
