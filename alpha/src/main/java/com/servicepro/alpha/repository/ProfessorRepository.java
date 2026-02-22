@@ -11,4 +11,7 @@ public interface ProfessorRepository extends JpaRepository<Professor,Long> {
 
     @Query("SELECT r FROM Professor r WHERE r.matricula = :matricula")
     Professor findByMatricula(String matricula);
+
+    @Query("SELECT r FROM Professor r WHERE r.email = :email")
+    Professor findByEmail(String email);
 }

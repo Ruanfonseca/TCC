@@ -19,7 +19,9 @@ public class UserService {
     private UsuarioRepository repository;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-
+    public Usuario buscarPorEmail(String email) {
+        return repository.findByEmail(email);
+    }
 
     public Usuario buscarPorMatricula(String matricula) {
         return repository.findByMatricula(matricula);
@@ -31,7 +33,6 @@ public class UserService {
     }
 
     public Usuario salvarUsuario(UsuarioDTO dto) {
-
 
 
         Usuario usuario = new Usuario();

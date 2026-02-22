@@ -48,9 +48,12 @@ public class LaboratorioController {
 
             service.salvarLab(dto);
 
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .build();
+
+
+            List<Laboratorio> labs = service.buscarLabs();
+            return ResponseEntity.ok(labs);
+
+
         } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
@@ -68,7 +71,8 @@ public class LaboratorioController {
                         .status(HttpStatus.NOT_FOUND)
                         .body("laboratorio não encontrado.");
             }
-            return ResponseEntity.ok().build();
+            List<Laboratorio> labs = service.buscarLabs();
+            return ResponseEntity.ok(labs);
         } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity

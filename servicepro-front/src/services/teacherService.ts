@@ -23,7 +23,7 @@ class TeacherService {
     }
   }
 
-  async createTeacher(teacher: Teacher): Promise<TeacherResponse> {
+  async createTeacher(teacher: Teacher): Promise<TeacherResponse[]> {
     try {
       return await api.post<TeacherResponse>(this.baseUrl, teacher);
     } catch (error) {
@@ -33,10 +33,10 @@ class TeacherService {
 
   async updateTeacher(
     id: string,
-    updated: Partial<Teacher>
-  ): Promise<TeacherResponse> {
+    updated: Partial<Teacher>,
+  ): Promise<TeacherResponse[]> {
     try {
-      return await api.put<TeacherResponse>(`${this.baseUrl}/${id}`, updated);
+      return await api.put<TeacherResponse[]>(`${this.baseUrl}/${id}`, updated);
     } catch (error) {
       console.error(error);
     }

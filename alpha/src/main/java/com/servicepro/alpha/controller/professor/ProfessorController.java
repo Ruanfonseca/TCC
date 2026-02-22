@@ -44,10 +44,8 @@ public class ProfessorController {
 
             service.salvarProfessor(dto);
 
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .build();
-
+            List<Professor> professores = service.buscarProfessor();
+            return ResponseEntity.ok(professores);
         } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
@@ -68,7 +66,8 @@ public class ProfessorController {
                         .body("Professor não encontrado.");
             }
 
-            return ResponseEntity.ok(professor);
+            List<Professor> professores = service.buscarProfessor();
+            return ResponseEntity.ok(professores);
 
         } catch (Throwable e) {
             e.printStackTrace();

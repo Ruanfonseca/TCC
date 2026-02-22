@@ -24,7 +24,7 @@ public class Sala {
 
     private String name;
     private String block;
-    private String capacity;
+    private Integer capacity;
     private String type;
 
     @ElementCollection
@@ -32,7 +32,7 @@ public class Sala {
     private List<String> equipment = new ArrayList<>();
 
     private String status;
-    private String floor;
+    private Integer floor;
     private String description;
 
     private LocalDate createdAt;

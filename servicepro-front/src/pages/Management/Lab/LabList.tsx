@@ -62,9 +62,9 @@ import { getTypeColor, normalizeTipoLab } from "@/utils/util";
 const labCreateSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
   bloco: z.string().min(1, "Bloco é obrigatório"),
-  capacidade: z.string().min(1, "Capacidade é obrigatória"),
+  capacidade: z.coerce.number().min(1, "Capacidade deve ser maior que 0"),
   tipoLab: z.nativeEnum(TipoLab),
-  andar: z.string().min(1, "Andar é obrigatório"),
+  andar: z.coerce.number().min(0, "Andar deve ser 0 ou maior"),
   equipamento: z.array(z.string()),
   descricao: z.string().optional(),
   status: z.enum(["active", "inactive", "maintenance"]),
@@ -73,9 +73,9 @@ const labCreateSchema = z.object({
 const labEditSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
   bloco: z.string().min(1, "Bloco é obrigatório"),
-  capacidade: z.string().min(1, "Capacidade é obrigatória"),
+  capacidade: z.coerce.number().min(1, "Capacidade deve ser maior que 0"),
   tipoLab: z.nativeEnum(TipoLab),
-  andar: z.string().min(1, "Andar é obrigatório"),
+  andar: z.coerce.number().min(0, "Andar deve ser 0 ou maior"),
   equipamento: z.array(z.string()),
   descricao: z.string().optional(),
   status: z.enum(["active", "inactive", "maintenance"]),
@@ -90,19 +90,34 @@ export default function LabList() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedLab, setSelectedLab] = useState<LaboratorioResponse | null>(
-    null
+    null,
   );
   const [labs, setLabs] = useState<LaboratorioResponse[]>([]);
+
+  const availableEquipment = [
+    "Capela",
+    "Chuveiro de Emergência",
+    "Bancadas",
+    "Microscópios",
+    "Centrífuga",
+    "Termociclador",
+    "Osciloscópio",
+    "Gerador de Funções",
+    "Multímetros",
+    "Computadores",
+    "Projetor",
+    "Ar Condicionado",
+  ];
 
   const createForm = useForm<z.infer<typeof labCreateSchema>>({
     resolver: zodResolver(labCreateSchema),
     defaultValues: {
       nome: "",
       bloco: "",
-      capacidade: "",
+      capacidade: 0,
       equipamento: [],
       status: "active",
-      andar: "",
+      andar: 0,
       descricao: "",
       tipoLab: TipoLab.DIDATICO,
     },
@@ -113,10 +128,10 @@ export default function LabList() {
     defaultValues: {
       nome: "",
       bloco: "",
-      capacidade: "",
+      capacidade: 0,
       equipamento: [],
       status: "active",
-      andar: "",
+      andar: 0,
       descricao: "",
       tipoLab: TipoLab.DIDATICO,
     },
@@ -134,21 +149,6 @@ export default function LabList() {
         setLabs([]);
       });
   }, []);
-
-  const availableEquipment = [
-    "Capela",
-    "Chuveiro de Emergência",
-    "Bancadas",
-    "Microscópios",
-    "Centrífuga",
-    "Termociclador",
-    "Osciloscópio",
-    "Gerador de Funções",
-    "Multímetros",
-    "Computadores",
-    "Projetor",
-    "Ar Condicionado",
-  ];
 
   const filteredLabs = labs.filter((lab) => {
     const nome = lab.nome || "";
@@ -179,7 +179,7 @@ export default function LabList() {
       status: values.status,
     };
     const created = await labService.createLab(labData);
-    setLabs((prev) => [...prev, created]);
+    setLabs(Array.isArray(created) ? created : []);
     setIsCreateDialogOpen(false);
     createForm.reset();
   };
@@ -197,9 +197,8 @@ export default function LabList() {
       status: values.status,
     };
     const updated = await labService.updateLab(selectedLab.id, labData);
-    setLabs((prev) =>
-      prev.map((lab) => (lab.id === updated.id ? updated : lab))
-    );
+    setLabs(Array.isArray(updated) ? updated : []);
+
     setIsEditDialogOpen(false);
     setSelectedLab(null);
     editForm.reset();
@@ -281,10 +280,9 @@ export default function LabList() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="Bloco A">Bloco A</SelectItem>
-                              <SelectItem value="Bloco B">Bloco B</SelectItem>
-                              <SelectItem value="Bloco C">Bloco C</SelectItem>
-                              <SelectItem value="Bloco D">Bloco D</SelectItem>
+                              <SelectItem value="Anexo">Anexo</SelectItem>
+                              <SelectItem value="Predio1">Prédio 1</SelectItem>
+                              <SelectItem value="Predio2">Prédio 2</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -315,10 +313,8 @@ export default function LabList() {
                         <FormItem>
                           <FormLabel>Tipo *</FormLabel>
                           <Select
-                            onValueChange={(value) =>
-                              field.onChange(parseInt(value) as TipoLab)
-                            }
-                            value={field.value.toString()}
+                            onValueChange={field.onChange}
+                            value={field.value}
                           >
                             <FormControl>
                               <SelectTrigger>
@@ -326,8 +322,10 @@ export default function LabList() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="0">Didático</SelectItem>
-                              <SelectItem value="1">
+                              <SelectItem value={TipoLab.DIDATICO}>
+                                Didático
+                              </SelectItem>
+                              <SelectItem value={TipoLab.DIDATICO_PESQUISA}>
                                 Didático e Pesquisa
                               </SelectItem>
                             </SelectContent>
@@ -370,7 +368,7 @@ export default function LabList() {
                                   const newEquipment = checked
                                     ? [...(field.value || []), eq]
                                     : (field.value || []).filter(
-                                        (e) => e !== eq
+                                        (e) => e !== eq,
                                       );
                                   field.onChange(newEquipment);
                                 }}
@@ -442,9 +440,9 @@ export default function LabList() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos</SelectItem>
-                  <SelectItem value="Bloco A">Bloco A</SelectItem>
-                  <SelectItem value="Bloco B">Bloco B</SelectItem>
-                  <SelectItem value="Bloco C">Bloco C</SelectItem>
+                  <SelectItem value="Anexo">Anexo</SelectItem>
+                  <SelectItem value="Predio1">Prédio 1</SelectItem>
+                  <SelectItem value="Predio2">Prédio 2</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -454,8 +452,8 @@ export default function LabList() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos</SelectItem>
-                  <SelectItem value="DIDATICO">Didático</SelectItem>
-                  <SelectItem value="DIDATICO_PESQUISA">
+                  <SelectItem value={TipoLab.DIDATICO}>Didático</SelectItem>
+                  <SelectItem value={TipoLab.DIDATICO_PESQUISA}>
                     Didático e Pesquisa
                   </SelectItem>
                 </SelectContent>
@@ -515,7 +513,7 @@ export default function LabList() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {labs.reduce((s, l) => s + parseInt(l.capacidade), 0)}
+              {labs.reduce((s, l) => s + l.capacidade, 0)}{" "}
             </div>
           </CardContent>
         </Card>
@@ -552,8 +550,8 @@ export default function LabList() {
                     tipoNormalizado === "didatico"
                       ? "Didático"
                       : tipoNormalizado === "didatico/pesquisa"
-                      ? "Didático/Pesquisa"
-                      : "Outro";
+                        ? "Didático/Pesquisa"
+                        : "Outro";
 
                   return (
                     <TableRow key={lab.id}>
@@ -586,8 +584,11 @@ export default function LabList() {
 
                       <TableCell>
                         <div className="text-xs">
-                          {lab.equipamento.slice(0, 2).join(", ")}
-                          {lab.equipamento.length > 2 &&
+                          {Array.isArray(lab.equipamento)
+                            ? lab.equipamento.slice(0, 2).join(", ")
+                            : ""}
+                          {Array.isArray(lab.equipamento) &&
+                            lab.equipamento.length > 2 &&
                             ` +${lab.equipamento.length - 2}`}
                         </div>
                       </TableCell>
@@ -601,8 +602,8 @@ export default function LabList() {
                           {lab.status === "active"
                             ? "Ativo"
                             : lab.status === "maintenance"
-                            ? "Manutenção"
-                            : "Inativo"}
+                              ? "Manutenção"
+                              : "Inativo"}
                         </Badge>
                       </TableCell>
 
@@ -659,8 +660,8 @@ export default function LabList() {
                 tipoNormalizado === "didatico"
                   ? "Didático"
                   : tipoNormalizado === "didatico/pesquisa"
-                  ? "Didático/Pesquisa"
-                  : "Outro";
+                    ? "Didático/Pesquisa"
+                    : "Outro";
 
               return (
                 <Card key={lab.id}>
@@ -795,10 +796,9 @@ export default function LabList() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Bloco A">Bloco A</SelectItem>
-                          <SelectItem value="Bloco B">Bloco B</SelectItem>
-                          <SelectItem value="Bloco C">Bloco C</SelectItem>
-                          <SelectItem value="Bloco D">Bloco D</SelectItem>
+                          <SelectItem value="Anexo">Anexo</SelectItem>
+                          <SelectItem value="Predio1">Prédio 1</SelectItem>
+                          <SelectItem value="Predio2">Prédio 2</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -843,10 +843,8 @@ export default function LabList() {
                     <FormItem>
                       <FormLabel>Tipo *</FormLabel>
                       <Select
-                        onValueChange={(value) =>
-                          field.onChange(parseInt(value) as TipoLab)
-                        }
-                        value={field.value.toString()}
+                        onValueChange={field.onChange}
+                        value={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -854,8 +852,12 @@ export default function LabList() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="0">Didático</SelectItem>
-                          <SelectItem value="1">Didático e Pesquisa</SelectItem>
+                          <SelectItem value={TipoLab.DIDATICO}>
+                            Didático
+                          </SelectItem>{" "}
+                          <SelectItem value={TipoLab.DIDATICO_PESQUISA}>
+                            Didático e Pesquisa
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

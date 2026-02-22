@@ -34,7 +34,7 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody UsuarioDTO dto) {
         try {
-            // Verificando se já existe um professor cadastrado
+            // Verificando se já existe um usuario com a mesma matricula cadastrado
             Usuario usuarioExistente = service.buscarPorMatricula(dto.getRegisterNumber());
 
             if (usuarioExistente != null) {
@@ -43,11 +43,19 @@ public class UsuarioController {
                         .body("Usuário já existente.");
             }
 
+
+            Usuario usuarioExistenteEmail = service.buscarPorEmail(dto.getEmail());
+
+            if (usuarioExistenteEmail != null) {
+                return ResponseEntity
+                        .status(HttpStatus.CONFLICT)
+                        .body("Usuário já existente.");
+            }
+
             service.salvarUsuario(dto);
 
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .build();
+            List<Usuario> usuarios = service.buscarUsuarios();
+            return ResponseEntity.ok(usuarios);
         } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
@@ -66,7 +74,8 @@ public class UsuarioController {
                         .status(HttpStatus.NOT_FOUND)
                         .body("Usuario não encontrado.");
             }
-            return ResponseEntity.ok().build();
+            List<Usuario> usuarios = service.buscarUsuarios();
+            return ResponseEntity.ok(usuarios);
         } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity

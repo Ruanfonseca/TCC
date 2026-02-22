@@ -26,14 +26,14 @@ public class Laboratorio {
 
     private String nome;
     private String bloco;
-    private String capacidade;
+    private Integer capacidade;
 
     @ElementCollection
     @Column(name = "equipamento")
     private List<String> equipamento = new ArrayList<>();
 
     private String status;
-    private String andar;
+    private Integer andar;
     private String descricao;
     @Enumerated(EnumType.STRING)
     private TipoLab tipoLab;

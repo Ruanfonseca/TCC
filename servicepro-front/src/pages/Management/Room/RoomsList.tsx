@@ -61,9 +61,9 @@ import { roomsService } from "@/services/roomService";
 const roomCreateSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
   block: z.string().min(1, "Bloco é obrigatório"),
-  capacity: z.string().min(1, "Capacidade é obrigatória"),
+  capacity: z.coerce.number().min(1, "Capacidade deve ser maior que 0"),
   type: z.string().min(1, "Tipo é obrigatório"),
-  floor: z.string().min(1, "Andar é obrigatório"),
+  floor: z.coerce.number().min(0, "Andar deve ser 0 ou maior"),
   equipment: z.array(z.string()),
   description: z.string().optional(),
   status: z.enum(["active", "inactive", "maintenance"]),
@@ -72,9 +72,9 @@ const roomCreateSchema = z.object({
 const roomEditSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
   block: z.string().min(1, "Bloco é obrigatório"),
-  capacity: z.number().min(1, "Capacidade é obrigatória"),
+  capacity: z.coerce.number().min(1, "Capacidade deve ser maior que 0"),
   type: z.string().min(1, "Tipo é obrigatório"),
-  floor: z.number().min(0, "Andar é obrigatório"),
+  floor: z.coerce.number().min(0, "Andar deve ser 0 ou maior"),
   equipment: z.array(z.string()),
   description: z.string().optional(),
   status: z.enum(["active", "inactive", "maintenance"]),
@@ -105,16 +105,61 @@ export default function RoomsList() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<RoomResponse | null>(null);
   const [rooms, setRooms] = useState<RoomResponse[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const availableEquipment = [
+    "Projetor",
+    "Computador",
+    "Sistema de Som",
+    "Quadro Interativo",
+    "Ar Condicionado",
+    "Quadro Branco",
+    "TV",
+    "Microfones",
+    "Bancadas",
+    "Capela",
+    "Chuveiro de Emergência",
+    "Mesa de Reunião",
+  ];
+
+  const normalizeRoom = (room: any) => ({
+    ...room,
+    equipment: Array.isArray(room?.equipment) ? room.equipment : [],
+    capacity: Number(room?.capacity ?? 0),
+    floor: Number(room?.floor ?? 0),
+  });
+
+  const filteredRooms = rooms.filter((room) => {
+    const matchesSearch =
+      (room.name?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (room.block?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (room.type?.toLowerCase() || "").includes(searchTerm.toLowerCase());
+
+    const matchesBlock = blockFilter === "all" || room.block === blockFilter;
+    const matchesType = typeFilter === "all" || room.type === typeFilter;
+    const matchesStatus =
+      statusFilter === "all" || room.status === statusFilter;
+
+    return matchesSearch && matchesBlock && matchesType && matchesStatus;
+  });
+
+  const totalPages = Math.ceil(filteredRooms.length / itemsPerPage);
+
+  const paginatedRooms = filteredRooms.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   const createForm = useForm<z.infer<typeof roomCreateSchema>>({
     resolver: zodResolver(roomCreateSchema),
     defaultValues: {
       name: "",
       block: "",
-      capacity: "",
+      capacity: 0,
       type: "",
       equipment: [],
-      floor: "",
+      floor: 0,
       description: "",
       status: "active",
     },
@@ -148,38 +193,7 @@ export default function RoomsList() {
       .catch(() => {
         setRooms([]); // fallback em caso de erro na API
       });
-  }, []);
-
-  console.log("Salas - ", rooms);
-
-  const availableEquipment = [
-    "Projetor",
-    "Computador",
-    "Sistema de Som",
-    "Quadro Interativo",
-    "Ar Condicionado",
-    "Quadro Branco",
-    "TV",
-    "Microfones",
-    "Bancadas",
-    "Capela",
-    "Chuveiro de Emergência",
-    "Mesa de Reunião",
-  ];
-
-  const filteredRooms = rooms.filter((room) => {
-    const matchesSearch =
-      (room.name?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (room.block?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-      (room.type?.toLowerCase() || "").includes(searchTerm.toLowerCase());
-
-    const matchesBlock = blockFilter === "all" || room.block === blockFilter;
-    const matchesType = typeFilter === "all" || room.type === typeFilter;
-    const matchesStatus =
-      statusFilter === "all" || room.status === statusFilter;
-
-    return matchesSearch && matchesBlock && matchesType && matchesStatus;
-  });
+  }, [rooms]);
 
   const handleCreate = async (values: z.infer<typeof roomCreateSchema>) => {
     const roomData: Room = {
@@ -189,7 +203,11 @@ export default function RoomsList() {
     };
 
     const created = await roomsService.createRoom(roomData);
-    setRooms((prev) => [...prev, created]);
+
+    const safeCreated = normalizeRoom(created);
+
+    setRooms((prev) => [...prev, safeCreated]);
+
     setIsCreateDialogOpen(false);
     createForm.reset();
   };
@@ -198,9 +216,11 @@ export default function RoomsList() {
     if (!selectedRoom) return;
 
     const updated = await roomsService.updateRoom(selectedRoom.id, values);
-    setRooms((prev) =>
-      prev.map((room) => (room.id === updated.id ? updated : room))
-    );
+
+    const safeUpdated = normalizeRoom(updated);
+
+    setRooms((prev) => [...prev, safeUpdated]);
+
     setIsEditDialogOpen(false);
     setSelectedRoom(null);
     editForm.reset();
@@ -208,8 +228,11 @@ export default function RoomsList() {
 
   const handleDelete = async () => {
     if (!selectedRoom) return;
+
     await roomsService.deleteRoom(selectedRoom.id);
+
     setRooms((prev) => prev.filter((room) => room.id !== selectedRoom.id));
+
     setIsDeleteDialogOpen(false);
     setSelectedRoom(null);
   };
@@ -283,10 +306,9 @@ export default function RoomsList() {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="Bloco A">Bloco A</SelectItem>
-                              <SelectItem value="Bloco B">Bloco B</SelectItem>
-                              <SelectItem value="Bloco C">Bloco C</SelectItem>
-                              <SelectItem value="Bloco D">Bloco D</SelectItem>
+                              <SelectItem value="Anexo">Anexo</SelectItem>
+                              <SelectItem value="Predio1">Prédio I</SelectItem>
+                              <SelectItem value="Predio2">Prédio II</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -378,7 +400,7 @@ export default function RoomsList() {
                                   const newEquipment = checked
                                     ? [...(field.value || []), eq]
                                     : (field.value || []).filter(
-                                        (e) => e !== eq
+                                        (e) => e !== eq,
                                       );
                                   field.onChange(newEquipment);
                                 }}
@@ -452,9 +474,9 @@ export default function RoomsList() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos</SelectItem>
-                  <SelectItem value="Bloco A">Bloco A</SelectItem>
-                  <SelectItem value="Bloco B">Bloco B</SelectItem>
-                  <SelectItem value="Bloco C">Bloco C</SelectItem>
+                  <SelectItem value="Anexo">Anexo</SelectItem>
+                  <SelectItem value="Predio1">Prédio 1</SelectItem>
+                  <SelectItem value="Predio2">Prédio 2</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -528,7 +550,10 @@ export default function RoomsList() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {rooms.reduce((s, r) => s + r.capacity, 0)}
+              {rooms.reduce(
+                (sum, room) => sum + Number(room.capacity || 0),
+                0,
+              )}{" "}
             </div>
           </CardContent>
         </Card>
@@ -565,7 +590,7 @@ export default function RoomsList() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredRooms.map((room) => (
+                {paginatedRooms.map((room) => (
                   <TableRow key={room.id}>
                     <TableCell>
                       <div>
@@ -610,15 +635,15 @@ export default function RoomsList() {
                           room.status === "active"
                             ? "bg-success/10 text-success border-success"
                             : room.status === "maintenance"
-                            ? "bg-warning/10 text-warning border-warning"
-                            : "bg-muted/10 text-muted-foreground border-muted"
+                              ? "bg-warning/10 text-warning border-warning"
+                              : "bg-muted/10 text-muted-foreground border-muted"
                         }
                       >
                         {room.status === "active"
                           ? "Ativa"
                           : room.status === "maintenance"
-                          ? "Manutenção"
-                          : "Inativa"}
+                            ? "Manutenção"
+                            : "Inativa"}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -663,11 +688,37 @@ export default function RoomsList() {
                 ))}
               </TableBody>
             </Table>
+            {/* Pagination */}
+            <div className="flex items-center justify-between mt-4">
+              <div className="text-sm text-muted-foreground">
+                Página {currentPage} de {totalPages}
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((prev) => prev - 1)}
+                >
+                  Anterior
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={currentPage === totalPages || totalPages === 0}
+                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                >
+                  Próxima
+                </Button>
+              </div>
+            </div>
           </div>
 
           {/* Cards for mobile/tablet */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:hidden">
-            {filteredRooms.map((room) => (
+            {paginatedRooms.map((room) => (
               <article key={room.id} className="p-3 border rounded-lg">
                 <div className="flex justify-between items-start gap-3">
                   <div>
@@ -746,6 +797,34 @@ export default function RoomsList() {
                 </div>
               </article>
             ))}
+            {/* Pagination Mobile */}
+            <div className="flex flex-col gap-2 mt-4 md:hidden">
+              <div className="text-sm text-muted-foreground text-center">
+                Página {currentPage} de {totalPages}
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((prev) => prev - 1)}
+                >
+                  Anterior
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  disabled={currentPage === totalPages || totalPages === 0}
+                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                >
+                  Próxima
+                </Button>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -827,10 +906,9 @@ export default function RoomsList() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Bloco A">Bloco A</SelectItem>
-                          <SelectItem value="Bloco B">Bloco B</SelectItem>
-                          <SelectItem value="Bloco C">Bloco C</SelectItem>
-                          <SelectItem value="Bloco D">Bloco D</SelectItem>
+                          <SelectItem value="Anexo">Anexo</SelectItem>
+                          <SelectItem value="Predio1">Prédio 1</SelectItem>
+                          <SelectItem value="Predio2">Prédio 2</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

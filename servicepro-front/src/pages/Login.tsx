@@ -29,7 +29,7 @@ export default function Login() {
 
   // Estado global do Redux
   const { isAuthenticated, user, error, loading } = useSelector(
-    (state: RootState) => state.auth
+    (state: RootState) => state.auth,
   );
 
   // Redireciona se logado com sucesso
@@ -45,7 +45,6 @@ export default function Login() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submit clicado", { email, password });
 
     dispatch(loginRequest({ email, password }));
   };

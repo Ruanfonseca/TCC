@@ -65,7 +65,6 @@ export default function Reports() {
     try {
       const data = await getReportData(startDate, endDate, reportType);
 
-      console.log(data);
       const safeData = {
         sala: Array.isArray(data?.sala) ? data.sala : [],
         laboratorio: Array.isArray(data?.laboratorio) ? data.laboratorio : [],
@@ -102,10 +101,10 @@ export default function Reports() {
     doc.text(
       `Período: ${format(startDate, "dd/MM/yyyy")} até ${format(
         endDate,
-        "dd/MM/yyyy"
+        "dd/MM/yyyy",
       )}`,
       margin,
-      y
+      y,
     );
     y += 30;
 
@@ -113,7 +112,7 @@ export default function Reports() {
       title: string,
       data: any[],
       columns: string[],
-      mapRow: (item: any) => any[]
+      mapRow: (item: any) => any[],
     ) => {
       if (!data?.length) return;
       doc.setFontSize(12);
@@ -158,7 +157,7 @@ export default function Reports() {
         }`,
         item.equipament?.join(", ") || "-",
         getStatusText(item.status),
-      ]
+      ],
     );
 
     // LABORATÓRIOS
@@ -184,7 +183,7 @@ export default function Reports() {
         }`,
         item.numeroAluno || "-",
         getStatusText(item.status),
-      ]
+      ],
     );
 
     doc.save(`relatorio-${format(new Date(), "yyyy-MM-dd")}.pdf`);
@@ -197,13 +196,13 @@ export default function Reports() {
   ];
   const totalRequests = allRequests.length;
   const approvedRequests = allRequests.filter(
-    (r) => r.status === "approved"
+    (r) => r.status === "approved",
   ).length;
   const pendingRequests = allRequests.filter(
-    (r) => r.status === "pending"
+    (r) => r.status === "pending",
   ).length;
   const rejectedRequests = allRequests.filter(
-    (r) => r.status === "rejected"
+    (r) => r.status === "rejected",
   ).length;
 
   const hasData = totalRequests > 0;
@@ -246,7 +245,7 @@ export default function Reports() {
                     variant="outline"
                     className={cn(
                       "w-full justify-start text-left font-normal",
-                      !startDate && "text-muted-foreground"
+                      !startDate && "text-muted-foreground",
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
@@ -274,7 +273,7 @@ export default function Reports() {
                     variant="outline"
                     className={cn(
                       "w-full justify-start text-left font-normal",
-                      !endDate && "text-muted-foreground"
+                      !endDate && "text-muted-foreground",
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />

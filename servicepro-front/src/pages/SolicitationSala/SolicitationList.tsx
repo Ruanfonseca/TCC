@@ -47,7 +47,7 @@ import { roomsService } from "@/services/roomService";
 export default function SolicitationList() {
   const navigate = useNavigate();
   const [solicitations, setSolicitations] = useState<SolicitationResponse[]>(
-    []
+    [],
   );
   const [filteredSolicitations, setFilteredSolicitations] = useState<
     SolicitationResponse[]
@@ -101,7 +101,6 @@ export default function SolicitationList() {
     try {
       setLoading(true);
       const data = await solicitationService.getAll();
-      console.log(data);
       setSolicitations(data);
     } catch (error) {
       toast({
@@ -119,7 +118,7 @@ export default function SolicitationList() {
     let filtered = [...solicitations];
     if (searchTerm) {
       filtered = filtered.filter((sol) =>
-        sol.token.toLowerCase().includes(searchTerm.toLowerCase())
+        sol.token.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
     if (statusFilter !== "all") {
@@ -130,7 +129,7 @@ export default function SolicitationList() {
 
   const handleAction = (
     solicitation: SolicitationResponse,
-    type: "approve" | "reject" | "delete"
+    type: "approve" | "reject" | "delete",
   ) => {
     setSelectedSolicitation(solicitation);
     setActionType(type);
@@ -181,7 +180,7 @@ export default function SolicitationList() {
         // envia para o endpoint de baixa
         await solicitationService.darBaixaSolicitacao(
           selectedSolicitation.id,
-          payload
+          payload,
         );
 
         toast({
@@ -332,7 +331,7 @@ export default function SolicitationList() {
                         <TableCell>{solicitation.materia}</TableCell>
                         <TableCell>
                           {new Date(solicitation.dia).toLocaleDateString(
-                            "pt-BR"
+                            "pt-BR",
                           )}
                         </TableCell>
                         <TableCell>
@@ -648,7 +647,7 @@ export default function SolicitationList() {
               <p>
                 <strong>Data de Criação:</strong>{" "}
                 {new Date(viewSolicitation.createdAt).toLocaleDateString(
-                  "pt-BR"
+                  "pt-BR",
                 )}
               </p>
             </div>

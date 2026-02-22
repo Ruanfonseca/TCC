@@ -49,9 +49,9 @@ public class HorarioController {
             }
 
              service.salvarHorario(dto);
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .build();
+            List<Horario> horarios = service.buscarHorarios();
+
+            return ResponseEntity.ok(horarios);
         } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity
@@ -69,7 +69,9 @@ public class HorarioController {
                         .status(HttpStatus.NOT_FOUND)
                         .body("Horario não encontrado.");
             }
-            return ResponseEntity.ok().build();
+            List<Horario> horarios = service.buscarHorarios();
+
+            return ResponseEntity.ok(horarios);
         } catch (Throwable e) {
             e.printStackTrace();
             return ResponseEntity

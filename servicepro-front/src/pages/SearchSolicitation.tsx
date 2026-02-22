@@ -61,7 +61,6 @@ export default function SearchSolicitation() {
     setSearchResult(null);
 
     const result = await analiseService.getSolicitationByToken(token);
-    console.log(result);
     if (result) {
       setSearchResult(result);
     } else {

@@ -4,6 +4,8 @@ import com.servicepro.alpha.domain.Professor;
 import com.servicepro.alpha.dto.professor.ProfessorDTO;
 import com.servicepro.alpha.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,6 +17,7 @@ public class ProfessorService {
 
     @Autowired
     private ProfessorRepository repository;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public List<Professor> buscarProfessor() {
         return repository.findAll();
@@ -33,7 +36,10 @@ public class ProfessorService {
         professor.setStatus(dto.getStatus());
         professor.setMatricula(dto.getRegisterNumber());
         professor.setEspecialidade(dto.getSpecialization());
-        professor.setSenha(dto.getPassword());
+        if (!dto.getPassword().isEmpty()) {
+            String hashedPassword = passwordEncoder.encode(dto.getPassword());
+            professor.setSenha(hashedPassword);
+        }
         professor.setTotalRequests(dto.getTotalRequests());
         professor.setCreatedAt(LocalDate.now());
 
@@ -58,7 +64,10 @@ public class ProfessorService {
             professor.setDepartamento(dto.getDepartment());
             professor.setStatus(dto.getStatus());
             professor.setMatricula(dto.getRegisterNumber());
-            professor.setSenha(dto.getPassword());
+            if (!dto.getPassword().isEmpty()) {
+                String hashedPassword = passwordEncoder.encode(dto.getPassword());
+                professor.setSenha(hashedPassword);
+            }
             professor.setEspecialidade(dto.getSpecialization());
             professor.setTotalRequests(dto.getTotalRequests());
             professor.setUpdatedAt(LocalDate.now());

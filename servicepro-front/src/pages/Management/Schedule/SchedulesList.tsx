@@ -126,7 +126,7 @@ export default function SchedulesList() {
     };
 
     const created = await scheduleService.createSchedule(scheduleData);
-    setSchedules((prev) => [...prev, created]);
+    setSchedules(Array.isArray(created) ? created : []);
     setIsCreateDialogOpen(false);
     createForm.reset();
   };
@@ -142,9 +142,7 @@ export default function SchedulesList() {
     });
 
     if (updated) {
-      setSchedules((prev) =>
-        prev.map((s) => (s.id === updated.id ? updated : s))
-      );
+      setSchedules(Array.isArray(updated) ? updated : []);
     }
 
     setIsEditDialogOpen(false);
@@ -265,14 +263,14 @@ export default function SchedulesList() {
                                   const newDays = e.target.checked
                                     ? [...(field.value || []), day]
                                     : (field.value || []).filter(
-                                        (d) => d !== day
+                                        (d) => d !== day,
                                       );
                                   field.onChange(newDays);
                                 }}
                               />
                               <span className="text-sm">{day}</span>
                             </div>
-                          )
+                          ),
                         )}
                       </div>
                       <FormMessage />
@@ -557,14 +555,14 @@ export default function SchedulesList() {
                                 const newDays = e.target.checked
                                   ? [...(field.value || []), day]
                                   : (field.value || []).filter(
-                                      (d) => d !== day
+                                      (d) => d !== day,
                                     );
                                 field.onChange(newDays);
                               }}
                             />
                             <span className="text-sm">{day}</span>
                           </div>
-                        )
+                        ),
                       )}
                     </div>
                     <FormMessage />

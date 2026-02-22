@@ -28,6 +28,7 @@ public class Professor {
     private String phone;
     private String departamento;
     private String status;
+    private String password;
     private String especialidade;
     private Integer totalRequests;
     private String approvedRequests;

@@ -53,7 +53,7 @@ export default function SolicitationLabList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedSolicitation, setSelectedSolicitation] = useState<any | null>(
-    null
+    null,
   );
   const [actionType, setActionType] = useState<
     "approve" | "reject" | "delete" | null
@@ -112,7 +112,7 @@ export default function SolicitationLabList() {
     let filtered = [...solicitations];
     if (searchTerm) {
       filtered = filtered.filter((sol) =>
-        sol.token.toLowerCase().includes(searchTerm.toLowerCase())
+        sol.token.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
     if (statusFilter !== "all") {
@@ -123,7 +123,7 @@ export default function SolicitationLabList() {
 
   const handleAction = (
     solicitation: any,
-    type: "approve" | "reject" | "delete"
+    type: "approve" | "reject" | "delete",
   ) => {
     setSelectedSolicitation(solicitation);
     setActionType(type);
@@ -214,8 +214,6 @@ export default function SolicitationLabList() {
     const config = variants[status] || variants.pending;
     return <Badge variant={config.variant}>{config.label}</Badge>;
   };
-
-  console.log(solicitations);
 
   if (loading) {
     return (
@@ -730,7 +728,7 @@ export default function SolicitationLabList() {
               <div className="text-xs text-muted-foreground text-right">
                 Criado em:{" "}
                 {new Date(viewSolicitation.createdAt).toLocaleDateString(
-                  "pt-BR"
+                  "pt-BR",
                 )}
               </div>
             </div>

@@ -57,7 +57,7 @@ const teacherSchema = z.object({
     .min(8, "A senha deve ter pelo menos 8 caracteres")
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      "A senha deve conter letras maiúsculas, minúsculas, números e um caractere especial"
+      "A senha deve conter letras maiúsculas, minúsculas, números e um caractere especial",
     ),
 });
 
@@ -73,24 +73,27 @@ export default function TeachersList() {
   const [selectedTeacher, setSelectedTeacher] =
     useState<TeacherResponse | null>(null);
 
+  function formatTeacher(t: any): TeacherResponse {
+    return {
+      id: String(t.id),
+      name: t.nome,
+      email: t.email,
+      phone: t.phone,
+      department: t.departamento,
+      status: t.status,
+      registerNumber: t.matricula,
+      specialization: t.especialidade,
+      totalRequests: t.totalRequests,
+      approvedRequests: t.approvedRequests,
+      createdAt: t.createdAt,
+      updatedAt: t.updatedAt,
+    };
+  }
+
   // Carregar professores ao montar
   useEffect(() => {
     teacherService.getTeachers().then((data: any[]) => {
-      const formatted = data.map((t) => ({
-        id: String(t.id),
-        name: t.nome,
-        email: t.email,
-        phone: t.phone,
-        department: t.departamento,
-        status: t.status,
-        registerNumber: t.matricula,
-        specialization: t.especialidade,
-        totalRequests: t.totalRequests,
-        approvedRequests: t.approvedRequests,
-        createdAt: t.createdAt,
-        updatedAt: t.updatedAt,
-      }));
-      setTeachers(formatted);
+      setTeachers(data.map(formatTeacher));
     });
   }, []);
 
@@ -141,12 +144,10 @@ export default function TeachersList() {
       password: data.password,
     };
 
-    await teacherService.createTeacher(payload);
-
     // Como o POST não retorna o objeto, precisamos buscar de novo:
-    const updatedList = await teacherService.getTeachers();
-    setTeachers(updatedList);
+    const updatedList = await teacherService.createTeacher(payload);
 
+    setTeachers(updatedList.map(formatTeacher));
     setOpenModal(false);
     reset();
   };
@@ -182,16 +183,10 @@ export default function TeachersList() {
     try {
       const response = await teacherService.updateTeacher(
         selectedTeacher.id,
-        payload
+        payload,
       );
 
-      setTeachers((prev) => {
-        const updated = prev.map((t) =>
-          t.id === selectedTeacher.id ? selectedTeacher : t
-        );
-
-        return updated;
-      });
+      setTeachers(response.map(formatTeacher));
 
       setIsEditDialogOpen(false);
     } catch (error) {
@@ -199,7 +194,6 @@ export default function TeachersList() {
     }
   }
 
-  console.log("Professores - ", teachers);
   return (
     <div className="space-y-6">
       {/* Header */}

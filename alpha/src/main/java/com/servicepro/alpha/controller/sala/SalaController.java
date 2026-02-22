@@ -50,9 +50,10 @@ public class SalaController {
 
           service.salvarSala(dto);
 
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .build();
+            List<Sala> salas = service.buscarSalas();
+
+            return ResponseEntity.ok(salas);
+
         } catch (Throwable e) {
             e.printStackTrace();
 
@@ -74,7 +75,10 @@ public class SalaController {
                         .body("Sala não encontrado.");
             }
 
-            return ResponseEntity.ok().build();
+
+            List<Sala> salas = service.buscarSalas();
+
+            return ResponseEntity.ok(salas);
         } catch (Throwable e) {
 
             e.printStackTrace();

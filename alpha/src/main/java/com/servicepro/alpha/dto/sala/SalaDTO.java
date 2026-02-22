@@ -10,10 +10,10 @@ import java.util.List;
 public class SalaDTO {
      String name;
      String block;
-     String capacity;
+     Integer capacity;
      String type;
      List<String> equipment;
      String status;
-     String floor;
+     Integer floor;
      String description;
 }

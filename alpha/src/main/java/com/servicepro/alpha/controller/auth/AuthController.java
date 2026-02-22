@@ -1,9 +1,11 @@
 package com.servicepro.alpha.controller.auth;
 
+import com.servicepro.alpha.domain.Professor;
 import com.servicepro.alpha.domain.Usuario;
 import com.servicepro.alpha.dto.auth.LoginRequest;
 import com.servicepro.alpha.dto.auth.LoginResponse;
 import com.servicepro.alpha.dto.auth.UserInfo;
+import com.servicepro.alpha.repository.ProfessorRepository;
 import com.servicepro.alpha.repository.UsuarioRepository;
 import com.servicepro.alpha.security.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +25,15 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final UsuarioRepository usuarioRepository;
+    private final ProfessorRepository professorRepository;
 
     public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider tokenProvider,
-                          UsuarioRepository usuarioRepository) {
+                          UsuarioRepository usuarioRepository, ProfessorRepository professorRepository) {
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.usuarioRepository = usuarioRepository;
 
+        this.professorRepository = professorRepository;
     }
 
     @PostMapping("/login")
@@ -37,29 +41,47 @@ public class AuthController {
 
         try {
 
-            // Autentica usando Spring Security
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getEmail(),
-                            loginRequest.getPassword()
-                    )
-            );
+            // Primeiro tenta localizar como Usuario
+            Usuario usuario = usuarioRepository.findByEmail(loginRequest.getEmail());
 
-            // Recupera os dados do usuário do banco de dados
-            Usuario usuario = usuarioRepository.findByEmail(loginRequest.getEmail())
-                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado no banco"));
+            // Se não achou, tenta como Professor
+            Professor professor = null;
+            if (usuario == null) {
+                professor = professorRepository.findByEmail(loginRequest.getEmail());
+            }
 
+            String email;
+            String role;
+            String id;
+            String name;
+            String registerNumber;
 
-            // Gera o token JWT usando email e role
-            String role = usuario.getRole().name();
-            String token = tokenProvider.generateToken(usuario.getEmail(), role);
+            // Se for usuário comum
+            if (usuario != null) {
+                email = usuario.getEmail();
+                role = usuario.getRole().name();
+                id = String.valueOf(usuario.getId());
+                name = usuario.getName();
+                registerNumber = usuario.getRegisterNumber();
 
-            // Cria DTO de resposta com os dados reais do usuário
+                // Se for professor
+            } else {
+                email = professor.getEmail();
+                role = "PROFESSOR"; // defina aqui o nome da role desejada
+                id = String.valueOf(professor.getId());
+                name = professor.getNome();          // ajuste conforme o atributo
+                registerNumber = professor.getMatricula(); // ajuste conforme o atributo
+            }
+
+            // Gera token
+            String token = tokenProvider.generateToken(email, role);
+
+            // Monta DTO de resposta
             UserInfo userInfo = new UserInfo(
-                    String.valueOf(usuario.getId()),
-                    usuario.getEmail(),
-                    usuario.getRegisterNumber(),
-                    usuario.getName(),
+                    id,
+                    email,
+                    registerNumber,
+                    name,
                     role
             );
 

@@ -52,6 +52,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { UserResponse, User } from "@/types/userType";
 import { userService } from "@/services/userService";
 import InputMask from "react-input-mask";
+import { toast } from "@/hooks/use-toast";
 
 const getRoleColor = (role: string) => {
   switch (role) {
@@ -94,7 +95,7 @@ const userCreateSchema = z.object({
     .string()
     .regex(
       passwordRegex,
-      "A senha deve ter no mínimo 8 caracteres, incluindo maiúscula, minúscula, número e caractere especial."
+      "A senha deve ter no mínimo 8 caracteres, incluindo maiúscula, minúscula, número e caractere especial.",
     ),
 });
 
@@ -156,7 +157,6 @@ export default function UsersList() {
   });
 
   // Carrega usuários ao montar
-  // Carrega usuários ao montar
   useEffect(() => {
     userService
       .getUsers()
@@ -192,21 +192,38 @@ export default function UsersList() {
 
   // Create
   const onCreateSubmit = async (data: UserCreateFormData) => {
-    const payload: User = {
-      name: data.name,
-      email: data.email,
-      role: data.role,
-      status: data.status,
-      phone: data.phone,
-      registerNumber: data.registerNumber,
-      department: data.role === "ADMIN_LAB" ? data.department : undefined,
-      password: data.password,
-    };
+    try {
+      const payload: User = {
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        status: data.status,
+        phone: data.phone,
+        registerNumber: data.registerNumber,
+        department: data.role === "ADMIN_LAB" ? data.department : undefined,
+        password: data.password,
+      };
 
-    const created = await userService.createUser(payload);
-    setUsers((prev) => [...prev, created]);
-    setIsCreateDialogOpen(false);
-    createForm.reset();
+      const created = await userService.createUser(payload);
+
+      setUsers(Array.isArray(created) ? created : []);
+      setIsCreateDialogOpen(false);
+      createForm.reset();
+    } catch (error: any) {
+      if (error.response) {
+        toast({
+          title: "Atenção!",
+          description: error.response.data,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Atenção!",
+          description: "Erro inesperado ao criar usuário.",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   // Open edit dialog and populate form
@@ -219,29 +236,46 @@ export default function UsersList() {
     editForm.setValue("phone", user.phone);
     editForm.setValue("registerNumber", user.registerNumber);
     editForm.setValue("department", user.department || "");
-    editForm.setValue("password", user.password);
+    editForm.setValue("password", "");
     setIsEditDialogOpen(true);
   };
 
   // Update
   const onEditSubmit = async (data: UserEditFormData) => {
     if (!selectedUser) return;
-    const updated = await userService.updateUser(selectedUser.id, {
-      name: data.name,
-      email: data.email,
-      role: data.role,
-      phone: data.phone,
-      status: data.status,
-      registerNumber: data.registerNumber,
-      password: data.password,
-      department: data.role === "ADMIN_LAB" ? data.department : undefined,
-    });
-    if (updated) {
-      setUsers((prev) => prev.map((u) => (u.id === updated.id ? updated : u)));
+
+    try {
+      const updated = await userService.updateUser(selectedUser.id, {
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        phone: data.phone,
+        status: data.status,
+        registerNumber: data.registerNumber,
+        password: data.password,
+        department: data.role === "ADMIN_LAB" ? data.department : undefined,
+      });
+      if (updated) {
+        setUsers(Array.isArray(updated) ? updated : []);
+      }
+      setIsEditDialogOpen(false);
+      setSelectedUser(null);
+      editForm.reset();
+    } catch (error: any) {
+      if (error.response) {
+        toast({
+          title: "Atenção!",
+          description: error.response.data,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Atenção!",
+          description: "Erro inesperado ao criar usuário.",
+          variant: "destructive",
+        });
+      }
     }
-    setIsEditDialogOpen(false);
-    setSelectedUser(null);
-    editForm.reset();
   };
 
   // Open delete dialog
@@ -253,10 +287,26 @@ export default function UsersList() {
   // Delete
   const handleDelete = async () => {
     if (!selectedUser) return;
-    await userService.deleteUser(selectedUser.id);
-    setUsers((prev) => prev.filter((u) => u.id !== selectedUser.id));
-    setIsDeleteDialogOpen(false);
-    setSelectedUser(null);
+    try {
+      await userService.deleteUser(selectedUser.id);
+      setUsers((prev) => prev.filter((u) => u.id !== selectedUser.id));
+      setIsDeleteDialogOpen(false);
+      setSelectedUser(null);
+    } catch (error: any) {
+      if (error.response) {
+        toast({
+          title: "Atenção!",
+          description: error.response.data,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Atenção!",
+          description: "Erro inesperado ao criar usuário.",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   return (
@@ -640,12 +690,14 @@ export default function UsersList() {
                           <Badge
                             variant="outline"
                             className={
-                              user.status === "active"
+                              user.status?.trim().toLowerCase() === "active"
                                 ? "bg-success/10 text-success border-success"
                                 : "bg-muted/10 text-muted-foreground border-muted"
                             }
                           >
-                            {user.status === "active" ? "Ativo" : "Inativo"}
+                            {user.status?.trim().toLowerCase() === "active"
+                              ? "Ativo"
+                              : "Inativo"}
                           </Badge>
                         </TableCell>
                         <TableCell>
@@ -714,14 +766,14 @@ export default function UsersList() {
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <Button
+                      {/* <Button
                         variant="ghost"
                         size="icon"
                         className="text-destructive"
                         onClick={() => openDelete(user)}
                       >
                         <Trash2 className="h-4 w-4" />
-                      </Button>
+                      </Button> */}
                     </div>
                   </Card>
                 ))}

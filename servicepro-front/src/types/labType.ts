@@ -1,18 +1,18 @@
 import { Schedule } from "./schedule";
 
 export enum TipoLab {
-  DIDATICO,
-  DIDATICO_PESQUISA,
+  DIDATICO = "DIDATICO",
+  DIDATICO_PESQUISA = "DIDATICO_PESQUISA",
 }
 
 export interface Laboratorio {
   id?: string;
   nome: string;
   bloco: string;
-  capacidade: string;
+  capacidade: number;
   equipamento: string[];
   status: "active" | "maintenance" | "inactive";
-  andar: string;
+  andar: number;
   descricao: string;
   tipoLab: TipoLab;
 }
